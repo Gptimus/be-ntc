@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "be-ntc",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "be-ntc",
+    "slug": "be-ntc",
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
