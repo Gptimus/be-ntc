@@ -5,7 +5,7 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "../../packages/ui/src/styles/index.css",
+    "css": "../../packages/ui/src/styles/globals.css",
     "baseColor": "zinc",
     "cssVariables": true,
     "prefix": ""
@@ -14,7 +14,7 @@
   "aliases": {
     "components": "@/components",
     "utils": "@be-ntc/ui/lib/utils",
-    "ui": "@be-ntc/ui/components/ui",
+    "ui": "@be-ntc/ui/components",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },

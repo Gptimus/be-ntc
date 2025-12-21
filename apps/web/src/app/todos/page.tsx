@@ -3,14 +3,21 @@
 import type { Id } from "@be-ntc/backend/convex/_generated/dataModel";
 
 import { api } from "@be-ntc/backend/convex/_generated/api";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation, useQuery } from "convex/react";
-import { Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { Button } from "@be-ntc/ui/components/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@be-ntc/ui/components/card";
+import { Checkbox } from "@be-ntc/ui/components/checkbox";
+import { Input } from "@be-ntc/ui/components/input";
+import { Delete02Icon, Loading03Icon } from "@hugeicons/core-free-icons";
 
 export default function TodosPage() {
   const [newTodoText, setNewTodoText] = useState("");
@@ -44,7 +51,10 @@ export default function TodosPage() {
           <CardDescription>Manage your tasks efficiently</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleAddTodo} className="mb-6 flex items-center space-x-2">
+          <form
+            onSubmit={handleAddTodo}
+            className="mb-6 flex items-center space-x-2"
+          >
             <Input
               value={newTodoText}
               onChange={(e) => setNewTodoText(e.target.value)}
@@ -57,7 +67,10 @@ export default function TodosPage() {
 
           {todos === undefined ? (
             <div className="flex justify-center py-4">
-              <Loader2 className="h-6 w-6 animate-spin" />
+              <HugeiconsIcon
+                icon={Loading03Icon}
+                className="h-6 w-6 animate-spin"
+              />
             </div>
           ) : todos.length === 0 ? (
             <p className="py-4 text-center">No todos yet. Add one above!</p>
@@ -71,7 +84,9 @@ export default function TodosPage() {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       checked={todo.completed}
-                      onCheckedChange={() => handleToggleTodo(todo._id, todo.completed)}
+                      onCheckedChange={() =>
+                        handleToggleTodo(todo._id, todo.completed)
+                      }
                       id={`todo-${todo._id}`}
                     />
                     <label
@@ -87,7 +102,7 @@ export default function TodosPage() {
                     onClick={() => handleDeleteTodo(todo._id)}
                     aria-label="Delete todo"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <HugeiconsIcon icon={Delete02Icon} className="h-4 w-4" />
                   </Button>
                 </li>
               ))}

@@ -3,9 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "paths": {
+    "@be-ntc/ui/*": [
+      "./src/*"
+    ]
+  },
   "exports": {
-    ".": "./src/index.ts",
-    "./globals.css": "./src/index.css"
+    "./globals.css": "./src/styles/globals.css",
+    "./postcss.config": "./postcss.config.mjs",
+    "./lib/*": "./src/lib/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./hooks/*": "./src/hooks/*.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
