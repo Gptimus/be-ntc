@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Outfit } from "next/font/google";
 
 import Header from "@/components/header";
 import Providers from "@/components/providers";
-import "@be-ntc/ui/styles/global.css";
+import "@be-ntc/ui/globals.css";
+
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

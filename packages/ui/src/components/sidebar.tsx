@@ -22,7 +22,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@be-ntc/ui/components/tooltip"
-import { useIsMobile } from "@be-ntc/ui/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { HugeiconsIcon } from "@hugeicons/react"
 import { SidebarLeftIcon } from "@hugeicons/core-free-icons"
 

@@ -5,7 +5,6 @@
     "paths": {
       "@be-ntc/ui/*": ["./src/*"]
     },
-    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "react-jsx"
   },
   "include": ["src"],
