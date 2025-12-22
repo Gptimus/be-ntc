@@ -1,4 +1,11 @@
 {
+  "home": {
+    "metadata": {
+      "title": "BE-NTC - Financial Freedom for Everyone in DRC",
+      "description": "Your all-in-one super app for payments, savings, loans, and more. Multi-currency support (CDF & USD). Join thousands of users in the Democratic Republic of Congo.",
+      "keywords": "mobile banking DRC, Congo fintech, CDF USD wallet, mobile payments Congo, microfinance DRC, digital wallet Kinshasa, money transfer Congo, financial services DRC"
+    }
+  },
   "hero": {
     "title": "Financial freedom for everyone in DRC",
     "subtitle": "Your all-in-one super app for payments, savings, loans, and more. CDF and USD support.",

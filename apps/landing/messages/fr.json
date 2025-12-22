@@ -1,4 +1,11 @@
 {
+  "home": {
+    "metadata": {
+      "title": "BE-NTC - Liberté Financière pour Tous en RDC",
+      "description": "Votre super application tout-en-un pour les paiements, l'épargne, les prêts et plus encore. Support multi-devises (CDF & USD). Rejoignez des milliers d'utilisateurs en République Démocratique du Congo.",
+      "keywords": "banque mobile RDC, fintech Congo, portefeuille CDF USD, paiements mobiles Congo, microfinance RDC, portefeuille numérique Kinshasa, transfert d'argent Congo, services financiers RDC"
+    }
+  },
   "hero": {
     "title": "Liberté financière pour tous en RDC",
     "subtitle": "Votre super application tout-en-un pour les paiements, l'épargne, les prêts et plus encore. Support CDF et USD.",
