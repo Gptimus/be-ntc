@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["bun", "git"]
+
+[phases.install]
+cmds = ["bun install --frozen-lockfile"]
+
+[phases.build]
+cmds = ["cd apps/landing && bun run build"]
+
+[start]
+cmd = "cd apps/landing && bun run start"
+
+[variables]
+NIXPACKS_BUN_VERSION = "1.3.0"
