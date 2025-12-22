@@ -23,7 +23,10 @@ export function FeaturesSection() {
   const t = useTranslations("features");
 
   return (
-    <section className="py-32 md:py-40 bg-background">
+    <section
+      id="features"
+      className="scroll-mt-20 py-32 md:py-40 bg-background"
+    >
       <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-7xl">
         {/* Section Header */}
         <motion.div

@@ -13,7 +13,10 @@ export function AppPreview() {
   const t = useTranslations("appPreview");
 
   return (
-    <section className="py-32 md:py-40 bg-gradient-to-b from-muted/30 to-background overflow-hidden">
+    <section
+      id="download"
+      className="scroll-mt-20 py-32 md:py-40 bg-gradient-to-b from-muted/30 to-background overflow-hidden"
+    >
       <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* Left - Phone Mockup */}

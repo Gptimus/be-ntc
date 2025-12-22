@@ -17,6 +17,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useTransition } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { ModeToggle } from "../mode-toggle";
 
 type FooterCategory = "about" | "services" | "legal";
 type FooterLink =
@@ -199,7 +200,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-border/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground font-light">
           <p>{t("copyright")}</p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <p>{t("madeWithLove")}</p>
             <span className="text-primary">•</span>
             <div className="flex gap-2">
@@ -226,6 +227,8 @@ export function Footer() {
                 FR
               </button>
             </div>
+            <span className="text-primary">•</span>
+            <ModeToggle />
           </div>
         </div>
       </div>

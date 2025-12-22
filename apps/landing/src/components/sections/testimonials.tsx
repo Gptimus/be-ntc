@@ -18,7 +18,10 @@ export function Testimonials() {
   const t = useTranslations("testimonials");
 
   return (
-    <section className="py-32 md:py-40 bg-gradient-to-b from-background to-muted/30">
+    <section
+      id="testimonials"
+      className="scroll-mt-20 py-32 md:py-40 bg-gradient-to-b from-background to-muted/30"
+    >
       <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-7xl">
         {/* Section Header */}
         <motion.div

@@ -3,13 +3,20 @@
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowDataTransferHorizontalIcon } from "@hugeicons/core-free-icons";
+import {
+  ArrowDataTransferHorizontalIcon,
+  Money03Icon,
+  DollarCircleIcon,
+} from "@hugeicons/core-free-icons";
 
 export function CurrencyShowcase() {
   const t = useTranslations("currency");
 
   return (
-    <section className="py-32 md:py-40 bg-gradient-to-b from-muted/30 to-background">
+    <section
+      id="currency"
+      className="scroll-mt-20 py-32 md:py-40 bg-gradient-to-b from-muted/30 to-background"
+    >
       <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-7xl">
         {/* Section Header */}
         <motion.div
@@ -53,7 +60,11 @@ export function CurrencyShowcase() {
                     </div>
                   </div>
                   <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">🇨🇩</span>
+                    <HugeiconsIcon
+                      icon={Money03Icon}
+                      strokeWidth={1.5}
+                      className="w-7 h-7 text-primary"
+                    />
                   </div>
                 </div>
                 <div className="space-y-3">
@@ -105,7 +116,11 @@ export function CurrencyShowcase() {
                     </div>
                   </div>
                   <div className="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💵</span>
+                    <HugeiconsIcon
+                      icon={DollarCircleIcon}
+                      strokeWidth={1.5}
+                      className="w-7 h-7 text-accent"
+                    />
                   </div>
                 </div>
                 <div className="space-y-3">
