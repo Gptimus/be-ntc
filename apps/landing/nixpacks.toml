@@ -1,0 +1,27 @@
+[phases]
+# Install specific Bun version (1.3.0)
+setup.packages = ["git", "openssl", "nodejs-22_x"]
+setup.cmds = [
+    # Install Bun 1.3.0 specifically
+    "curl -fsSL https://bun.sh/install | bash -s \"bun-v1.3.0\"",
+    "export PATH=\"/root/.bun/bin:$PATH\""
+]
+
+# Install dependencies
+install.cmds = [
+    "bun --version",
+    "bun install --frozen-lockfile"
+]
+
+# Build your landing app
+build.cmds = [
+    "cd apps/landing && bun run build"
+]
+
+[start]
+cmd = "cd apps/landing && bun run start"
+
+[environment]
+# Set Bun path permanently
+PATH = "/root/.bun/bin:${PATH}"
+NODE_ENV = "production"
