@@ -2,6 +2,7 @@
   "extends": "../config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "paths": {
       "@be-ntc/ui/*": ["./src/*"]
     },
