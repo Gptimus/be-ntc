@@ -44,6 +44,7 @@
     "features": "Features",
     "testimonials": "Testimonials",
     "faq": "FAQ",
+    "contact": "Contact",
     "download": "Download"
   },
   "services": {
@@ -182,5 +183,24 @@
     "address": "Kinshasa, DRC",
     "copyright": "© 2025 BE-NTC. All rights reserved.",
     "madeWithLove": "Made with ❤️ in DRC"
+  },
+  "contact": {
+    "title": "Get in touch",
+    "subtitle": "Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "How can we help you?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us more about your inquiry...",
+    "messageDescription": "Please provide as much detail as possible so we can assist you better.",
+    "characters": "characters",
+    "resetButton": "Reset",
+    "sendButton": "Send Message",
+    "sendingButton": "Sending...",
+    "successMessage": "Message sent successfully!",
+    "successDescription": "We'll get back to you as soon as possible."
   }
 }

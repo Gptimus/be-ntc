@@ -44,6 +44,7 @@
     "features": "Fonctionnalités",
     "testimonials": "Témoignages",
     "faq": "FAQ",
+    "contact": "Contact",
     "download": "Télécharger"
   },
   "services": {
@@ -182,5 +183,24 @@
     "address": "Kinshasa, RDC",
     "copyright": "© 2025 BE-NTC. Tous droits réservés.",
     "madeWithLove": "Fait avec ❤️ en RDC"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez des questions ? Nous serions ravis de vous entendre. Envoyez-nous un message et nous vous répondrons dans les plus brefs délais.",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Votre nom complet",
+    "emailLabel": "Email",
+    "emailPlaceholder": "votre.email@exemple.com",
+    "subjectLabel": "Sujet",
+    "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Parlez-nous de votre demande...",
+    "messageDescription": "Veuillez fournir autant de détails que possible afin que nous puissions mieux vous aider.",
+    "characters": "caractères",
+    "resetButton": "Réinitialiser",
+    "sendButton": "Envoyer le message",
+    "sendingButton": "Envoi en cours...",
+    "successMessage": "Message envoyé avec succès !",
+    "successDescription": "Nous vous répondrons dans les plus brefs délais."
   }
 }

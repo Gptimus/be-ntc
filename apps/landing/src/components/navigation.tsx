@@ -84,6 +84,12 @@ export function Navigation() {
             >
               {t("faq")}
             </a>
+            <a
+              href="#contact"
+              className="text-sm font-light text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {t("contact")}
+            </a>
           </div>
 
           {/* CTA & Language Switcher */}

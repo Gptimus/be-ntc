@@ -9,6 +9,7 @@ import { AppPreview } from "@/components/sections/app-preview";
 import { Footer } from "@/components/sections/footer";
 import type { Metadata } from "next";
 import { generatePageMetadata } from "@/lib/metadata";
+import { ContactForm } from "@/components/sections/contact-form";
 
 export async function generateMetadata({
   params,
@@ -31,6 +32,7 @@ export default function Home() {
         <Testimonials />
         <FAQ />
         <AppPreview />
+        <ContactForm />
       </main>
       <Footer />
     </>
