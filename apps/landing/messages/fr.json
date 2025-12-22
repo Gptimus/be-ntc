@@ -201,6 +201,15 @@
     "sendButton": "Envoyer le message",
     "sendingButton": "Envoi en cours...",
     "successMessage": "Message envoyé avec succès !",
-    "successDescription": "Nous vous répondrons dans les plus brefs délais."
+    "successDescription": "Nous vous répondrons dans les plus brefs délais.",
+    "validation": {
+      "nameMin": "Le nom doit contenir au moins 2 caractères.",
+      "nameMax": "Le nom doit contenir au maximum 50 caractères.",
+      "emailInvalid": "Veuillez entrer une adresse email valide.",
+      "subjectMin": "Le sujet doit contenir au moins 5 caractères.",
+      "subjectMax": "Le sujet doit contenir au maximum 100 caractères.",
+      "messageMin": "Le message doit contenir au moins 20 caractères.",
+      "messageMax": "Le message doit contenir au maximum 500 caractères."
+    }
   }
 }

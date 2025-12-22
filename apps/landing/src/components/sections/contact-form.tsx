@@ -23,24 +23,26 @@ import {
   InputGroupTextarea,
 } from "@be-ntc/ui/components/input-group";
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, "Name must be at least 2 characters.")
-    .max(50, "Name must be at most 50 characters."),
-  email: z.string().email("Please enter a valid email address."),
-  subject: z
-    .string()
-    .min(5, "Subject must be at least 5 characters.")
-    .max(100, "Subject must be at most 100 characters."),
-  message: z
-    .string()
-    .min(20, "Message must be at least 20 characters.")
-    .max(500, "Message must be at most 500 characters."),
-});
-
 export function ContactForm() {
   const t = useTranslations("contact");
+
+  // Create schema inside component to access translations
+  const formSchema = z.object({
+    name: z
+      .string()
+      .min(2, t("validation.nameMin"))
+      .max(50, t("validation.nameMax")),
+    email: z.string().email(t("validation.emailInvalid")),
+    subject: z
+      .string()
+      .min(5, t("validation.subjectMin"))
+      .max(100, t("validation.subjectMax")),
+    message: z
+      .string()
+      .min(20, t("validation.messageMin"))
+      .max(500, t("validation.messageMax")),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,6 +51,7 @@ export function ContactForm() {
       subject: "",
       message: "",
     },
+    mode: "all",
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
@@ -89,7 +92,7 @@ export function ContactForm() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 md:p-12 shadow-xl">
+          <div className="bg-card/30 backdrop-blur-sm border border-border/50 rounded-3xl p-8 md:p-12">
             <form
               id="contact-form"
               onSubmit={form.handleSubmit(onSubmit)}
@@ -222,7 +225,9 @@ export function ContactForm() {
                   type="submit"
                   form="contact-form"
                   className="flex-1"
-                  disabled={form.formState.isSubmitting}
+                  disabled={
+                    form.formState.isSubmitting || !form.formState.isValid
+                  }
                 >
                   {form.formState.isSubmitting
                     ? t("sendingButton")

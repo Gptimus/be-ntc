@@ -221,7 +221,6 @@ export function Footer() {
           <div className="border-t border-border/30 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground font-light">
             <p>{t("copyright")}</p>
             <div className="flex items-center gap-3">
-              <span className="text-primary">•</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleLanguageChange("en")}

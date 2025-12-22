@@ -201,6 +201,15 @@
     "sendButton": "Send Message",
     "sendingButton": "Sending...",
     "successMessage": "Message sent successfully!",
-    "successDescription": "We'll get back to you as soon as possible."
+    "successDescription": "We'll get back to you as soon as possible.",
+    "validation": {
+      "nameMin": "Name must be at least 2 characters.",
+      "nameMax": "Name must be at most 50 characters.",
+      "emailInvalid": "Please enter a valid email address.",
+      "subjectMin": "Subject must be at least 5 characters.",
+      "subjectMax": "Subject must be at most 100 characters.",
+      "messageMin": "Message must be at least 20 characters.",
+      "messageMax": "Message must be at most 500 characters."
+    }
   }
 }
