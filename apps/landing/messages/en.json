@@ -1,0 +1,167 @@
+{
+  "hero": {
+    "title": "Financial freedom for everyone in DRC",
+    "subtitle": "Your all-in-one super app for payments, savings, loans, and more. CDF and USD support.",
+    "downloadApp": "Download app",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "activeUsers": "Active users",
+    "services": "Services",
+    "currencies": "Currencies",
+    "totalBalance": "Total balance",
+    "welcomeBack": "Welcome back",
+    "addMoney": "Add Money",
+    "transfer": "Transfer",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "seeAll": "See All",
+    "airtime": "Airtime",
+    "internet": "Internet",
+    "bills": "Bills",
+    "cards": "Cards",
+    "savings": "Savings",
+    "loans": "Loans",
+    "events": "Events",
+    "more": "More",
+    "netflix": "Netflix Subscription",
+    "grocery": "Grocery Store",
+    "received": "Received from Mike",
+    "today": "Today, 9:00 AM",
+    "yesterday": "Yesterday, 6:30 PM",
+    "date": "Dec 20, 4:15 PM"
+  },
+  "navigation": {
+    "services": "Services",
+    "currency": "Currency",
+    "features": "Features",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "download": "Download"
+  },
+  "services": {
+    "title": "All your financial needs in one place",
+    "subtitle": "From daily payments to long-term savings, we've got you covered",
+    "payMerchant": "Pay merchant",
+    "payTV": "Pay TV",
+    "payElectricity": "Pay electricity",
+    "payWater": "Pay water",
+    "bulkPayment": "Bulk payment",
+    "assurance": "Insurance",
+    "microfinance": "Microfinance",
+    "transferInternational": "International transfer",
+    "payTax": "Pay tax",
+    "cashWithdrawal": "Cash withdrawal",
+    "currencyExchange": "Currency exchange",
+    "bet": "Betting",
+    "cardTransfer": "Card transfer",
+    "recharge": "Mobile recharge",
+    "microloan": "Microloan",
+    "transferLocal": "Local transfer",
+    "reservation": "Reservations",
+    "foodOrder": "Food order"
+  },
+  "currency": {
+    "title": "Multi-currency wallet",
+    "subtitle": "Manage your money in CDF and USD with ease",
+    "cdfWallet": "CDF wallet",
+    "usdWallet": "USD wallet",
+    "exchange": "Exchange between currencies",
+    "instantExchange": "Instant exchange"
+  },
+  "features": {
+    "title": "Powerful features for modern banking",
+    "subtitle": "Everything you need to manage your finances",
+    "wallet": {
+      "title": "Digital wallet",
+      "description": "Secure multi-currency wallet supporting CDF and USD with instant transactions"
+    },
+    "savings": {
+      "title": "Savings goals",
+      "description": "Set and track your financial goals with automated savings features"
+    },
+    "loans": {
+      "title": "Quick loans",
+      "description": "Access microloans and microfinance with competitive rates"
+    },
+    "payments": {
+      "title": "Multiple payment methods",
+      "description": "Pay with cards, mobile money, or bank transfers seamlessly"
+    },
+    "rewards": {
+      "title": "Loyalty rewards",
+      "description": "Earn points on every transaction and unlock exclusive benefits"
+    }
+  },
+  "testimonials": {
+    "title": "Trusted by thousands",
+    "subtitle": "See what our users are saying",
+    "testimonial1": {
+      "name": "Marie K.",
+      "role": "Small business owner",
+      "content": "This app has transformed how I manage my business finances. Fast, secure, and reliable!"
+    },
+    "testimonial2": {
+      "name": "Jean-Paul M.",
+      "role": "Freelancer",
+      "content": "The multi-currency wallet is a game-changer. I can easily manage both CDF and USD."
+    },
+    "testimonial3": {
+      "name": "Natalie B.",
+      "role": "Student",
+      "content": "The savings goals help me save for my education. Simple and effective!"
+    }
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "subtitle": "Everything you need to know",
+    "q1": {
+      "question": "Is my money safe?",
+      "answer": "Yes, we use bank-level encryption and security measures to protect your funds and personal information."
+    },
+    "q2": {
+      "question": "What currencies do you support?",
+      "answer": "We support Congolese Franc (CDF) and US Dollar (USD) with instant exchange between them."
+    },
+    "q3": {
+      "question": "Are there any fees?",
+      "answer": "We offer transparent pricing with competitive fees. Most basic transactions are free, and we clearly display any applicable fees before confirmation."
+    },
+    "q4": {
+      "question": "How do I get started?",
+      "answer": "Simply download the app, create your account, complete KYC verification, and start using our services immediately."
+    },
+    "q5": {
+      "question": "Can I use it for my business?",
+      "answer": "Absolutely! We offer both personal and business accounts with features tailored for businesses."
+    },
+    "q6": {
+      "question": "What services are available?",
+      "answer": "We offer 18+ services including payments, transfers, savings, loans, insurance, and more. Everything you need in one app."
+    }
+  },
+  "appPreview": {
+    "title": "Experience the future of finance",
+    "subtitle": "Available on iOS and Android",
+    "downloadNow": "Download now"
+  },
+  "footer": {
+    "about": "About",
+    "services": "Services",
+    "legal": "Legal",
+    "contact": "Contact",
+    "aboutUs": "About us",
+    "careers": "Careers",
+    "press": "Press",
+    "allServices": "All services",
+    "pricing": "Pricing",
+    "security": "Security",
+    "privacyPolicy": "Privacy policy",
+    "terms": "Terms of service",
+    "compliance": "Compliance",
+    "supportEmail": "support@be-ntc.com",
+    "phone": "+243 XXX XXX XXX",
+    "address": "Kinshasa, DRC",
+    "copyright": "© 2025 BE-NTC. All rights reserved.",
+    "madeWithLove": "Made with ❤️ in DRC"
+  }
+}

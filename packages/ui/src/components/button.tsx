@@ -1,60 +1,454 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
-
-import { cn } from "@be-ntc/ui/lib/utils"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
+import { Slot as SlotPrimitive } from "radix-ui";
+import { cn } from "@be-ntc/ui/lib/utils";
 
 const buttonVariants = cva(
-  "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-lg border border-transparent bg-clip-padding text-sm font-medium focus-visible:ring-[3px] aria-invalid:ring-[3px] [&_svg:not([class*='size-'])]:size-4 inline-flex items-center justify-center whitespace-nowrap transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none shrink-0 [&_svg]:shrink-0 outline-none group/button select-none",
+  "cursor-pointer group whitespace-nowrap focus-visible:outline-hidden inline-flex items-center justify-center has-data-[arrow=true]:justify-between whitespace-nowrap text-sm font-medium ring-offset-background transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-60 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-        outline: "border-border bg-background hover:bg-muted hover:text-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-        ghost: "hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 aria-expanded:bg-muted aria-expanded:text-foreground",
-        destructive: "bg-destructive/10 hover:bg-destructive/20 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/20 text-destructive focus-visible:border-destructive/40 dark:hover:bg-destructive/30",
-        link: "text-primary underline-offset-4 hover:underline",
+        primary:
+          "bg-primary text-primary-foreground hover:bg-primary/90 data-[state=open]:bg-primary/90",
+        heavy:
+          "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/20 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200",
+        mono: "bg-zinc-950 text-white dark:bg-zinc-300 dark:text-black hover:bg-zinc-950/90 dark:hover:bg-zinc-300/90 data-[state=open]:bg-zinc-950/90 dark:data-[state=open]:bg-zinc-300/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 data-[state=open]:bg-destructive/90",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/90 data-[state=open]:bg-secondary/90",
+        outline:
+          "bg-background border border-input hover:bg-accent hover:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+        dashed:
+          "border border-input border-dashed bg-background hover:bg-accent hover:text-accent-foreground data-[state=open]:text-accent-foreground",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+        dim: "text-muted-foreground hover:text-foreground data-[state=open]:text-foreground",
+        foreground: "",
+        inverse: "",
+      },
+      appearance: {
+        default: "",
+        ghost: "",
+      },
+      underline: {
+        solid: "",
+        dashed: "",
+      },
+      underlined: {
+        solid: "",
+        dashed: "",
       },
       size: {
-        default: "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
-        icon: "size-8",
-        "icon-xs": "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
+        huge: "h-14 px-8 text-base gap-2.5 rounded-2xl [&_svg:not([class*=size-])]:size-5",
+        lg: "h-10 px-4 text-sm gap-1.5 [&_svg:not([class*=size-])]:size-4",
+        md: "h-9 px-3 gap-1.5 text-sm [&_svg:not([class*=size-])]:size-4",
+        sm: "h-8 px-2.5 gap-1.25 text-xs [&_svg:not([class*=size-])]:size-3.5",
+        xs: "h-7 px-2 gap-1 text-xs [&_svg:not([class*=size-])]:size-3.5",
+        icon: "size-9 [&_svg:not([class*=size-])]:size-4 shrink-0",
+      },
+      autoHeight: {
+        true: "",
+        false: "",
+      },
+      radius: {
+        md: "rounded-md",
+        full: "rounded-full",
+      },
+      mode: {
+        default:
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        icon: "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 shrink-0",
+        link: "text-primary h-auto p-0 bg-transparent rounded-none hover:bg-transparent data-[state=open]:bg-transparent",
+        input: `
+            justify-start font-normal hover:bg-background [&_svg]:transition-colors [&_svg]:hover:text-foreground data-[state=open]:bg-background 
+            focus-visible:border-ring focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-ring/30 
+            [[data-state=open]>&]:border-ring [[data-state=open]>&]:outline-hidden [[data-state=open]>&]:ring-[3px] 
+            [[data-state=open]>&]:ring-ring/30 
+            aria-invalid:border-destructive/60 aria-invalid:ring-destructive/10 dark:aria-invalid:border-destructive dark:aria-invalid:ring-destructive/20
+            in-data-[invalid=true]:border-destructive/60 in-data-[invalid=true]:ring-destructive/10  dark:in-data-[invalid=true]:border-destructive dark:in-data-[invalid=true]:ring-destructive/20
+          `,
+      },
+      placeholder: {
+        true: "text-muted-foreground",
+        false: "",
       },
     },
+    compoundVariants: [
+      // Icons opacity for default mode
+      {
+        variant: "ghost",
+        mode: "default",
+        className:
+          "[&_svg:not([role=img]):not([class*=text-]):not([class*=opacity-])]:opacity-60",
+      },
+      {
+        variant: "outline",
+        mode: "default",
+        className:
+          "[&_svg:not([role=img]):not([class*=text-]):not([class*=opacity-])]:opacity-60",
+      },
+      {
+        variant: "dashed",
+        mode: "default",
+        className:
+          "[&_svg:not([role=img]):not([class*=text-]):not([class*=opacity-])]:opacity-60",
+      },
+      {
+        variant: "secondary",
+        mode: "default",
+        className:
+          "[&_svg:not([role=img]):not([class*=text-]):not([class*=opacity-])]:opacity-60",
+      },
+
+      // Icons opacity for default mode
+      {
+        variant: "outline",
+        mode: "input",
+        className:
+          "[&_svg:not([role=img]):not([class*=text-]):not([class*=opacity-])]:opacity-60",
+      },
+      {
+        variant: "outline",
+        mode: "icon",
+        className:
+          "[&_svg:not([role=img]):not([class*=text-]):not([class*=opacity-])]:opacity-60",
+      },
+
+      // Auto height
+      {
+        size: "xs",
+        autoHeight: true,
+        className: "h-auto min-h-7",
+      },
+      {
+        size: "md",
+        autoHeight: true,
+        className: "h-auto min-h-9",
+      },
+      {
+        size: "sm",
+        autoHeight: true,
+        className: "h-auto min-h-8",
+      },
+      {
+        size: "lg",
+        autoHeight: true,
+        className: "h-auto min-h-10",
+      },
+
+      // Shadow support
+      {
+        variant: "primary",
+        mode: "default",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "mono",
+        mode: "default",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "secondary",
+        mode: "default",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "outline",
+        mode: "default",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "dashed",
+        mode: "default",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "destructive",
+        mode: "default",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+
+      // Shadow support
+      {
+        variant: "primary",
+        mode: "icon",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "mono",
+        mode: "icon",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "secondary",
+        mode: "icon",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "outline",
+        mode: "icon",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "dashed",
+        mode: "icon",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+      {
+        variant: "destructive",
+        mode: "icon",
+        appearance: "default",
+        className: "shadow-xs shadow-black/5",
+      },
+
+      // Link
+      {
+        variant: "primary",
+        mode: "link",
+        underline: "solid",
+        className:
+          "font-medium text-primary hover:text-primary/90 [&_svg:not([role=img]):not([class*=text-])]:opacity-60 hover:underline hover:underline-offset-4 hover:decoration-solid",
+      },
+      {
+        variant: "primary",
+        mode: "link",
+        underline: "dashed",
+        className:
+          "font-medium text-primary hover:text-primary/90 [&_svg:not([role=img]):not([class*=text-])]:opacity-60 hover:underline hover:underline-offset-4 hover:decoration-dashed decoration-1",
+      },
+      {
+        variant: "primary",
+        mode: "link",
+        underlined: "solid",
+        className:
+          "font-medium text-primary hover:text-primary/90 [&_svg:not([role=img]):not([class*=text-])]:opacity-60 underline underline-offset-4 decoration-solid",
+      },
+      {
+        variant: "primary",
+        mode: "link",
+        underlined: "dashed",
+        className:
+          "font-medium text-primary hover:text-primary/90 [&_svg]:opacity-60 underline underline-offset-4 decoration-dashed decoration-1",
+      },
+
+      {
+        variant: "inverse",
+        mode: "link",
+        underline: "solid",
+        className:
+          "font-medium text-inherit [&_svg:not([role=img]):not([class*=text-])]:opacity-60 hover:underline hover:underline-offset-4 hover:decoration-solid",
+      },
+      {
+        variant: "inverse",
+        mode: "link",
+        underline: "dashed",
+        className:
+          "font-medium text-inherit [&_svg:not([role=img]):not([class*=text-])]:opacity-60 hover:underline hover:underline-offset-4 hover:decoration-dashed decoration-1",
+      },
+      {
+        variant: "inverse",
+        mode: "link",
+        underlined: "solid",
+        className:
+          "font-medium text-inherit [&_svg:not([role=img]):not([class*=text-])]:opacity-60 underline underline-offset-4 decoration-solid",
+      },
+      {
+        variant: "inverse",
+        mode: "link",
+        underlined: "dashed",
+        className:
+          "font-medium text-inherit [&_svg:not([role=img]):not([class*=text-])]:opacity-60 underline underline-offset-4 decoration-dashed decoration-1",
+      },
+
+      {
+        variant: "foreground",
+        mode: "link",
+        underline: "solid",
+        className:
+          "font-medium text-foreground [&_svg:not([role=img]):not([class*=text-])]:opacity-60 hover:underline hover:underline-offset-4 hover:decoration-solid",
+      },
+      {
+        variant: "foreground",
+        mode: "link",
+        underline: "dashed",
+        className:
+          "font-medium text-foreground [&_svg:not([role=img]):not([class*=text-])]:opacity-60 hover:underline hover:underline-offset-4 hover:decoration-dashed decoration-1",
+      },
+      {
+        variant: "foreground",
+        mode: "link",
+        underlined: "solid",
+        className:
+          "font-medium text-foreground [&_svg:not([role=img]):not([class*=text-])]:opacity-60 underline underline-offset-4 decoration-solid",
+      },
+      {
+        variant: "foreground",
+        mode: "link",
+        underlined: "dashed",
+        className:
+          "font-medium text-foreground [&_svg:not([role=img]):not([class*=text-])]:opacity-60 underline underline-offset-4 decoration-dashed decoration-1",
+      },
+
+      // Ghost
+      {
+        variant: "primary",
+        appearance: "ghost",
+        className:
+          "bg-transparent text-primary/90 hover:bg-primary/5 data-[state=open]:bg-primary/5",
+      },
+      {
+        variant: "destructive",
+        appearance: "ghost",
+        className:
+          "bg-transparent text-destructive/90 hover:bg-destructive/5 data-[state=open]:bg-destructive/5",
+      },
+      {
+        variant: "ghost",
+        mode: "icon",
+        className: "text-muted-foreground",
+      },
+
+      // Size
+      {
+        size: "xs",
+        mode: "icon",
+        className: "w-7 h-7 p-0 [[&_svg:not([class*=size-])]:size-3.5",
+      },
+      {
+        size: "sm",
+        mode: "icon",
+        className: "w-8 h-8 p-0 [[&_svg:not([class*=size-])]:size-3.5",
+      },
+      {
+        size: "md",
+        mode: "icon",
+        className: "w-9 h-9 p-0 [&_svg:not([class*=size-])]:size-4",
+      },
+      {
+        size: "icon",
+        className: "w-9 h-9 p-0 [&_svg:not([class*=size-])]:size-4",
+      },
+      {
+        size: "lg",
+        mode: "icon",
+        className: "w-10 h-10 p-0 [&_svg:not([class*=size-])]:size-4",
+      },
+
+      // Input mode
+      {
+        mode: "input",
+        placeholder: true,
+        variant: "outline",
+        className: "font-normal text-muted-foreground",
+      },
+      {
+        mode: "input",
+        variant: "outline",
+        size: "sm",
+        className: "gap-1.25",
+      },
+      {
+        mode: "input",
+        variant: "outline",
+        size: "md",
+        className: "gap-1.5",
+      },
+      {
+        mode: "input",
+        variant: "outline",
+        size: "lg",
+        className: "gap-1.5",
+      },
+    ],
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: "primary",
+      mode: "default",
+      size: "md",
+      radius: "md",
+      appearance: "default",
     },
   }
-)
+);
 
 function Button({
   className,
-  variant = "default",
-  size = "default",
+  selected,
+  variant,
+  radius,
+  appearance,
+  mode,
+  size,
+  autoHeight,
+  underlined,
+  underline,
   asChild = false,
+  placeholder = false,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
+    selected?: boolean;
+    asChild?: boolean;
   }) {
-  const Comp = asChild ? Slot.Root : "button"
-
+  const Comp = asChild ? SlotPrimitive.Slot : "button";
   return (
     <Comp
       data-slot="button"
-      data-variant={variant}
-      data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(
+        buttonVariants({
+          variant,
+          size,
+          radius,
+          appearance,
+          mode,
+          autoHeight,
+          placeholder,
+          underlined,
+          underline,
+          className,
+        }),
+        asChild && props.disabled && "pointer-events-none opacity-50"
+      )}
+      {...(selected && { "data-state": "open" })}
       {...props}
     />
-  )
+  );
 }
 
-export { Button, buttonVariants }
+interface ButtonArrowProps
+  extends Omit<React.ComponentProps<"svg">, "strokeWidth"> {
+  icon?: any;
+  strokeWidth?: number;
+}
+
+function ButtonArrow({
+  icon: Icon = ArrowDown01Icon,
+  className,
+  strokeWidth,
+  ...props
+}: ButtonArrowProps) {
+  return (
+    <HugeiconsIcon
+      icon={Icon}
+      data-slot="button-arrow"
+      className={cn("ms-auto -me-1", className)}
+      strokeWidth={strokeWidth}
+      {...props}
+    />
+  );
+}
+
+export { Button, ButtonArrow, buttonVariants };

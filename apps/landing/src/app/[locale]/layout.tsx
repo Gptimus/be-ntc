@@ -1,6 +1,10 @@
 import { getToken } from "@/lib/auth-server";
 import type { Metadata } from "next";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
+import { cn } from "@be-ntc/ui/lib/utils";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 
 import Providers from "@/components/providers";
@@ -23,19 +27,34 @@ export const metadata: Metadata = {
   description: "be-ntc",
 };
 
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+};
+
 export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+  params,
+}: Readonly<Props>) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   const token = await getToken();
 
   return (
-    <html lang="en" className={outfit.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(outfit.variable, "scroll-smooth")}
+      suppressHydrationWarning
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers initialToken={token}>{children}</Providers>
+        <Providers initialToken={token}>
+          <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        </Providers>
       </body>
     </html>
   );
