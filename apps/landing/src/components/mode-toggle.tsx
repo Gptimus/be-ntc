@@ -1,8 +1,8 @@
 "use client";
 
-import { HugeiconsIcon } from "@hugeicons/react";
 import { useTheme } from "next-themes";
-
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@be-ntc/ui/components/button";
 import {
   DropdownMenu,
@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@be-ntc/ui/components/dropdown-menu";
-import { Moon02Icon, Sun03Icon } from "@hugeicons/core-free-icons";
 
 export function ModeToggle() {
   const { setTheme } = useTheme();

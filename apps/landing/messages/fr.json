@@ -1,4 +1,11 @@
 {
+  "home": {
+    "metadata": {
+      "title": "BE-NTC - Liberté Financière pour Tous en RDC",
+      "description": "Votre super application tout-en-un pour les paiements, l'épargne, les prêts et plus encore. Support multi-devises (CDF & USD). Rejoignez des milliers d'utilisateurs en République Démocratique du Congo.",
+      "keywords": "banque mobile RDC, fintech Congo, portefeuille CDF USD, paiements mobiles Congo, microfinance RDC, portefeuille numérique Kinshasa, transfert d'argent Congo, services financiers RDC"
+    }
+  },
   "hero": {
     "title": "Liberté financière pour tous en RDC",
     "subtitle": "Votre super application tout-en-un pour les paiements, l'épargne, les prêts et plus encore. Support CDF et USD.",
@@ -28,7 +35,8 @@
     "received": "Reçu de Mike",
     "today": "Aujourd'hui, 09:00",
     "yesterday": "Hier, 18:30",
-    "date": "20 Déc, 16:15"
+    "date": "20 Déc, 16:15",
+    "available": "Disponible"
   },
   "navigation": {
     "services": "Services",
@@ -36,6 +44,7 @@
     "features": "Fonctionnalités",
     "testimonials": "Témoignages",
     "faq": "FAQ",
+    "contact": "Contact",
     "download": "Télécharger"
   },
   "services": {
@@ -90,6 +99,10 @@
     "rewards": {
       "title": "Récompenses fidélité",
       "description": "Gagnez des points à chaque transaction et débloquez des avantages exclusifs"
+    },
+    "notifications": {
+      "title": "Notifications intelligentes",
+      "description": "Restez informé avec des alertes en temps réel pour toutes vos transactions et activités de compte"
     }
   },
   "testimonials": {
@@ -142,7 +155,10 @@
   "appPreview": {
     "title": "Découvrez l'avenir de la finance",
     "subtitle": "Disponible sur iOS et Android",
-    "downloadNow": "Télécharger maintenant"
+    "downloadNow": "Télécharger maintenant",
+    "feature1": "18+ Services Financiers",
+    "feature2": "Support Multi-Devises",
+    "feature3": "Sécurité Bancaire"
   },
   "footer": {
     "about": "À propos",
@@ -158,10 +174,42 @@
     "privacyPolicy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
     "compliance": "Conformité",
+    "description": "Votre super application financière tout-en-un pour la République Démocratique du Congo.",
+    "email": "Email",
+    "phoneLabel": "Téléphone",
+    "location": "Localisation",
     "supportEmail": "support@be-ntc.com",
     "phone": "+243 XXX XXX XXX",
     "address": "Kinshasa, RDC",
     "copyright": "© 2025 BE-NTC. Tous droits réservés.",
     "madeWithLove": "Fait avec ❤️ en RDC"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez des questions ? Nous serions ravis de vous entendre. Envoyez-nous un message et nous vous répondrons dans les plus brefs délais.",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Votre nom complet",
+    "emailLabel": "Email",
+    "emailPlaceholder": "votre.email@exemple.com",
+    "subjectLabel": "Sujet",
+    "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Parlez-nous de votre demande...",
+    "messageDescription": "Veuillez fournir autant de détails que possible afin que nous puissions mieux vous aider.",
+    "characters": "caractères",
+    "resetButton": "Réinitialiser",
+    "sendButton": "Envoyer le message",
+    "sendingButton": "Envoi en cours...",
+    "successMessage": "Message envoyé avec succès !",
+    "successDescription": "Nous vous répondrons dans les plus brefs délais.",
+    "validation": {
+      "nameMin": "Le nom doit contenir au moins 2 caractères.",
+      "nameMax": "Le nom doit contenir au maximum 50 caractères.",
+      "emailInvalid": "Veuillez entrer une adresse email valide.",
+      "subjectMin": "Le sujet doit contenir au moins 5 caractères.",
+      "subjectMax": "Le sujet doit contenir au maximum 100 caractères.",
+      "messageMin": "Le message doit contenir au moins 20 caractères.",
+      "messageMax": "Le message doit contenir au maximum 500 caractères."
+    }
   }
 }

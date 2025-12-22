@@ -15,7 +15,7 @@ export function FAQ() {
   const t = useTranslations("faq");
 
   return (
-    <section className="py-32 md:py-40 bg-background">
+    <section id="faq" className="scroll-mt-20 py-32 md:py-40 bg-background">
       <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-4xl">
         {/* Section Header */}
         <motion.div

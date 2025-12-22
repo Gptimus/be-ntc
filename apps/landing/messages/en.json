@@ -1,4 +1,11 @@
 {
+  "home": {
+    "metadata": {
+      "title": "BE-NTC - Financial Freedom for Everyone in DRC",
+      "description": "Your all-in-one super app for payments, savings, loans, and more. Multi-currency support (CDF & USD). Join thousands of users in the Democratic Republic of Congo.",
+      "keywords": "mobile banking DRC, Congo fintech, CDF USD wallet, mobile payments Congo, microfinance DRC, digital wallet Kinshasa, money transfer Congo, financial services DRC"
+    }
+  },
   "hero": {
     "title": "Financial freedom for everyone in DRC",
     "subtitle": "Your all-in-one super app for payments, savings, loans, and more. CDF and USD support.",
@@ -28,7 +35,8 @@
     "received": "Received from Mike",
     "today": "Today, 9:00 AM",
     "yesterday": "Yesterday, 6:30 PM",
-    "date": "Dec 20, 4:15 PM"
+    "date": "Dec 20, 4:15 PM",
+    "available": "Available"
   },
   "navigation": {
     "services": "Services",
@@ -36,6 +44,7 @@
     "features": "Features",
     "testimonials": "Testimonials",
     "faq": "FAQ",
+    "contact": "Contact",
     "download": "Download"
   },
   "services": {
@@ -90,6 +99,10 @@
     "rewards": {
       "title": "Loyalty rewards",
       "description": "Earn points on every transaction and unlock exclusive benefits"
+    },
+    "notifications": {
+      "title": "Smart notifications",
+      "description": "Stay informed with real-time alerts for all your transactions and account activity"
     }
   },
   "testimonials": {
@@ -142,7 +155,10 @@
   "appPreview": {
     "title": "Experience the future of finance",
     "subtitle": "Available on iOS and Android",
-    "downloadNow": "Download now"
+    "downloadNow": "Download now",
+    "feature1": "18+ Financial Services",
+    "feature2": "Multi-Currency Support",
+    "feature3": "Bank-Level Security"
   },
   "footer": {
     "about": "About",
@@ -158,10 +174,42 @@
     "privacyPolicy": "Privacy policy",
     "terms": "Terms of service",
     "compliance": "Compliance",
+    "description": "Your all-in-one financial super app for the Democratic Republic of Congo.",
+    "email": "Email",
+    "phoneLabel": "Phone",
+    "location": "Location",
     "supportEmail": "support@be-ntc.com",
     "phone": "+243 XXX XXX XXX",
     "address": "Kinshasa, DRC",
     "copyright": "© 2025 BE-NTC. All rights reserved.",
     "madeWithLove": "Made with ❤️ in DRC"
+  },
+  "contact": {
+    "title": "Get in touch",
+    "subtitle": "Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "How can we help you?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us more about your inquiry...",
+    "messageDescription": "Please provide as much detail as possible so we can assist you better.",
+    "characters": "characters",
+    "resetButton": "Reset",
+    "sendButton": "Send Message",
+    "sendingButton": "Sending...",
+    "successMessage": "Message sent successfully!",
+    "successDescription": "We'll get back to you as soon as possible.",
+    "validation": {
+      "nameMin": "Name must be at least 2 characters.",
+      "nameMax": "Name must be at most 50 characters.",
+      "emailInvalid": "Please enter a valid email address.",
+      "subjectMin": "Subject must be at least 5 characters.",
+      "subjectMax": "Subject must be at most 100 characters.",
+      "messageMin": "Message must be at least 20 characters.",
+      "messageMax": "Message must be at most 500 characters."
+    }
   }
 }

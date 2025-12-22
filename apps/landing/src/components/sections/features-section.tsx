@@ -9,6 +9,7 @@ import {
   MoneyBag01Icon,
   CreditCardValidationIcon,
   Award01Icon,
+  Notification01Icon,
 } from "@hugeicons/core-free-icons";
 
 const features = [
@@ -17,13 +18,17 @@ const features = [
   { key: "loans", icon: MoneyBag01Icon },
   { key: "payments", icon: CreditCardValidationIcon },
   { key: "rewards", icon: Award01Icon },
+  { key: "notifications", icon: Notification01Icon },
 ];
 
 export function FeaturesSection() {
   const t = useTranslations("features");
 
   return (
-    <section className="py-32 md:py-40 bg-background">
+    <section
+      id="features"
+      className="scroll-mt-20 py-32 md:py-40 bg-background"
+    >
       <div className="container mx-auto px-6 md:px-12 lg:px-16 max-w-7xl">
         {/* Section Header */}
         <motion.div
