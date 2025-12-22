@@ -96,8 +96,7 @@ export function Footer() {
                   className="h-12 w-auto mb-6"
                 />
                 <p className="text-muted-foreground font-light leading-relaxed mb-8 max-w-sm">
-                  Your all-in-one financial super app for the Democratic
-                  Republic of Congo.
+                  {t("description")}
                 </p>
 
                 {/* Social Links */}
@@ -176,7 +175,7 @@ export function Footer() {
                 </div>
                 <div>
                   <div className="text-sm text-muted-foreground font-light mb-1">
-                    Email
+                    {t("email")}
                   </div>
                   <div className="text-foreground font-light">
                     {t("supportEmail")}
@@ -193,7 +192,7 @@ export function Footer() {
                 </div>
                 <div>
                   <div className="text-sm text-muted-foreground font-light mb-1">
-                    Phone
+                    {t("phoneLabel")}
                   </div>
                   <div className="text-foreground font-light">{t("phone")}</div>
                 </div>
@@ -208,7 +207,7 @@ export function Footer() {
                 </div>
                 <div>
                   <div className="text-sm text-muted-foreground font-light mb-1">
-                    Location
+                    {t("location")}
                   </div>
                   <div className="text-foreground font-light">
                     {t("address")}
@@ -264,13 +263,13 @@ export function Footer() {
           y: showBackToTop ? 0 : 20,
         }}
         transition={{ duration: 0.3 }}
-        className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center group"
+        className="fixed bottom-8 right-8 z-50 w-10 h-10 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center group"
         style={{ pointerEvents: showBackToTop ? "auto" : "none" }}
         aria-label="Back to top"
       >
         <HugeiconsIcon
           icon={ArrowUp01Icon}
-          className="w-5 h-5 group-hover:-translate-y-0.5 transition-transform"
+          className="size-6 group-hover:-translate-y-0.5 transition-transform"
           strokeWidth={2}
         />
       </motion.button>
