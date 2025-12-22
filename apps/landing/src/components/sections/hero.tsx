@@ -143,7 +143,7 @@ export function Hero() {
 
                     {/* Scrollable Content */}
                     <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative">
-                      <div className="relative w-full min-h-full bg-gradient-to-br from-primary/5 to-accent/5 p-5 pt-4 flex flex-col gap-5">
+                      <div className="relative w-full min-h-full bg-gradient-to-br from-primary/5 to-accent/5 p-5 px-2 pt-4 flex flex-col gap-5">
                         {/* Header */}
                         <div className="flex justify-between items-center shrink-0">
                           <div className="flex items-center gap-2">
