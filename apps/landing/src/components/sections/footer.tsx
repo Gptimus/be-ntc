@@ -15,7 +15,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { useTransition } from "react";
+import { useTransition, useState, useEffect } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { ModeToggle } from "../mode-toggle";
 
@@ -51,6 +51,11 @@ export function Footer() {
   };
 
   const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <footer className="relative bg-gradient-to-b from-background to-muted/30 border-t border-border/50">
@@ -67,7 +72,7 @@ export function Footer() {
             >
               <Image
                 src={
-                  theme === "dark"
+                  mounted && theme === "dark"
                     ? "/images/logo-dark.png"
                     : "/images/logo-light.png"
                 }
