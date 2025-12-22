@@ -69,12 +69,7 @@ export function Hero() {
                 </a>
               </Button>
 
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-3 font-semibold text-base h-14 px-8"
-                asChild
-              >
+              <Button size="huge" variant="outline" asChild>
                 <a href="#download">
                   <HugeiconsIcon
                     icon={GoogleIcon}
@@ -129,7 +124,7 @@ export function Hero() {
                   {/* Screen */}
                   <div className="relative w-full h-full bg-background rounded-[2.5rem] overflow-hidden flex flex-col">
                     {/* Notch */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-foreground rounded-b-3xl z-30" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-6 bg-foreground rounded-b-3xl z-30" />
 
                     {/* Status Bar */}
                     <div className="flex justify-between items-center px-6 pt-3 pb-1 z-20">
@@ -147,10 +142,10 @@ export function Hero() {
                     </div>
 
                     {/* Scrollable Content */}
-                    <div className="flex-1 overflow-hidden relative">
-                      <div className="relative w-full h-full bg-gradient-to-br from-primary/5 to-accent/5 p-5 pt-4 flex flex-col gap-5">
+                    <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative">
+                      <div className="relative w-full min-h-full bg-gradient-to-br from-primary/5 to-accent/5 p-5 pt-4 flex flex-col gap-5">
                         {/* Header */}
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center shrink-0">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-full bg-muted overflow-hidden border border-border">
                               <img
@@ -161,7 +156,7 @@ export function Hero() {
                             </div>
                             <div>
                               <div className="text-[10px] text-muted-foreground">
-                                Welcome back
+                                {t("welcomeBack")}
                               </div>
                               <div className="text-xs font-medium text-foreground">
                                 John Doe
@@ -177,41 +172,43 @@ export function Hero() {
                         </div>
 
                         {/* Balance card */}
-                        <div className="bg-gradient-to-br from-primary to-primary/90 rounded-2xl p-5 shadow-lg relative overflow-hidden group">
+                        <div className="bg-gradient-to-br from-primary to-primary/90 rounded-2xl p-5 shadow-lg relative overflow-hidden group shrink-0">
                           <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl" />
                           <div className="absolute bottom-0 left-0 w-16 h-16 bg-black/10 rounded-full -ml-8 -mb-8 blur-xl" />
 
-                          <div className="relative z-10">
-                            <div className="flex justify-between items-start mb-1">
-                              <span className="text-primary-foreground/80 text-[10px] font-medium tracking-wide uppercase">
-                                Total Balance
-                              </span>
-                              <div className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] text-white font-medium flex items-center gap-1">
-                                <span>USD</span>
-                                <HugeiconsIcon
-                                  icon={ArrowDown01Icon}
-                                  className="w-2 h-2"
-                                />
+                          <div className="relative z-10 flex flex-col gap-6">
+                            <div className="space-y-1">
+                              <div className="flex justify-between items-center">
+                                <span className="text-primary-foreground/80 text-[10px] font-medium tracking-wide uppercase">
+                                  {t("totalBalance")}
+                                </span>
+                                <div className="bg-white/20 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] text-white font-medium flex items-center gap-1">
+                                  <span>USD</span>
+                                  <HugeiconsIcon
+                                    icon={ArrowDown01Icon}
+                                    className="w-2 h-2"
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            <div className="text-2xl font-semibold text-white mb-4 tracking-tight">
-                              $1,234.56
+                              <div className="text-3xl font-semibold text-white tracking-tight">
+                                $1,234.56
+                              </div>
                             </div>
 
                             <div className="flex gap-3">
-                              <button className="flex-1 bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors py-1.5 rounded-lg text-white text-[10px] font-medium flex items-center justify-center gap-1.5">
+                              <button className="flex-1 bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors py-2 rounded-xl text-white text-[10px] font-medium flex items-center justify-center gap-1.5 active:scale-95">
                                 <HugeiconsIcon
                                   icon={PlusSignIcon}
                                   className="w-3 h-3"
                                 />
-                                Add Money
+                                {t("addMoney")}
                               </button>
-                              <button className="flex-1 bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors py-1.5 rounded-lg text-white text-[10px] font-medium flex items-center justify-center gap-1.5">
+                              <button className="flex-1 bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors py-2 rounded-xl text-white text-[10px] font-medium flex items-center justify-center gap-1.5 active:scale-95">
                                 <HugeiconsIcon
                                   icon={ArrowRight01Icon}
                                   className="w-3 h-3"
                                 />
-                                Transfer
+                                {t("transfer")}
                               </button>
                             </div>
                           </div>
@@ -220,48 +217,48 @@ export function Hero() {
                         {/* Services Grid */}
                         <div>
                           <div className="text-xs font-semibold text-foreground mb-3 px-1">
-                            Quick Actions
+                            {t("quickActions")}
                           </div>
                           <div className="grid grid-cols-4 gap-3">
                             {[
                               {
                                 icon: SmartPhone01Icon,
-                                label: "Airtime",
+                                label: t("airtime"),
                                 color: "bg-blue-500/10 text-blue-600",
                               },
                               {
                                 icon: Globe02Icon,
-                                label: "Internet",
+                                label: t("internet"),
                                 color: "bg-purple-500/10 text-purple-600",
                               },
                               {
                                 icon: Invoice03Icon,
-                                label: "Bills",
+                                label: t("bills"),
                                 color: "bg-orange-500/10 text-orange-600",
                               },
                               {
                                 icon: CreditCardIcon,
-                                label: "Cards",
+                                label: t("cards"),
                                 color: "bg-pink-500/10 text-pink-600",
                               },
                               {
                                 icon: MoneyBag02Icon,
-                                label: "Savings",
+                                label: t("savings"),
                                 color: "bg-green-500/10 text-green-600",
                               },
                               {
                                 icon: Wallet02Icon,
-                                label: "Loans",
+                                label: t("loans"),
                                 color: "bg-indigo-500/10 text-indigo-600",
                               },
                               {
                                 icon: Ticket01Icon,
-                                label: "Events",
+                                label: t("events"),
                                 color: "bg-red-500/10 text-red-600",
                               },
                               {
                                 icon: Menu01Icon,
-                                label: "More",
+                                label: t("more"),
                                 color: "bg-gray-500/10 text-gray-600",
                               },
                             ].map((item, i) => (
@@ -290,32 +287,32 @@ export function Hero() {
                         <div className="pb-16">
                           <div className="flex justify-between items-center mb-3 px-1">
                             <span className="text-xs font-semibold text-foreground">
-                              Recent Activity
+                              {t("recentActivity")}
                             </span>
                             <span className="text-[10px] text-primary">
-                              See All
+                              {t("seeAll")}
                             </span>
                           </div>
                           <div className="space-y-3">
                             {[
                               {
                                 icon: PlayCircle02Icon,
-                                title: "Netflix Subscription",
-                                date: "Today, 9:00 AM",
+                                title: t("netflix"),
+                                date: t("today"),
                                 amount: "-$15.00",
                                 color: "text-red-500 bg-red-500/10",
                               },
                               {
                                 icon: ShoppingBag02Icon,
-                                title: "Grocery Store",
-                                date: "Yesterday, 6:30 PM",
+                                title: t("grocery"),
+                                date: t("yesterday"),
                                 amount: "-$45.20",
                                 color: "text-orange-500 bg-orange-500/10",
                               },
                               {
                                 icon: ArrowDownLeft01Icon,
-                                title: "Received from Mike",
-                                date: "Dec 20, 4:15 PM",
+                                title: t("received"),
+                                date: t("date"),
                                 amount: "+$200.00",
                                 color: "text-green-500 bg-green-500/10",
                               },
