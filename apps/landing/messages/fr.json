@@ -35,7 +35,8 @@
     "received": "Reçu de Mike",
     "today": "Aujourd'hui, 09:00",
     "yesterday": "Hier, 18:30",
-    "date": "20 Déc, 16:15"
+    "date": "20 Déc, 16:15",
+    "available": "Disponible"
   },
   "navigation": {
     "services": "Services",
@@ -97,6 +98,10 @@
     "rewards": {
       "title": "Récompenses fidélité",
       "description": "Gagnez des points à chaque transaction et débloquez des avantages exclusifs"
+    },
+    "notifications": {
+      "title": "Notifications intelligentes",
+      "description": "Restez informé avec des alertes en temps réel pour toutes vos transactions et activités de compte"
     }
   },
   "testimonials": {
@@ -149,7 +154,10 @@
   "appPreview": {
     "title": "Découvrez l'avenir de la finance",
     "subtitle": "Disponible sur iOS et Android",
-    "downloadNow": "Télécharger maintenant"
+    "downloadNow": "Télécharger maintenant",
+    "feature1": "18+ Services Financiers",
+    "feature2": "Support Multi-Devises",
+    "feature3": "Sécurité Bancaire"
   },
   "footer": {
     "about": "À propos",

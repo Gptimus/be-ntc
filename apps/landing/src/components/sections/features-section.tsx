@@ -9,6 +9,7 @@ import {
   MoneyBag01Icon,
   CreditCardValidationIcon,
   Award01Icon,
+  Notification01Icon,
 } from "@hugeicons/core-free-icons";
 
 const features = [
@@ -17,6 +18,7 @@ const features = [
   { key: "loans", icon: MoneyBag01Icon },
   { key: "payments", icon: CreditCardValidationIcon },
   { key: "rewards", icon: Award01Icon },
+  { key: "notifications", icon: Notification01Icon },
 ];
 
 export function FeaturesSection() {

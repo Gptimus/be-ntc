@@ -11,6 +11,7 @@ import {
 
 export function CurrencyShowcase() {
   const t = useTranslations("currency");
+  const tHero = useTranslations("hero");
 
   return (
     <section
@@ -69,7 +70,7 @@ export function CurrencyShowcase() {
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm text-muted-foreground font-light">
-                    <span>Available</span>
+                    <span>{tHero("available")}</span>
                     <span className="currency-cdf font-medium text-foreground">
                       25,000 FC
                     </span>
@@ -125,7 +126,7 @@ export function CurrencyShowcase() {
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between text-sm text-muted-foreground font-light">
-                    <span>Available</span>
+                    <span>{tHero("available")}</span>
                     <span className="currency-usd font-medium text-foreground">
                       $125.50
                     </span>

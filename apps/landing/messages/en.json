@@ -35,7 +35,8 @@
     "received": "Received from Mike",
     "today": "Today, 9:00 AM",
     "yesterday": "Yesterday, 6:30 PM",
-    "date": "Dec 20, 4:15 PM"
+    "date": "Dec 20, 4:15 PM",
+    "available": "Available"
   },
   "navigation": {
     "services": "Services",
@@ -97,6 +98,10 @@
     "rewards": {
       "title": "Loyalty rewards",
       "description": "Earn points on every transaction and unlock exclusive benefits"
+    },
+    "notifications": {
+      "title": "Smart notifications",
+      "description": "Stay informed with real-time alerts for all your transactions and account activity"
     }
   },
   "testimonials": {
@@ -149,7 +154,10 @@
   "appPreview": {
     "title": "Experience the future of finance",
     "subtitle": "Available on iOS and Android",
-    "downloadNow": "Download now"
+    "downloadNow": "Download now",
+    "feature1": "18+ Financial Services",
+    "feature2": "Multi-Currency Support",
+    "feature3": "Bank-Level Security"
   },
   "footer": {
     "about": "About",
