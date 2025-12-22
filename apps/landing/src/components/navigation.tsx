@@ -3,23 +3,16 @@
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { useTransition, useState, useEffect } from "react";
+import { useTransition } from "react";
 import Image from "next/image";
-import { useTheme } from "next-themes";
 import { Button } from "@be-ntc/ui/components/button";
 
 export function Navigation() {
   const locale = useLocale();
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const t = useTranslations("navigation");
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleLanguageChange = (newLocale: string) => {
     startTransition(() => {
@@ -39,11 +32,7 @@ export function Navigation() {
           {/* Logo */}
           <a href="/" className="flex items-center">
             <Image
-              src={
-                mounted && theme === "dark"
-                  ? "/images/logo-dark.png"
-                  : "/images/logo-light.png"
-              }
+              src="/images/logo.png"
               alt="BE-NTC Logo"
               width={140}
               height={46}

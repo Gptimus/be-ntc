@@ -15,7 +15,6 @@ import {
   ArrowUp01Icon,
 } from "@hugeicons/core-free-icons";
 import Image from "next/image";
-import { useTheme } from "next-themes";
 import { useTransition, useState, useEffect } from "react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { ModeToggle } from "../mode-toggle";
@@ -51,13 +50,9 @@ export function Footer() {
     });
   };
 
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 400);
     };
@@ -85,11 +80,7 @@ export function Footer() {
                 transition={{ duration: 0.6 }}
               >
                 <Image
-                  src={
-                    mounted && theme === "dark"
-                      ? "/images/logo-dark.png"
-                      : "/images/logo-light.png"
-                  }
+                  src="/images/logo.png"
                   alt="BE-NTC Logo"
                   width={160}
                   height={53}
