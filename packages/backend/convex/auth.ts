@@ -1,8 +1,9 @@
 import { expo } from "@better-auth/expo";
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
-import { betterAuth } from "better-auth";
+import { betterAuth, BetterAuthOptions } from "better-auth";
 import { v } from "convex/values";
+import authConfig from "./auth.config";
 
 import { components } from "./_generated/api";
 import { DataModel } from "./_generated/dataModel";
@@ -13,14 +14,8 @@ const nativeAppUrl = process.env.NATIVE_APP_URL || "mybettertapp://";
 
 export const authComponent = createClient<DataModel>(components.betterAuth);
 
-function createAuth(
-  ctx: GenericCtx<DataModel>,
-  { optionsOnly }: { optionsOnly?: boolean } = { optionsOnly: false },
-) {
+const createAuth = (ctx: GenericCtx<DataModel>) => {
   return betterAuth({
-    logger: {
-      disabled: optionsOnly,
-    },
     baseURL: siteUrl,
     trustedOrigins: [siteUrl, nativeAppUrl],
     database: authComponent.adapter(ctx),
@@ -28,9 +23,15 @@ function createAuth(
       enabled: true,
       requireEmailVerification: false,
     },
-    plugins: [expo(), convex()],
-  });
-}
+    plugins: [
+      expo(),
+      convex({
+        authConfig,
+        jwksRotateOnTokenGenerationError: true,
+      }),
+    ],
+  } satisfies BetterAuthOptions);
+};
 
 export { createAuth };
 

@@ -1,3 +1,4 @@
+import { getToken } from "@/lib/auth-server";
 import type { Metadata } from "next";
 
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
@@ -23,17 +24,19 @@ export const metadata: Metadata = {
   description: "be-ntc",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const token = await getToken();
+
   return (
     <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
+        <Providers initialToken={token}>
           <div className="grid grid-rows-[auto_1fr] h-svh">
             <Header />
             {children}
