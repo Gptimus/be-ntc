@@ -12,6 +12,8 @@ const buttonVariants = cva(
       variant: {
         primary:
           "bg-primary text-primary-foreground hover:bg-primary/90 data-[state=open]:bg-primary/90",
+        heavy:
+          "bg-primary text-primary-foreground font-bold shadow-md shadow-primary/20 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200",
         mono: "bg-zinc-950 text-white dark:bg-zinc-300 dark:text-black hover:bg-zinc-950/90 dark:hover:bg-zinc-300/90 data-[state=open]:bg-zinc-950/90 dark:data-[state=open]:bg-zinc-300/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90 data-[state=open]:bg-destructive/90",
@@ -40,6 +42,7 @@ const buttonVariants = cva(
         dashed: "",
       },
       size: {
+        huge: "h-14 px-8 text-base gap-2.5 rounded-2xl [&_svg:not([class*=size-])]:size-5",
         lg: "h-10 px-4 text-sm gap-1.5 [&_svg:not([class*=size-])]:size-4",
         md: "h-9 px-3 gap-1.5 text-sm [&_svg:not([class*=size-])]:size-4",
         sm: "h-8 px-2.5 gap-1.25 text-xs [&_svg:not([class*=size-])]:size-3.5",

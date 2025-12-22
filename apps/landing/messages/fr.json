@@ -1,0 +1,167 @@
+{
+  "hero": {
+    "title": "Liberté financière pour tous en RDC",
+    "subtitle": "Votre super application tout-en-un pour les paiements, l'épargne, les prêts et plus encore. Support CDF et USD.",
+    "downloadApp": "Télécharger l'app",
+    "appStore": "App Store",
+    "googlePlay": "Google Play",
+    "activeUsers": "Utilisateurs actifs",
+    "services": "Services",
+    "currencies": "Devises",
+    "totalBalance": "Solde total",
+    "welcomeBack": "Bon retour",
+    "addMoney": "Ajouter",
+    "transfer": "Transférer",
+    "quickActions": "Actions rapides",
+    "recentActivity": "Activité récente",
+    "seeAll": "Voir tout",
+    "airtime": "Crédit",
+    "internet": "Internet",
+    "bills": "Factures",
+    "cards": "Cartes",
+    "savings": "Épargne",
+    "loans": "Prêts",
+    "events": "Événements",
+    "more": "Plus",
+    "netflix": "Abo Netflix",
+    "grocery": "Supermarché",
+    "received": "Reçu de Mike",
+    "today": "Aujourd'hui, 09:00",
+    "yesterday": "Hier, 18:30",
+    "date": "20 Déc, 16:15"
+  },
+  "navigation": {
+    "services": "Services",
+    "currency": "Devises",
+    "features": "Fonctionnalités",
+    "testimonials": "Témoignages",
+    "faq": "FAQ",
+    "download": "Télécharger"
+  },
+  "services": {
+    "title": "Tous vos besoins financiers en un seul endroit",
+    "subtitle": "Des paiements quotidiens à l'épargne à long terme, nous avons tout prévu",
+    "payMerchant": "Payer commerçant",
+    "payTV": "Payer TV",
+    "payElectricity": "Payer électricité",
+    "payWater": "Payer eau",
+    "bulkPayment": "Paiement groupé",
+    "assurance": "Assurance",
+    "microfinance": "Microfinance",
+    "transferInternational": "Transfert international",
+    "payTax": "Payer taxe",
+    "cashWithdrawal": "Retrait d'argent",
+    "currencyExchange": "Change de devises",
+    "bet": "Paris",
+    "cardTransfer": "Transfert par carte",
+    "recharge": "Recharge mobile",
+    "microloan": "Micro-crédit",
+    "transferLocal": "Transfert local",
+    "reservation": "Réservations",
+    "foodOrder": "Commande nourriture"
+  },
+  "currency": {
+    "title": "Portefeuille multi-devises",
+    "subtitle": "Gérez votre argent en CDF et USD facilement",
+    "cdfWallet": "Portefeuille CDF",
+    "usdWallet": "Portefeuille USD",
+    "exchange": "Échanger entre devises",
+    "instantExchange": "Échange instantané"
+  },
+  "features": {
+    "title": "Fonctionnalités puissantes pour la banque moderne",
+    "subtitle": "Tout ce dont vous avez besoin pour gérer vos finances",
+    "wallet": {
+      "title": "Portefeuille numérique",
+      "description": "Portefeuille multi-devises sécurisé supportant CDF et USD avec transactions instantanées"
+    },
+    "savings": {
+      "title": "Objectifs d'épargne",
+      "description": "Définissez et suivez vos objectifs financiers avec des fonctionnalités d'épargne automatisées"
+    },
+    "loans": {
+      "title": "Prêts rapides",
+      "description": "Accédez aux micro-crédits et à la microfinance avec des taux compétitifs"
+    },
+    "payments": {
+      "title": "Méthodes de paiement multiples",
+      "description": "Payez avec cartes, mobile money ou virements bancaires en toute simplicité"
+    },
+    "rewards": {
+      "title": "Récompenses fidélité",
+      "description": "Gagnez des points à chaque transaction et débloquez des avantages exclusifs"
+    }
+  },
+  "testimonials": {
+    "title": "Approuvé par des milliers",
+    "subtitle": "Découvrez ce que nos utilisateurs disent",
+    "testimonial1": {
+      "name": "Marie K.",
+      "role": "Propriétaire de petite entreprise",
+      "content": "Cette application a transformé la façon dont je gère mes finances professionnelles. Rapide, sûr et fiable!"
+    },
+    "testimonial2": {
+      "name": "Jean-Paul M.",
+      "role": "Freelance",
+      "content": "Le portefeuille multi-devises change la donne. Je peux facilement gérer CDF et USD."
+    },
+    "testimonial3": {
+      "name": "Natalie B.",
+      "role": "Étudiante",
+      "content": "Les objectifs d'épargne m'aident à épargner pour mes études. Simple et efficace!"
+    }
+  },
+  "faq": {
+    "title": "Questions fréquemment posées",
+    "subtitle": "Tout ce que vous devez savoir",
+    "q1": {
+      "question": "Mon argent est-il en sécurité?",
+      "answer": "Oui, nous utilisons un cryptage et des mesures de sécurité de niveau bancaire pour protéger vos fonds et informations personnelles."
+    },
+    "q2": {
+      "question": "Quelles devises supportez-vous?",
+      "answer": "Nous supportons le Franc Congolais (CDF) et le Dollar Américain (USD) avec échange instantané entre eux."
+    },
+    "q3": {
+      "question": "Y a-t-il des frais?",
+      "answer": "Nous offrons une tarification transparente avec des frais compétitifs. La plupart des transactions de base sont gratuites, et nous affichons clairement les frais applicables avant confirmation."
+    },
+    "q4": {
+      "question": "Comment commencer?",
+      "answer": "Téléchargez simplement l'application, créez votre compte, complétez la vérification KYC et commencez à utiliser nos services immédiatement."
+    },
+    "q5": {
+      "question": "Puis-je l'utiliser pour mon entreprise?",
+      "answer": "Absolument! Nous offrons des comptes individuels et d'entreprise avec des fonctionnalités adaptées aux entreprises."
+    },
+    "q6": {
+      "question": "Quels services sont disponibles?",
+      "answer": "Nous offrons plus de 18 services incluant paiements, transferts, épargne, prêts, assurance et plus encore. Tout ce dont vous avez besoin dans une seule app."
+    }
+  },
+  "appPreview": {
+    "title": "Découvrez l'avenir de la finance",
+    "subtitle": "Disponible sur iOS et Android",
+    "downloadNow": "Télécharger maintenant"
+  },
+  "footer": {
+    "about": "À propos",
+    "services": "Services",
+    "legal": "Légal",
+    "contact": "Contact",
+    "aboutUs": "À propos de nous",
+    "careers": "Carrières",
+    "press": "Presse",
+    "allServices": "Tous les services",
+    "pricing": "Tarification",
+    "security": "Sécurité",
+    "privacyPolicy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "compliance": "Conformité",
+    "supportEmail": "support@be-ntc.com",
+    "phone": "+243 XXX XXX XXX",
+    "address": "Kinshasa, RDC",
+    "copyright": "© 2025 BE-NTC. Tous droits réservés.",
+    "madeWithLove": "Fait avec ❤️ en RDC"
+  }
+}
