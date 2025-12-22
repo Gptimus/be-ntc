@@ -15,6 +15,8 @@ import {
 } from "@hugeicons/core-free-icons";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useTransition } from "react";
+import { usePathname, useRouter } from "@/i18n/navigation";
 
 type FooterCategory = "about" | "services" | "legal";
 type FooterLink =
@@ -37,6 +39,16 @@ const footerLinks: Record<FooterCategory, FooterLink[]> = {
 export function Footer() {
   const t = useTranslations("footer");
   const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+
+  const handleLanguageChange = (newLocale: string) => {
+    startTransition(() => {
+      router.replace(pathname, { locale: newLocale });
+    });
+  };
+
   const { theme } = useTheme();
 
   return (
@@ -192,20 +204,24 @@ export function Footer() {
             <span className="text-primary">•</span>
             <div className="flex gap-2">
               <button
+                onClick={() => handleLanguageChange("en")}
+                disabled={isPending}
                 className={`px-3 py-1 rounded-lg transition-all ${
                   locale === "en"
                     ? "bg-primary/10 text-primary"
                     : "hover:text-foreground"
-                }`}
+                } ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 EN
               </button>
               <button
+                onClick={() => handleLanguageChange("fr")}
+                disabled={isPending}
                 className={`px-3 py-1 rounded-lg transition-all ${
                   locale === "fr"
                     ? "bg-primary/10 text-primary"
                     : "hover:text-foreground"
-                }`}
+                } ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 FR
               </button>

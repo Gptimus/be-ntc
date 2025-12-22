@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTransition } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Button } from "@be-ntc/ui/components/button";
@@ -10,6 +12,15 @@ export function Navigation() {
   const locale = useLocale();
   const { theme } = useTheme();
   const t = useTranslations("navigation");
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+
+  const handleLanguageChange = (newLocale: string) => {
+    startTransition(() => {
+      router.replace(pathname, { locale: newLocale });
+    });
+  };
 
   return (
     <motion.nav
@@ -74,20 +85,24 @@ export function Navigation() {
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-1">
               <button
+                onClick={() => handleLanguageChange("en")}
+                disabled={isPending}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   locale === "en"
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground"
-                }`}
+                } ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 EN
               </button>
               <button
+                onClick={() => handleLanguageChange("fr")}
+                disabled={isPending}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   locale === "fr"
                     ? "bg-primary text-primary-foreground"
                     : "text-muted-foreground hover:text-foreground"
-                }`}
+                } ${isPending ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 FR
               </button>

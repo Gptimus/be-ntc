@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 
+import { cn } from "@be-ntc/ui/lib/utils";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 
 import Providers from "@/components/providers";
@@ -43,7 +44,11 @@ export default async function RootLayout({
   const token = await getToken();
 
   return (
-    <html lang="en" className={outfit.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(outfit.variable, "scroll-smooth")}
+      suppressHydrationWarning
+    >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
