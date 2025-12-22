@@ -53,11 +53,11 @@ export function AppPreview() {
               <motion.div className="relative w-full max-w-[280px]">
                 <div className="relative w-full aspect-[9/19]">
                   {/* Phone frame */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-foreground to-foreground/90 rounded-[3rem] shadow-2xl p-2.5">
+                  <div className="absolute inset-0 bg-gradient-to-br from-foreground to-foreground/90 dark:from-primary dark:to-primary/90 rounded-[3rem] shadow-2xl p-2.5">
                     {/* Screen */}
                     <div className="relative w-full h-full bg-background rounded-[2.5rem] overflow-hidden flex flex-col">
                       {/* Notch */}
-                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-6 bg-foreground rounded-b-3xl z-30" />
+                      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-6 bg-primary rounded-b-3xl z-30" />
 
                       {/* Status Bar */}
                       <div className="flex justify-between items-center px-6 pt-3 pb-1 z-20">
