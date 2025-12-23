@@ -1,8 +1,8 @@
+import { routing } from "@/i18n/routing";
 import { getToken } from "@/lib/auth-server";
 import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
 
 import { cn } from "@be-ntc/ui/lib/utils";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
