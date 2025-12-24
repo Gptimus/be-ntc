@@ -31,7 +31,7 @@ export async function generatePageMetadata({
 }
 
 export function createMetadata(override: Metadata, locale: string): Metadata {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://be-ntc.cd";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://be-ntc.com";
   const ogImageUrl = `${baseUrl}/images/og-image.png`;
 
   return {
