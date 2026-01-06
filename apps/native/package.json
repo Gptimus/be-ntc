@@ -12,19 +12,29 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@be-ntc/backend": "workspace:*",
+    "@better-auth/expo": "catalog:",
+    "@convex-dev/better-auth": "catalog:",
     "@expo/metro-runtime": "~6.1.2",
     "@expo/vector-icons": "^15.0.3",
     "@gorhom/bottom-sheet": "^5.2.6",
     "@react-navigation/drawer": "^7.3.9",
     "@react-navigation/elements": "^2.8.1",
+    "better-auth": "catalog:",
+    "convex": "catalog:",
+    "dotenv": "catalog:",
     "expo": "^54.0.23",
+    "expo-build-properties": "^1.0.10",
     "expo-constants": "~18.0.10",
     "expo-font": "~14.0.9",
     "expo-haptics": "^15.0.7",
+    "expo-image-picker": "^17.0.10",
     "expo-linking": "~8.0.8",
+    "expo-local-authentication": "^17.0.8",
     "expo-network": "~8.0.7",
     "expo-router": "~6.0.14",
     "expo-secure-store": "~15.0.7",
+    "expo-splash-screen": "^31.0.13",
     "expo-status-bar": "~3.0.8",
     "heroui-native": "1.0.0-beta.3",
     "react": "19.1.0",
@@ -42,18 +52,12 @@
     "tailwind-variants": "3.1.1",
     "tailwindcss": "~4.1.17",
     "uniwind": "^1.0.4",
-    "convex": "catalog:",
-    "better-auth": "catalog:",
-    "@better-auth/expo": "catalog:",
-    "@convex-dev/better-auth": "catalog:",
-    "dotenv": "catalog:",
-    "zod": "catalog:",
-    "@be-ntc/backend": "workspace:*"
+    "zod": "catalog:"
   },
   "devDependencies": {
+    "@be-ntc/config": "workspace:*",
     "@types/node": "^24.10.0",
     "@types/react": "~19.1.0",
-    "typescript": "catalog:",
-    "@be-ntc/config": "workspace:*"
+    "typescript": "catalog:"
   }
 }
