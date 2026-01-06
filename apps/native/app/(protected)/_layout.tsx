@@ -1,17 +1,30 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { useConvexAuth } from "convex/react";
+import { Link, Redirect } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useThemeColor } from "heroui-native";
 import React, { useCallback } from "react";
 import { Pressable, Text } from "react-native";
 
+import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-function DrawerLayout() {
+function ProtectedLayout() {
+  const { isLoading, isAuthenticated } = useConvexAuth();
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
 
   const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
+
+  // Show loading spinner while checking auth
+  if (isLoading) {
+    return <FullScreenLoading />;
+  }
+
+  // Redirect to sign-in if not authenticated
+  if (!isAuthenticated) {
+    return <Redirect href="/(guest)/sign-in" />;
+  }
 
   return (
     <Drawer
@@ -77,4 +90,4 @@ function DrawerLayout() {
   );
 }
 
-export default DrawerLayout;
+export default ProtectedLayout;

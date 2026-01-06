@@ -42,7 +42,7 @@ configureReanimatedLogger({
 SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
-  initialRouteName: "(drawer)",
+  initialRouteName: "(protected)",
 };
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
@@ -53,7 +53,8 @@ const convex = new ConvexReactClient(convexUrl, {
 function StackLayout() {
   return (
     <Stack screenOptions={{}}>
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+      <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+      <Stack.Screen name="(guest)" options={{ headerShown: false }} />
       <Stack.Screen
         name="modal"
         options={{ title: "Modal", presentation: "modal" }}
