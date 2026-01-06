@@ -84,13 +84,13 @@ export function EmailInputForm({
           </Button.Label>
         ) : (
           <>
-            <Button.Label className="font-heading-bold">
+            <Button.Label className="font-heading-bold text-white">
               {t("auth.emailInput.continueButton")}
             </Button.Label>
             <StyledHugeIcon
               icon={Mail01Icon}
               size={20}
-              className="text-background"
+              className="text-white"
             />
           </>
         )}

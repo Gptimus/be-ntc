@@ -23,15 +23,17 @@ export function AuthHeader({ showEmailInput, onBackPress }: AuthHeaderProps) {
             exiting={FadeOutLeft.duration(300)}
           >
             <Button
-              variant="ghost"
-              size="sm"
+              variant="primary"
+              size="md"
               onPress={onBackPress}
-              className="rounded-full -ml-2"
+              className="rounded-full -ml-2 w-10 h-10 p-0"
+              pressableFeedbackVariant="ripple"
             >
               <StyledHugeIcon
                 icon={ArrowLeft01Icon}
-                size={20}
-                className="text-foreground"
+                size={22}
+                variant="stroke"
+                className="text-white"
               />
             </Button>
           </Animated.View>

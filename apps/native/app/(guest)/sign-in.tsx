@@ -41,7 +41,6 @@ export default function SignInScreen() {
 
   const handleBackPress = () => {
     triggerHaptic();
-    triggerHaptic();
     setShowEmailInput(false);
     Keyboard.dismiss();
   };
