@@ -1,7 +1,14 @@
 import { z } from "zod";
 
-export const emailInputSchema = z.object({
-  email: z.email("Please enter a valid email address").toLowerCase().trim(),
-});
+export const createEmailInputSchema = (t: (key: string) => string) => {
+  return z.object({
+    email: z
+      .email(t("auth.emailInput.validation.emailInvalid"))
+      .toLowerCase()
+      .trim(),
+  });
+};
 
-export type EmailInputFormData = z.infer<typeof emailInputSchema>;
+export type EmailInputFormData = z.infer<
+  ReturnType<typeof createEmailInputSchema>
+>;

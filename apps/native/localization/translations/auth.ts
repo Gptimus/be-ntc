@@ -20,6 +20,24 @@ export const auth = {
       continueButton: "Continue",
       alreadyHaveAccount: "Already have an account? ",
       signInLink: "Sign in",
+      validation: {
+        emailRequired: "Email is required",
+        emailInvalid: "Please enter a valid email address",
+      },
+      toast: {
+        success: {
+          title: "Magic link sent!",
+          description: "Check your inbox at {email}",
+        },
+        error: {
+          title: "Failed to send magic link",
+          description: "Please try again",
+        },
+        genericError: {
+          title: "Something went wrong",
+          description: "Please try again later",
+        },
+      },
     },
     verifyEmail: {
       title: "Check your email",
@@ -60,6 +78,24 @@ export const auth = {
       continueButton: "Continuer",
       alreadyHaveAccount: "Vous avez déjà un compte ? ",
       signInLink: "Se connecter",
+      validation: {
+        emailRequired: "L'email est requis",
+        emailInvalid: "Veuillez entrer une adresse email valide",
+      },
+      toast: {
+        success: {
+          title: "Lien magique envoyé !",
+          description: "Vérifiez votre boîte de réception à {email}",
+        },
+        error: {
+          title: "Échec de l'envoi du lien magique",
+          description: "Veuillez réessayer",
+        },
+        genericError: {
+          title: "Une erreur s'est produite",
+          description: "Veuillez réessayer plus tard",
+        },
+      },
     },
     verifyEmail: {
       title: "Vérifiez votre email",

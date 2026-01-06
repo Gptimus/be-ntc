@@ -1,18 +1,93 @@
 import { useRouter } from "expo-router";
-import { BottomSheet, Button } from "heroui-native";
-import { ImageBackground, Text, View, Image } from "react-native";
-import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
+import { BottomSheet, useToast } from "heroui-native";
+import { useState } from "react";
+import { ImageBackground, View, Keyboard } from "react-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
-import { AppleIcon, GoogleIcon, Mail01Icon } from "@hugeicons/core-free-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  createEmailInputSchema,
+  type EmailInputFormData,
+} from "@/schemas/email-input.schema";
+import { authClient } from "@/lib/auth-client";
+import { AuthHeader } from "@/components/auth/auth-header";
+import { SocialAuthButtons } from "@/components/auth/social-auth-buttons";
+import { EmailInputForm } from "@/components/auth/email-input-form";
+import { triggerHaptic } from "@/lib/haptics";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
-export default function SignUpScreen() {
+export default function SignInScreen() {
   const router = useRouter();
   const { t } = useLocalization();
-  const insets = useSafeAreaInsets();
+  const { toast } = useToast();
+  const [showEmailInput, setShowEmailInput] = useState(false);
 
-  const handleEmailSignIn = () => {
-    router.push("/(guest)/email-input");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<EmailInputFormData>({
+    resolver: zodResolver(createEmailInputSchema(t)),
+    mode: "all",
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  const handleEmailPress = () => {
+    triggerHaptic();
+    setShowEmailInput(true);
+  };
+
+  const handleBackPress = () => {
+    triggerHaptic();
+    triggerHaptic();
+    setShowEmailInput(false);
+    Keyboard.dismiss();
+  };
+
+  const onSubmit = async (data: EmailInputFormData) => {
+    Keyboard.dismiss();
+
+    try {
+      const { data: authData, error: authError } =
+        await authClient.signIn.magicLink({
+          email: data.email,
+          callbackURL: "/(protected)",
+        });
+
+      if (authError) {
+        toast.show({
+          variant: "danger",
+          label: t("auth.emailInput.toast.error.title"),
+          description:
+            authError.message || t("auth.emailInput.toast.error.description"),
+          duration: 4000,
+        });
+        return;
+      }
+
+      toast.show({
+        variant: "success",
+        label: t("auth.emailInput.toast.success.title"),
+        description: t("auth.emailInput.toast.success.description", {
+          email: data.email,
+        }),
+        duration: 3000,
+      });
+
+      router.push({
+        pathname: "/(guest)/verify-email",
+        params: { email: data.email },
+      });
+    } catch (err) {
+      toast.show({
+        variant: "danger",
+        label: t("auth.emailInput.toast.genericError.title"),
+        description: t("auth.emailInput.toast.genericError.description"),
+        duration: 4000,
+      });
+    }
   };
 
   return (
@@ -27,7 +102,7 @@ export default function SignUpScreen() {
         <View className="absolute inset-0 bg-background/40" />
       </ImageBackground>
 
-      {/* Main Bottom Sheet - Always Open on this screen */}
+      {/* Main Bottom Sheet */}
       <BottomSheet isOpen={true} onOpenChange={() => {}}>
         <BottomSheet.Portal>
           <BottomSheet.Overlay
@@ -35,92 +110,39 @@ export default function SignUpScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={["55%"]}
+            snapPoints={showEmailInput ? ["65%"] : ["55%"]}
             enablePanDownToClose={false}
             backgroundClassName="bg-background rounded-[55px] border border-border"
             handleIndicatorClassName="bg-background w-12"
-            contentContainerClassName="px-8 pt-4 pb-10 "
+            contentContainerClassName="px-8 pt-4 pb-10"
           >
-            {/* Header / Logo Section */}
-            <View className="mb-8">
-              <View className="rounded-xl items-start justify-center mb-6">
-                <Image
-                  source={require("@/assets/images/logo-fit.webp")}
-                  style={{ width: 32, height: 32 }}
-                  resizeMode="contain"
-                />
-              </View>
+            {/* Header */}
+            <AuthHeader
+              showEmailInput={showEmailInput}
+              onBackPress={handleBackPress}
+            />
 
-              <BottomSheet.Title className="text-3xl font-heading-bold text-primary mb-2">
-                {t("auth.signUp.title")}
-              </BottomSheet.Title>
-              <BottomSheet.Description className="text-sm text-foreground font-sans leading-snug">
-                {t("auth.signUp.description")}
-              </BottomSheet.Description>
-            </View>
-
-            {/* Social Buttons */}
-            <View className="gap-3">
-              <Button
-                variant="primary"
-                size="lg"
-                className="bg-foreground border-foreground h-14 rounded-2xl"
-                pressableFeedbackVariant="ripple"
+            {/* Content */}
+            {!showEmailInput ? (
+              <SocialAuthButtons onEmailPress={handleEmailPress} />
+            ) : (
+              <KeyboardAwareScrollView
+                className="w-full flex-1"
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  width: "100%",
+                }}
               >
-                <StyledHugeIcon
-                  icon={AppleIcon}
-                  size={20}
-                  variant="solid"
-                  className="text-background"
+                <EmailInputForm
+                  control={control}
+                  errors={errors}
+                  isValid={isValid}
+                  isLoading={isSubmitting}
+                  onSubmit={handleSubmit(onSubmit)}
                 />
-                <Button.Label className="text-background font-heading-bold">
-                  {t("auth.signUp.continueWithApple")}
-                </Button.Label>
-              </Button>
-
-              <Button
-                variant="secondary"
-                size="lg"
-                className="bg-background border border-border rounded-2xl"
-                pressableFeedbackVariant="ripple"
-              >
-                <StyledHugeIcon
-                  icon={GoogleIcon}
-                  size={20}
-                  className="text-foreground"
-                />
-                <Button.Label className="text-foreground font-heading-bold">
-                  {t("auth.signUp.continueWithGoogle")}
-                </Button.Label>
-              </Button>
-
-              <Button
-                variant="tertiary"
-                size="lg"
-                onPress={handleEmailSignIn}
-                className="rounded-2xl"
-                pressableFeedbackVariant="ripple"
-              >
-                <StyledHugeIcon
-                  icon={Mail01Icon}
-                  size={20}
-                  className="text-foreground"
-                />
-                <Button.Label className="font-heading-bold">
-                  {t("auth.signUp.continueWithEmail")}
-                </Button.Label>
-              </Button>
-            </View>
-
-            {/* Footer */}
-            <View className="mt-8 flex-row flex-wrap justify-center">
-              <Text className="text-xs text-foreground font-sans">
-                {t("auth.signUp.terms.agreement")}
-              </Text>
-              <Text className="text-xs text-foreground font-sans-bold">
-                {t("auth.signUp.terms.link")}
-              </Text>
-            </View>
+              </KeyboardAwareScrollView>
+            )}
           </BottomSheet.Content>
         </BottomSheet.Portal>
       </BottomSheet>
