@@ -11,7 +11,7 @@ import {
   NativeScrollEvent,
   ImageBackground,
 } from "react-native";
-import { PressableFeedback } from "heroui-native";
+import { Button } from "heroui-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
@@ -118,18 +118,16 @@ export default function GetStartedScreen() {
         style={{ paddingTop: insets.top }}
         className="flex-row justify-end px-6 z-20"
       >
-        <PressableFeedback
+        <Button
+          variant="ghost"
           onPress={handleSkip}
-          feedbackVariant="highlight"
-          className="rounded-full"
           hitSlop={10}
+          className="rounded-full"
         >
-          <View className="p-4">
-            <Text className="text-white/50 text-xs font-sans-bold tracking-[2px]">
-              {t("common.getStarted.buttons.skip").toUpperCase()}
-            </Text>
-          </View>
-        </PressableFeedback>
+          <Button.Label className="text-white/50 text-xs font-sans-bold tracking-[2px]">
+            {t("common.getStarted.buttons.skip").toUpperCase()}
+          </Button.Label>
+        </Button>
       </View>
 
       {/* Main Bottom Container */}
@@ -169,33 +167,26 @@ export default function GetStartedScreen() {
           style={{ paddingBottom: insets.bottom + 20 }}
         >
           <Animated.View entering={FadeInDown.delay(400)}>
-            <PressableFeedback
-              onPress={handleNext}
-              feedbackVariant="highlight"
-              className="rounded-2xl overflow-hidden"
-            >
-              <View className="h-16 items-center bg-primary justify-center shadow-lg shadow-primary/30">
-                <Text className="text-white text-lg font-heading-bold tracking-tight">
-                  {activeIndex === FEATURES.length - 1
-                    ? t("common.getStarted.buttons.start")
-                    : t("common.getStarted.buttons.getStarted")}
-                </Text>
-              </View>
-            </PressableFeedback>
+            <Button variant="primary" size="lg" onPress={handleNext}>
+              <Button.Label className="text-white text-lg font-heading-bold tracking-tight">
+                {activeIndex === FEATURES.length - 1
+                  ? t("common.getStarted.buttons.start")
+                  : t("common.getStarted.buttons.getStarted")}
+              </Button.Label>
+            </Button>
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(500)}>
-            <PressableFeedback
+            <Button
+              variant="secondary"
+              size="lg"
               onPress={handleSignIn}
-              feedbackVariant="highlight"
-              className="rounded-2xl overflow-hidden"
+              className="border-white/10 bg-white/10"
             >
-              <View className="bg-white/10 border border-white/10 h-16 items-center justify-center backdrop-blur-md">
-                <Text className="text-white text-lg font-heading-bold">
-                  {t("common.getStarted.buttons.signIn")}
-                </Text>
-              </View>
-            </PressableFeedback>
+              <Button.Label className="text-white text-lg font-heading-bold">
+                {t("common.getStarted.buttons.signIn")}
+              </Button.Label>
+            </Button>
           </Animated.View>
         </View>
       </View>
