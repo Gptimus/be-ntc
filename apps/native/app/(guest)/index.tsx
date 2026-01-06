@@ -80,7 +80,8 @@ export default function GetStartedScreen() {
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const scrollOffset = event.nativeEvent.contentOffset.x;
     const index = Math.round(scrollOffset / width);
-    if (index >= 0 && index < FEATURES.length) {
+    if (index >= 0 && index < FEATURES.length && index !== activeIndex) {
+      triggerHaptic();
       setActiveIndex(index);
     }
   };
