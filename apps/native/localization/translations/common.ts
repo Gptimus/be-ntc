@@ -20,6 +20,19 @@ export const common = {
           title: "Secure & Safe",
           description: "Bank-level security with biometric authentication",
         },
+        savings: {
+          title: "Savings Goals",
+          description:
+            "Save specifically for your projects with automated rules",
+        },
+        rewards: {
+          title: "Loyalty Rewards",
+          description: "Earn points on every transaction and redeem for prizes",
+        },
+        cards: {
+          title: "Digital Cards",
+          description: "Manage your physical and virtual cards in one place",
+        },
       },
       buttons: {
         getStarted: "Get Started",
@@ -50,6 +63,21 @@ export const common = {
         secure: {
           title: "Sécurisé et Sûr",
           description: "Sécurité bancaire avec authentification biométrique",
+        },
+        savings: {
+          title: "Objectifs d'Épargne",
+          description:
+            "Épargnez spécifiquement pour vos projets avec des règles automatisées",
+        },
+        rewards: {
+          title: "Récompenses de Fidélité",
+          description:
+            "Gagnez des points sur chaque transaction et échangez-les contre des prix",
+        },
+        cards: {
+          title: "Cartes Digitales",
+          description:
+            "Gérez vos cartes physiques et virtuelles en un seul endroit",
         },
       },
       buttons: {

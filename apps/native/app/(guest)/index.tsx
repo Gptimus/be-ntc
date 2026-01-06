@@ -2,35 +2,30 @@ import { useLocalization } from "@/localization/hooks/use-localization";
 import { storageHelpers } from "@/lib/storage";
 import { useRouter } from "expo-router";
 import { useThemeColor } from "heroui-native";
-import { useEffect } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
   Pressable,
-  ImageBackground,
-  ScrollView,
+  Dimensions,
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
-import Animated, {
-  FadeIn,
-  FadeInDown,
-  FadeInUp,
-  SlideInRight,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withSpring,
-  withTiming,
-} from "react-native-reanimated";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   CreditCardIcon,
   GridTableIcon,
   Exchange01Icon,
   Shield01Icon,
-  Wallet01Icon,
+  Coins01Icon,
+  GiftIcon,
+  ScratchCardIcon,
 } from "@hugeicons/core-free-icons";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
+
+const { width } = Dimensions.get("window");
 
 const FEATURES = [
   {
@@ -49,6 +44,18 @@ const FEATURES = [
     icon: Shield01Icon,
     key: "secure" as const,
   },
+  {
+    icon: Coins01Icon,
+    key: "savings" as const,
+  },
+  {
+    icon: GiftIcon,
+    key: "rewards" as const,
+  },
+  {
+    icon: ScratchCardIcon,
+    key: "cards" as const,
+  },
 ];
 
 export default function GetStartedScreen() {
@@ -56,32 +63,8 @@ export default function GetStartedScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const backgroundColor = useThemeColor("background");
-
-  // Animated values
-  const logoScale = useSharedValue(0.8);
-  const floatingY = useSharedValue(0);
-
-  useEffect(() => {
-    // Logo entrance animation
-    logoScale.value = withSpring(1, {
-      damping: 10,
-      stiffness: 100,
-    });
-
-    // Floating animation
-    floatingY.value = withRepeat(
-      withSequence(
-        withTiming(-10, { duration: 2000 }),
-        withTiming(0, { duration: 2000 })
-      ),
-      -1,
-      true
-    );
-  }, []);
-
-  const logoAnimatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: logoScale.value }, { translateY: floatingY.value }],
-  }));
+  const [activeIndex, setActiveIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
   const handleGetStarted = () => {
     storageHelpers.setHasSeenOnboarding(true);
@@ -98,118 +81,102 @@ export default function GetStartedScreen() {
     router.replace("/(guest)/sign-in");
   };
 
-  return (
-    <View className="flex-1" style={{ backgroundColor }}>
-      {/* Background GIF with overlay */}
-      <ImageBackground
-        source={require("@/assets/video/bg-gif.gif")}
-        className="absolute inset-0"
-        resizeMode="cover"
-      >
-        <View className="absolute inset-0 bg-background/90" />
-      </ImageBackground>
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const scrollOffset = event.nativeEvent.contentOffset.x;
+    const index = Math.round(scrollOffset / width);
+    if (index >= 0 && index < FEATURES.length) {
+      setActiveIndex(index);
+    }
+  };
 
-      {/* Content */}
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{
-          paddingTop: insets.top + 20,
-          paddingBottom: insets.bottom + 20,
-          paddingHorizontal: 24,
-        }}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Skip button */}
-        <Animated.View
-          entering={FadeIn.delay(200)}
-          className="flex-row justify-end mb-4"
-        >
-          <Pressable
-            onPress={handleSkip}
-            className="px-4 py-2 active:opacity-70"
-          >
-            <Text className="text-muted text-sm font-medium">
+  const renderFeature = ({ item }: { item: (typeof FEATURES)[0] }) => (
+    <View style={{ width }} className="items-center px-8">
+      <View className="w-24 h-24 rounded-full bg-primary/10 items-center justify-center mb-8 border border-primary/20">
+        <StyledHugeIcon icon={item.icon} size={48} className="text-primary" />
+      </View>
+      <Text className="text-3xl font-heading-bold text-foreground text-center mb-4">
+        {t(`common.getStarted.features.${item.key}.title`)}
+      </Text>
+      <Text className="text-lg text-muted text-center font-sans leading-relaxed">
+        {t(`common.getStarted.features.${item.key}.description`)}
+      </Text>
+    </View>
+  );
+
+  return (
+    <View
+      className="flex-1"
+      style={{ backgroundColor, paddingTop: insets.top }}
+    >
+      {/* Top Header */}
+      <View className="flex-row justify-end px-6 py-2">
+        <Animated.View entering={FadeIn.delay(200)}>
+          <Pressable onPress={handleSkip} className="active:opacity-70 p-2">
+            <Text className="text-muted text-sm font-sans-medium">
               {t("common.getStarted.buttons.skip")}
             </Text>
           </Pressable>
         </Animated.View>
+      </View>
 
-        {/* Logo/Icon */}
-        <Animated.View
-          style={logoAnimatedStyle}
-          className="items-center justify-center mb-8"
-        >
-          <View className="w-32 h-32 rounded-full bg-primary/10 items-center justify-center border border-primary/20">
-            <StyledHugeIcon
-              icon={Wallet01Icon}
-              size={64}
-              className="text-primary"
-            />
-          </View>
-        </Animated.View>
-
-        {/* Title */}
-        <Animated.View entering={FadeInUp.delay(400)} className="mb-4">
-          <Text className="text-4xl font-heading-bold text-foreground text-center mb-3">
-            {t("common.getStarted.title")}
-          </Text>
-          <Text className="text-lg text-muted text-center font-light">
-            {t("common.getStarted.subtitle")}
-          </Text>
-        </Animated.View>
-
-        {/* Features */}
-        <View className="mt-8 mb-8 gap-4">
-          {FEATURES.map((feature, index) => (
-            <Animated.View
-              key={feature.key}
-              entering={SlideInRight.delay(600 + index * 100)}
-            >
-              <View className="flex-row items-start gap-4 bg-card/60 backdrop-blur-sm p-4 rounded-2xl border border-border/30">
-                <View className="w-12 h-12 rounded-full bg-primary/10 items-center justify-center shrink-0">
-                  <StyledHugeIcon
-                    icon={feature.icon}
-                    size={24}
-                    className="text-primary"
-                  />
-                </View>
-                <View className="flex-1">
-                  <Text className="text-base font-heading-semi-bold text-foreground mb-1">
-                    {t(`common.getStarted.features.${feature.key}.title`)}
-                  </Text>
-                  <Text className="text-sm text-muted leading-relaxed">
-                    {t(`common.getStarted.features.${feature.key}.description`)}
-                  </Text>
-                </View>
-              </View>
-            </Animated.View>
-          ))}
+      <View className="flex-1 justify-center">
+        {/* Feature Swiper */}
+        <View style={{ height: 400 }}>
+          <FlatList
+            ref={flatListRef}
+            data={FEATURES}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            renderItem={renderFeature}
+            keyExtractor={(item) => item.key}
+            decelerationRate="fast"
+            scrollEnabled={true}
+          />
         </View>
 
-        {/* CTA Buttons */}
-        <Animated.View entering={FadeInDown.delay(1000)} className="gap-3 mt-4">
+        {/* Dots Indicator */}
+        <View className="flex-row gap-2 self-center mt-8 px-8">
+          {FEATURES.map((_, index) => (
+            <View
+              key={index}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === index ? "w-8 bg-primary" : "w-1.5 bg-muted/30"
+              }`}
+            />
+          ))}
+        </View>
+      </View>
+
+      {/* CTA Buttons */}
+      <View
+        className="px-6 pb-12 gap-3"
+        style={{ paddingBottom: insets.bottom + 20 }}
+      >
+        <Animated.View entering={FadeInDown.delay(400)}>
           <Pressable
             onPress={handleGetStarted}
-            className="bg-primary p-4 rounded-2xl items-center active:opacity-90"
+            className="bg-primary h-14 rounded-2xl items-center justify-center active:opacity-90"
           >
             <Text className="text-primary-foreground text-lg font-heading-semi-bold">
               {t("common.getStarted.buttons.getStarted")}
             </Text>
           </Pressable>
+        </Animated.View>
 
+        <Animated.View entering={FadeInDown.delay(500)}>
           <Pressable
             onPress={handleSignIn}
-            className="bg-card border border-border p-4 rounded-2xl items-center active:opacity-70"
+            className="bg-surface border border-border h-14 rounded-2xl items-center justify-center active:opacity-70"
           >
             <Text className="text-foreground text-lg font-heading-medium">
               {t("common.getStarted.buttons.signIn")}
             </Text>
           </Pressable>
         </Animated.View>
-
-        {/* Bottom spacing */}
-        <View className="h-8" />
-      </ScrollView>
+      </View>
     </View>
   );
 }
