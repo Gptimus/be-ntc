@@ -4,12 +4,16 @@ import { ConvexReactClient } from "convex/react";
 import { SplashScreen, Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
 
 import { useFonts } from "expo-font";
+
+import {
+  KeyboardAvoidingView,
+  KeyboardProvider,
+} from "react-native-keyboard-controller";
 
 import {
   Geist_400Regular,
@@ -96,7 +100,14 @@ export default function Layout() {
         <KeyboardProvider>
           <AppThemeProvider>
             <HeroUINativeProvider>
-              <StackLayout />
+              <KeyboardAvoidingView
+                pointerEvents="box-none"
+                behavior="padding"
+                keyboardVerticalOffset={12}
+                className="flex-1"
+              >
+                <StackLayout />
+              </KeyboardAvoidingView>
             </HeroUINativeProvider>
           </AppThemeProvider>
         </KeyboardProvider>

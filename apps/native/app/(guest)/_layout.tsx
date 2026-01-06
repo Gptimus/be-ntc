@@ -1,22 +1,44 @@
+import { storageHelpers } from "@/lib/storage";
 import { useConvexAuth } from "convex/react";
-import { Redirect, Stack } from "expo-router";
+import { Redirect, Stack, useSegments } from "expo-router";
 import { useThemeColor } from "heroui-native";
+import { useEffect, useState } from "react";
 
 import { FullScreenLoading } from "@/components/full-screen-loading";
 
 function GuestLayout() {
   const { isLoading, isAuthenticated } = useConvexAuth();
+  const segments = useSegments();
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
+    null
+  );
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
 
-  // Show loading spinner while checking auth
-  if (isLoading) {
+  // Check onboarding status on mount
+  useEffect(() => {
+    const checkOnboarding = () => {
+      const seen = storageHelpers.hasSeenOnboarding();
+      setHasSeenOnboarding(seen);
+    };
+    checkOnboarding();
+  }, []);
+
+  // Show loading spinner while checking auth or onboarding
+  if (isLoading || hasSeenOnboarding === null) {
     return <FullScreenLoading />;
   }
 
   // Redirect to home if already authenticated
   if (isAuthenticated) {
     return <Redirect href="/(protected)" />;
+  }
+
+  // Redirect to sign-in if onboarding was already seen and we are on the index
+  const isAtOnboarding =
+    segments.length === 1 || segments[segments.length - 1] === "(guest)";
+  if (hasSeenOnboarding && isAtOnboarding) {
+    return <Redirect href="/(guest)/sign-in" />;
   }
 
   return (
@@ -30,6 +52,13 @@ function GuestLayout() {
         },
       }}
     >
+      <Stack.Screen
+        name="index"
+        options={{
+          headerTitle: "Get Started",
+          headerShown: false,
+        }}
+      />
       <Stack.Screen
         name="sign-in"
         options={{

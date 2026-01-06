@@ -23,7 +23,7 @@ function ProtectedLayout() {
 
   // Redirect to sign-in if not authenticated
   if (!isAuthenticated) {
-    return <Redirect href="/(guest)/sign-in" />;
+    return <Redirect href="/(guest)" />;
   }
 
   return (

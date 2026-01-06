@@ -377,6 +377,7 @@ Before committing:
 
 - [ ] Checked existing components in `packages/ui` or `apps/native/components/docs/components`
 - [ ] Used semantic color tokens (no `text-red-500`, `bg-blue-600`, etc.)
+- [ ] **NEVER** used emojis (Used Hugeicons instead)
 - [ ] File name in kebab-case
 - [ ] Named export (not default)
 - [ ] Hierarchical translation keys

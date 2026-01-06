@@ -16,6 +16,15 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     "expo-font",
     "expo-router",
     [
+      "expo-localization",
+      {
+        supportedLocales: {
+          ios: ["en", "fr"],
+          android: ["en", "fr"],
+        },
+      },
+    ],
+    [
       "expo-splash-screen",
       {
         image: "./assets/images/icons/splash-icon-light.png",

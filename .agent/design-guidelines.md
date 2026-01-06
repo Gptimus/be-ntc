@@ -804,16 +804,191 @@ export function MyComponent() {
 
 ### Using Translations (Native)
 
-```tsx
-import { useLocalization } from "@/src/localization/hooks/use-localization";
+**Location**: `apps/native/localization/`
 
-export function MyComponent() {
+The native app uses `i18n-js` with `expo-localization` for internationalization.
+
+#### File Structure
+
+```
+apps/native/localization/
+├── i18n.ts                    # i18n instance configuration
+├── hooks/
+│   └── use-localization.ts    # Localization hook
+└── translations/
+    ├── auth.ts                # Auth-related translations
+    ├── common.ts              # Common translations
+    ├── home.ts                # Home screen translations
+    └── [feature].ts           # Feature-specific translations
+```
+
+#### Translation File Pattern
+
+Each translation file should export an object with language keys:
+
+```tsx
+// localization/translations/auth.ts
+export const auth = {
+  en: {
+    signIn: {
+      title: "Sign In",
+      subtitle: "Welcome back",
+      emailLabel: "Email",
+      passwordLabel: "Password",
+      submitButton: "Sign In",
+      forgotPassword: "Forgot password?",
+      noAccount: "Don't have an account?",
+      signUpLink: "Sign Up",
+    },
+    signUp: {
+      title: "Create Account",
+      subtitle: "Get started with BE-NTC",
+      nameLabel: "Full Name",
+      emailLabel: "Email",
+      passwordLabel: "Password",
+      confirmPasswordLabel: "Confirm Password",
+      submitButton: "Sign Up",
+      hasAccount: "Already have an account?",
+      signInLink: "Sign In",
+    },
+  },
+  fr: {
+    signIn: {
+      title: "Se connecter",
+      subtitle: "Bon retour",
+      emailLabel: "E-mail",
+      passwordLabel: "Mot de passe",
+      submitButton: "Se connecter",
+      forgotPassword: "Mot de passe oublié?",
+      noAccount: "Pas de compte?",
+      signUpLink: "S'inscrire",
+    },
+    signUp: {
+      title: "Créer un compte",
+      subtitle: "Commencez avec BE-NTC",
+      nameLabel: "Nom complet",
+      emailLabel: "E-mail",
+      passwordLabel: "Mot de passe",
+      confirmPasswordLabel: "Confirmer le mot de passe",
+      submitButton: "S'inscrire",
+      hasAccount: "Vous avez déjà un compte?",
+      signInLink: "Se connecter",
+    },
+  },
+};
+```
+
+#### i18n Configuration
+
+```tsx
+// localization/i18n.ts
+import * as Localization from "expo-localization";
+import { I18n } from "i18n-js";
+import { auth } from "./translations/auth";
+import { common } from "./translations/common";
+import { home } from "./translations/home";
+
+// Create i18n instance
+export const i18n = new I18n({
+  en: {
+    auth: auth.en,
+    common: common.en,
+    home: home.en,
+  },
+  fr: {
+    auth: auth.fr,
+    common: common.fr,
+    home: home.fr,
+  },
+});
+
+// Set locale from device settings
+i18n.locale = Localization.getLocales()[0]?.languageCode || "en";
+i18n.enableFallback = true;
+i18n.defaultLocale = "en";
+```
+
+#### Localization Hook
+
+```tsx
+// localization/hooks/use-localization.ts
+import * as Localization from "expo-localization";
+import { useCallback, useState } from "react";
+import { i18n } from "../i18n";
+
+type SupportedLocale = "en" | "fr";
+
+export function useLocalization() {
+  const [locale, setLocaleState] = useState<SupportedLocale>(
+    (i18n.locale.split("-")[0] as SupportedLocale) || "en"
+  );
+
+  const setLocale = useCallback((newLocale: SupportedLocale) => {
+    i18n.locale = newLocale;
+    setLocaleState(newLocale);
+  }, []);
+
+  const t = useCallback((key: string, options?: any) => {
+    return i18n.t(key, options);
+  }, []);
+
+  const getSystemLocale = useCallback(() => {
+    return (
+      (Localization.getLocales()[0]?.languageCode?.split(
+        "-"
+      )[0] as SupportedLocale) || "en"
+    );
+  }, []);
+
+  return {
+    locale,
+    setLocale,
+    t,
+    getSystemLocale,
+    supportedLocales: ["en", "fr"] as const,
+  };
+}
+```
+
+#### Usage in Components
+
+```tsx
+import { useLocalization } from "@/localization/hooks/use-localization";
+import { View, Text } from "react-native";
+
+export function SignInScreen() {
   const { t } = useLocalization();
 
   return (
     <View>
-      <AppText>{t("home.sections.title")}</AppText>
-      <AppText>{t("home.sections.description")}</AppText>
+      <Text>{t("auth.signIn.title")}</Text>
+      <Text>{t("auth.signIn.subtitle")}</Text>
+    </View>
+  );
+}
+```
+
+#### Language Switcher
+
+```tsx
+import { useLocalization } from "@/localization/hooks/use-localization";
+import { Button } from "heroui-native";
+
+export function LanguageSwitcher() {
+  const { locale, setLocale, supportedLocales } = useLocalization();
+
+  return (
+    <View className="flex-row gap-2">
+      {supportedLocales.map((lang) => (
+        <Button
+          key={lang}
+          variant={locale === lang ? "solid" : "outline"}
+          color="primary"
+          onPress={() => setLocale(lang)}
+        >
+          {lang.toUpperCase()}
+        </Button>
+      ))}
     </View>
   );
 }
@@ -823,16 +998,30 @@ export function MyComponent() {
 
 ```tsx
 // ✅ CORRECT - Hierarchical structure
-t("auth.login.title");
-t("auth.login.emailLabel");
-t("dashboard.stats.totalUsers");
-t("shared.buttons.save");
-t("shared.buttons.cancel");
+t("auth.signIn.title");
+t("auth.signIn.emailLabel");
+t("home.sections.hero.title");
+t("common.buttons.save");
+t("common.buttons.cancel");
 
 // ❌ WRONG - Flat structure
-t("loginTitle");
+t("signInTitle");
 t("emailLabel");
-t("totalUsers");
+t("heroTitle");
+```
+
+### Translation Organization by Feature
+
+Organize translations by feature/module for better maintainability:
+
+```
+translations/
+├── auth.ts          # Authentication screens
+├── common.ts        # Shared/common translations
+├── home.ts          # Home screen
+├── profile.ts       # Profile screens
+├── transactions.ts  # Transaction screens
+└── settings.ts      # Settings screens
 ```
 
 ### Dynamic Content
@@ -1127,9 +1316,9 @@ const accentForeground = useThemeColor("accent-foreground");
 
 ## Icon System
 
-### Hugeicons Library
-
 The project uses **Hugeicons** for all icons across web and native platforms.
+
+> [!IMPORTANT] > **NEVER USE EMOJIS** for UI elements, labels, or feature indicators. Always use the appropriate icon from the Hugeicons library. This ensures a professional, consistent premium aesthetic and better accessibility.
 
 #### Web Icons
 

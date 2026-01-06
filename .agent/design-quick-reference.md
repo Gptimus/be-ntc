@@ -181,22 +181,38 @@ t("shared.buttons.save");
 
 ### Native
 
+**Location**: `apps/native/localization/`
+
 ```tsx
-import { useLocalization } from "@/src/localization/hooks/use-localization";
+import { useLocalization } from "@/localization/hooks/use-localization";
 
 const { t } = useLocalization();
-t("home.sections.title");
-t("shared.buttons.save");
+t("auth.signIn.title");
+t("common.buttons.save");
+
+// File structure
+// localization/
+// ├── i18n.ts
+// ├── hooks/use-localization.ts
+// └── translations/
+//     ├── auth.ts
+//     ├── common.ts
+//     └── [feature].ts
 ```
 
 ### Translation Keys (Hierarchical)
 
 ```tsx
-✅ t("auth.login.title")
-✅ t("dashboard.stats.totalUsers")
-❌ t("loginTitle")
+✅ t("auth.signIn.title")
+✅ t("home.sections.hero.title")
+✅ t("common.buttons.save")
+❌ t("signInTitle")
 ❌ t("totalUsers")
 ```
+
+### Adding Translations
+
+See [workflows/native-localization.md](./workflows/native-localization.md) for complete guide.
 
 ---
 
@@ -258,9 +274,9 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 
 ---
 
-## 🎯 Icons
+## 🎯 Icons (NEVER USE EMOJIS)
 
-### Web
+### Web (Hugeicons)
 
 ```tsx
 import { HugeiconsIcon } from "@hugeicons/react";

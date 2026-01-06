@@ -55,7 +55,19 @@ className = "text-purple-500 bg-blue-100 border-gray-300";
 - `background`, `foreground`, `card`, `popover`, `muted`
 - `border`, `input`, `ring`
 
-### 2. Component Reusability
+### 2. Hugeicons Only (No Emojis)
+
+**NEVER** use emojis for UI elements. Always use the **Hugeicons** library.
+
+```tsx
+// ✅ CORRECT
+<StyledHugeIcon icon={Wallet01Icon} size={24} />
+
+// ❌ WRONG
+<Text className="text-2xl">💰</Text>
+```
+
+### 3. Component Reusability
 
 **ALWAYS** check existing components before creating new ones:
 
