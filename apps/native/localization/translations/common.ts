@@ -20,9 +20,9 @@ export const common = {
             "Navigate the global market with ease. Our platform provides full, seamless support for both CDF and USD, featuring real-time exchange rates and instant currency conversion to ensure you always get the best value for your money.",
         },
         secure: {
-          title: "Military-Grade Security",
+          title: "Safe & Secure",
           description:
-            "Your peace of mind is our top priority. We employ state-of-the-art encryption and bank-level security protocols, complemented by advanced biometric authentication, to ensure your funds and personal data remain protected 24/7.",
+            "Your peace of mind is our priority. We use modern encryption and advanced biometric authentication to ensure your funds and personal data remain protected around the clock.",
         },
         savings: {
           title: "Smart Savings Goals",
@@ -79,9 +79,9 @@ export const common = {
             "Naviguez sur le marché mondial avec aisance. Notre plateforme offre un support complet et fluide pour le CDF et l'USD, avec des taux de change en temps réel et une conversion instantanée pour vous garantir la meilleure valeur pour votre argent.",
         },
         secure: {
-          title: "Sécurité de Niveau Militaire",
+          title: "Sécurité Avancée",
           description:
-            "Votre tranquillité d'esprit est notre priorité absolue. Nous utilisons un cryptage de pointe et des protocoles de sécurité bancaire, complétés par une authentification biométrique avancée, pour protéger vos fonds 24h/24 et 7j/7.",
+            "Votre tranquillité d'esprit est notre priorité. Nous utilisons un cryptage moderne et une authentification biométrique de pointe pour protéger vos fonds et vos données personnelles en continu.",
         },
         savings: {
           title: "Objectifs d'Épargne Intelligents",

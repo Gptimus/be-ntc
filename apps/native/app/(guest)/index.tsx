@@ -30,18 +30,22 @@ const FEATURES = [
   {
     icon: CreditCardIcon,
     key: "payments" as const,
+    image: require("@/assets/onboarding/hero.webp"),
   },
   {
     icon: GridTableIcon,
     key: "services" as const,
+    image: require("@/assets/onboarding/chest.webp"),
   },
   {
     icon: Exchange01Icon,
     key: "currencies" as const,
+    image: require("@/assets/onboarding/chest-gold-dollar.webp"),
   },
   {
     icon: Shield01Icon,
     key: "secure" as const,
+    image: require("@/assets/onboarding/shield-phone.webp"),
   },
 ];
 
@@ -97,7 +101,7 @@ export default function GetStartedScreen() {
     <View style={{ width }} className="px-4 justify-end pb-4">
       <View className="items-center mb-8">
         <Image
-          source={require("@/assets/onboarding/hero.webp")}
+          source={item.image}
           style={{ width: width * 0.45, height: width * 0.45 }}
           resizeMode="contain"
         />
