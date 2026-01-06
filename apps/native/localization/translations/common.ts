@@ -35,7 +35,8 @@ export const common = {
         },
       },
       buttons: {
-        getStarted: "Get Started",
+        getStarted: "Next",
+        start: "Start",
         signIn: "Sign In",
         skip: "Skip",
       },
@@ -81,7 +82,8 @@ export const common = {
         },
       },
       buttons: {
-        getStarted: "Commencer",
+        getStarted: "Suivant",
+        start: "Commencer",
         signIn: "Se connecter",
         skip: "Passer",
       },

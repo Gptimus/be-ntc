@@ -1,8 +1,7 @@
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { storageHelpers } from "@/lib/storage";
 import { useRouter } from "expo-router";
-import { useThemeColor } from "heroui-native";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,23 +12,13 @@ import {
   NativeScrollEvent,
   Image,
 } from "react-native";
-import Animated, {
-  FadeInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withTiming,
-} from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   CreditCardIcon,
   GridTableIcon,
   Exchange01Icon,
   Shield01Icon,
-  Coins01Icon,
-  GiftIcon,
-  ScratchCardIcon,
 } from "@hugeicons/core-free-icons";
 
 const { width, height } = Dimensions.get("window");
@@ -51,18 +40,6 @@ const FEATURES = [
     icon: Shield01Icon,
     key: "secure" as const,
   },
-  {
-    icon: Coins01Icon,
-    key: "savings" as const,
-  },
-  {
-    icon: GiftIcon,
-    key: "rewards" as const,
-  },
-  {
-    icon: ScratchCardIcon,
-    key: "cards" as const,
-  },
 ];
 
 export default function GetStartedScreen() {
@@ -72,28 +49,16 @@ export default function GetStartedScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
-  const primaryColor = useThemeColor("primary");
-
-  // Floating animation for the hero image
-  const heroY = useSharedValue(0);
-  useEffect(() => {
-    heroY.value = withRepeat(
-      withSequence(
-        withTiming(-15, { duration: 2500 }),
-        withTiming(0, { duration: 2500 })
-      ),
-      -1,
-      true
-    );
-  }, []);
-
-  const heroStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: heroY.value }],
-  }));
-
-  const handleGetStarted = () => {
-    storageHelpers.setHasSeenOnboarding(true);
-    router.replace("/(guest)/sign-up");
+  const handleNext = () => {
+    if (activeIndex < FEATURES.length - 1) {
+      flatListRef.current?.scrollToIndex({
+        index: activeIndex + 1,
+        animated: true,
+      });
+    } else {
+      storageHelpers.setHasSeenOnboarding(true);
+      router.replace("/(guest)/sign-up");
+    }
   };
 
   const handleSignIn = () => {
@@ -122,20 +87,17 @@ export default function GetStartedScreen() {
     index: number;
   }) => (
     <View
-      style={{ width, height: height * 0.45 }}
-      className="px-8 justify-end pb-8"
+      style={{ width, height: height * 0.4 }}
+      className="px-8 justify-end pb-4"
     >
       <Animated.View
-        entering={FadeInDown.delay(index * 100).duration(800)}
+        entering={FadeInDown.delay(index * 50).duration(600)}
         className="items-start"
       >
-        <Text
-          className="text-5xl font-heading-bold text-white leading-[1.1] mb-5"
-          style={{ color: "#FFFFFF" }}
-        >
+        <Text className="text-5xl font-heading-bold text-foreground leading-[1.1] mb-4">
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
-        <Text className="text-lg text-neutral-400 font-sans leading-relaxed text-left max-w-[95%]">
+        <Text className="text-base text-muted font-sans leading-relaxed text-left max-w-[95%]">
           {t(`common.getStarted.features.${item.key}.description`)}
         </Text>
       </Animated.View>
@@ -143,60 +105,29 @@ export default function GetStartedScreen() {
   );
 
   return (
-    <View className="flex-1 bg-black">
-      {/* Background Hero Asset */}
+    <View className="flex-1 bg-background">
+      {/* Hero Asset Area - Centered and non-animated */}
       <View
-        style={{ height: height * 0.45 }}
-        className="absolute top-0 left-0 right-0 overflow-hidden"
+        style={{ height: height * 0.3 }}
+        className="items-center justify-center"
       >
-        <Animated.View style={[heroStyle, { flex: 1 }]}>
-          <Image
-            source={require("@/assets/onboarding/hero.png")}
-            style={{ width, height: height * 0.5, opacity: 0.8 }}
-            resizeMode="cover"
-          />
-        </Animated.View>
-        <View
-          className="absolute inset-x-0 bottom-0 h-32"
-          style={{
-            backgroundColor: "transparent",
-            // Simple gradient-like fade to black
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: -40 },
-            shadowOpacity: 1,
-            shadowRadius: 50,
-            elevation: 20,
-          }}
-        />
-        {/* Actual Bottom Fade using a View */}
-        <View
-          className="absolute inset-x-0 bottom-0 h-40"
-          style={{
-            backgroundColor: "rgba(0,0,0,0.8)",
-            // We'll use a more robust way if needed, but for now this mimics the shadow/fade
-          }}
+        <Image
+          source={require("@/assets/onboarding/hero.png")}
+          style={{ width: width * 0.8, height: height * 0.28 }}
+          resizeMode="contain"
         />
       </View>
-
-      {/* Real Bottom Fade Overlay */}
-      <View
-        className="absolute top-0 left-0 right-0 h-full bg-black/20"
-        pointerEvents="none"
-      />
 
       {/* Skip button Overlay */}
       <View className="absolute top-12 right-6 z-20">
         <Pressable onPress={handleSkip} className="active:opacity-70 p-2">
-          <Text className="text-white/50 text-xs font-sans-bold tracking-[2px]">
+          <Text className="text-muted text-xs font-sans-bold tracking-[2px]">
             {t("common.getStarted.buttons.skip").toUpperCase()}
           </Text>
         </Pressable>
       </View>
 
       <View className="flex-1">
-        {/* Spacer for Hero Area */}
-        <View style={{ height: height * 0.35 }} />
-
         {/* Feature Swiper */}
         <FlatList
           ref={flatListRef}
@@ -217,40 +148,38 @@ export default function GetStartedScreen() {
           {FEATURES.map((_, index) => (
             <View
               key={index}
-              className={`h-1 rounded-full transition-all duration-300 ${
-                activeIndex === index ? "w-10 bg-primary" : "w-2 bg-neutral-800"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                activeIndex === index ? "w-8 bg-primary" : "w-2 bg-muted"
               }`}
-              style={{
-                backgroundColor:
-                  activeIndex === index ? primaryColor : "#262626",
-              }}
             />
           ))}
         </View>
       </View>
 
-      {/* CTA Buttons - Matching Global Theme */}
+      {/* CTA Buttons - Strictly Semantic Classes */}
       <View
         className="px-6 pb-12 gap-4"
         style={{ paddingBottom: insets.bottom + 20 }}
       >
-        <Animated.View entering={FadeInDown.delay(600)}>
+        <Animated.View entering={FadeInDown.delay(400)}>
           <Pressable
-            onPress={handleGetStarted}
+            onPress={handleNext}
             className="h-16 rounded-2xl items-center bg-primary justify-center active:opacity-95"
           >
-            <Text className="text-white text-lg font-heading-bold tracking-tight">
-              {t("common.getStarted.buttons.getStarted")}
+            <Text className="text-primary-foreground text-lg font-heading-bold tracking-tight">
+              {activeIndex === FEATURES.length - 1
+                ? t("common.getStarted.buttons.start")
+                : t("common.getStarted.buttons.getStarted")}
             </Text>
           </Pressable>
         </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(700)}>
+        <Animated.View entering={FadeInDown.delay(500)}>
           <Pressable
             onPress={handleSignIn}
-            className="bg-neutral-900 border border-neutral-800 h-16 rounded-2xl items-center justify-center active:opacity-70"
+            className="bg-default border border-border h-16 rounded-2xl items-center justify-center active:opacity-70"
           >
-            <Text className="text-white text-lg font-heading-bold">
+            <Text className="text-foreground text-lg font-heading-bold">
               {t("common.getStarted.buttons.signIn")}
             </Text>
           </Pressable>
