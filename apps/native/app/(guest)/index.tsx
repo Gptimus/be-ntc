@@ -98,7 +98,7 @@ export default function GetStartedScreen() {
       <View className="items-center mb-8">
         <Image
           source={require("@/assets/onboarding/hero.webp")}
-          style={{ width: width * 0.65, height: width * 0.65 }}
+          style={{ width: width * 0.45, height: width * 0.45 }}
           resizeMode="contain"
         />
       </View>
@@ -106,7 +106,7 @@ export default function GetStartedScreen() {
         entering={FadeInDown.delay(index * 50).duration(600)}
         className="items-start"
       >
-        <Text className="text-6xl font-heading-bold text-white leading-[1.1] mb-3">
+        <Text className="text-5xl font-heading-bold text-white leading-[1.1] mb-3">
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
         <Text className="text-base text-white/80 font-sans leading-relaxed text-left max-w-[95%]">
