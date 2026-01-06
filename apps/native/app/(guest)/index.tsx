@@ -21,7 +21,7 @@ import {
   Shield01Icon,
 } from "@hugeicons/core-free-icons";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const FEATURES = [
   {
@@ -86,15 +86,12 @@ export default function GetStartedScreen() {
     item: (typeof FEATURES)[0];
     index: number;
   }) => (
-    <View
-      style={{ width, height: height * 0.55 }}
-      className="px-8 justify-end pb-6"
-    >
+    <View style={{ width }} className="px-8 justify-end">
       <Animated.View
         entering={FadeInDown.delay(index * 50).duration(600)}
         className="items-start"
       >
-        <Text className="text-5xl font-heading-bold text-white leading-[1.1] mb-4">
+        <Text className="text-5xl font-heading-bold text-white leading-[1.1] mb-3">
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
         <Text className="text-base text-white/80 font-sans leading-relaxed text-left max-w-[95%]">
@@ -106,7 +103,7 @@ export default function GetStartedScreen() {
 
   return (
     <View className="flex-1 bg-black">
-      {/* Dynamic Background Image */}
+      {/* Background */}
       <ImageBackground
         source={require("@/assets/video/bg-gif.gif")}
         className="absolute inset-0"
@@ -116,33 +113,39 @@ export default function GetStartedScreen() {
         <View className="absolute inset-0 bg-black/50" />
       </ImageBackground>
 
-      {/* Skip button Overlay */}
-      <View className="absolute top-12 right-6 z-20">
-        <Pressable onPress={handleSkip} className="active:opacity-70 p-2">
+      {/* Skip button Area */}
+      <View
+        style={{ paddingTop: insets.top }}
+        className="flex-row justify-end px-6 z-20"
+      >
+        <Pressable onPress={handleSkip} className="active:opacity-70 p-4">
           <Text className="text-white/50 text-xs font-sans-bold tracking-[2px]">
             {t("common.getStarted.buttons.skip").toUpperCase()}
           </Text>
         </Pressable>
       </View>
 
-      <View className="flex-1">
-        {/* Feature Swiper */}
-        <FlatList
-          ref={flatListRef}
-          data={FEATURES}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={handleScroll}
-          scrollEventThrottle={16}
-          renderItem={renderFeature}
-          keyExtractor={(item) => item.key}
-          decelerationRate="fast"
-          scrollEnabled={true}
-        />
+      {/* Main Bottom Container */}
+      <View className="flex-1 justify-end">
+        {/* Swiper Content */}
+        <View className="mb-6">
+          <FlatList
+            ref={flatListRef}
+            data={FEATURES}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            renderItem={renderFeature}
+            keyExtractor={(item) => item.key}
+            decelerationRate="fast"
+            style={{ flexGrow: 0 }}
+          />
+        </View>
 
-        {/* Dots Indicator */}
-        <View className="flex-row gap-2 px-8 mb-6">
+        {/* Indicators */}
+        <View className="flex-row gap-2 px-8 mb-10">
           {FEATURES.map((_, index) => (
             <View
               key={index}
@@ -152,36 +155,36 @@ export default function GetStartedScreen() {
             />
           ))}
         </View>
-      </View>
 
-      {/* CTA Buttons */}
-      <View
-        className="px-6 pb-12 gap-4"
-        style={{ paddingBottom: insets.bottom + 20 }}
-      >
-        <Animated.View entering={FadeInDown.delay(400)}>
-          <Pressable
-            onPress={handleNext}
-            className="h-16 rounded-2xl items-center bg-primary justify-center active:opacity-95 shadow-lg shadow-primary/30"
-          >
-            <Text className="text-primary-foreground text-lg font-heading-bold tracking-tight">
-              {activeIndex === FEATURES.length - 1
-                ? t("common.getStarted.buttons.start")
-                : t("common.getStarted.buttons.getStarted")}
-            </Text>
-          </Pressable>
-        </Animated.View>
+        {/* Buttons */}
+        <View
+          className="px-6 gap-4"
+          style={{ paddingBottom: insets.bottom + 20 }}
+        >
+          <Animated.View entering={FadeInDown.delay(400)}>
+            <Pressable
+              onPress={handleNext}
+              className="h-16 rounded-2xl items-center bg-primary justify-center active:opacity-95 shadow-lg shadow-primary/30"
+            >
+              <Text className="text-primary-foreground text-lg font-heading-bold tracking-tight">
+                {activeIndex === FEATURES.length - 1
+                  ? t("common.getStarted.buttons.start")
+                  : t("common.getStarted.buttons.getStarted")}
+              </Text>
+            </Pressable>
+          </Animated.View>
 
-        <Animated.View entering={FadeInDown.delay(500)}>
-          <Pressable
-            onPress={handleSignIn}
-            className="bg-white/10 border border-white/10 h-16 rounded-2xl items-center justify-center active:opacity-70 backdrop-blur-md"
-          >
-            <Text className="text-white text-lg font-heading-bold">
-              {t("common.getStarted.buttons.signIn")}
-            </Text>
-          </Pressable>
-        </Animated.View>
+          <Animated.View entering={FadeInDown.delay(500)}>
+            <Pressable
+              onPress={handleSignIn}
+              className="bg-white/10 border border-white/10 h-16 rounded-2xl items-center justify-center active:opacity-70 backdrop-blur-md"
+            >
+              <Text className="text-white text-lg font-heading-bold">
+                {t("common.getStarted.buttons.signIn")}
+              </Text>
+            </Pressable>
+          </Animated.View>
+        </View>
       </View>
     </View>
   );
