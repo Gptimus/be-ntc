@@ -1,6 +1,6 @@
 import { api } from "@be-ntc/backend/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
-import { Card, Chip, useThemeColor } from "heroui-native";
+import { Card, useThemeColor } from "heroui-native";
 import { Text, View, TouchableOpacity } from "react-native";
 
 import { Container } from "@/components/container";
@@ -22,7 +22,9 @@ export default function Home() {
   return (
     <Container className="p-6">
       <View className="py-4 mb-6">
-        <Text className="text-4xl font-bold text-foreground mb-2">BETTER T STACK</Text>
+        <Text className="text-4xl font-bold font-heading-bold text-foreground mb-2">
+          BETTER T STACK
+        </Text>
       </View>
 
       {user ? (
@@ -47,14 +49,16 @@ export default function Home() {
         <Text className="text-foreground font-medium mb-2">API Status</Text>
         <View className="flex-row items-center gap-2">
           <View
-            className={`w-3 h-3 rounded-full ${healthCheck === "OK" ? "bg-success" : "bg-danger"}`}
+            className={`w-3 h-3 rounded-full ${
+              healthCheck === "OK" ? "bg-success" : "bg-danger"
+            }`}
           />
           <Text className="text-muted">
             {healthCheck === undefined
               ? "Checking..."
               : healthCheck === "OK"
-                ? "Connected to API"
-                : "API Disconnected"}
+              ? "Connected to API"
+              : "API Disconnected"}
           </Text>
         </View>
       </Card>

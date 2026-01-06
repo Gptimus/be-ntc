@@ -31,7 +31,9 @@ function DrawerLayout() {
         options={{
           headerTitle: "Home",
           drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Home</Text>
+            <Text style={{ color: focused ? color : themeColorForeground }}>
+              Home
+            </Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
             <Ionicons
@@ -47,7 +49,9 @@ function DrawerLayout() {
         options={{
           headerTitle: "Tabs",
           drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Tabs</Text>
+            <Text style={{ color: focused ? color : themeColorForeground }}>
+              Tabs
+            </Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
             <MaterialIcons
@@ -59,25 +63,13 @@ function DrawerLayout() {
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable className="mr-4">
-                <Ionicons name="add-outline" size={24} color={themeColorForeground} />
+                <Ionicons
+                  name="add-outline"
+                  size={24}
+                  color={themeColorForeground}
+                />
               </Pressable>
             </Link>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="todos"
-        options={{
-          headerTitle: "Todos",
-          drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Todos</Text>
-          ),
-          drawerIcon: ({ size, color, focused }) => (
-            <Ionicons
-              name="checkbox-outline"
-              size={size}
-              color={focused ? color : themeColorForeground}
-            />
           ),
         }}
       />
