@@ -1,14 +1,9 @@
 import { useRouter } from "expo-router";
 import { BottomSheet, Button } from "heroui-native";
-import { ImageBackground, Text, View } from "react-native";
+import { ImageBackground, Text, View, Image } from "react-native";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { useLocalization } from "@/localization/hooks/use-localization";
-import {
-  AppleIcon,
-  GoogleIcon,
-  Mail01Icon,
-  PlayIcon,
-} from "@hugeicons/core-free-icons";
+import { AppleIcon, GoogleIcon, Mail01Icon } from "@hugeicons/core-free-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SignUpScreen() {
@@ -49,12 +44,11 @@ export default function SignUpScreen() {
           >
             {/* Header / Logo Section */}
             <View className="mb-8">
-              <View className="w-12 h-12 bg-primary rounded-xl items-center justify-center mb-6">
-                <StyledHugeIcon
-                  icon={PlayIcon}
-                  size={24}
-                  variant="solid"
-                  className="text-white"
+              <View className="rounded-xl items-start justify-center mb-6">
+                <Image
+                  source={require("@/assets/images/logo-fit.webp")}
+                  style={{ width: 32, height: 32 }}
+                  resizeMode="contain"
                 />
               </View>
 
