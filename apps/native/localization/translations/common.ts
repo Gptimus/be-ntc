@@ -6,32 +6,38 @@ export const common = {
       features: {
         payments: {
           title: "Easy Payments",
-          description: "Pay bills, merchants, and transfer money instantly",
+          description:
+            "Experience the ultimate freedom of managing your finances. Pay your bills, settle merchant transactions, and transfer money to your loved ones instantly, anywhere in the world, with just a few taps on your mobile device.",
         },
         services: {
-          title: "18+ Services",
-          description: "Airtime, electricity, TV, insurance, and more",
+          title: "18+ Multi-Services",
+          description:
+            "Access a comprehensive suite of over 18 essential services in one single app. From recharging airtime and paying for electricity to managing your TV subscriptions and insurance policies, we've got all your daily needs covered.",
         },
         currencies: {
-          title: "Multi-Currency",
-          description: "Support for CDF and USD with real-time exchange",
+          title: "Dual-Currency Support",
+          description:
+            "Navigate the global market with ease. Our platform provides full, seamless support for both CDF and USD, featuring real-time exchange rates and instant currency conversion to ensure you always get the best value for your money.",
         },
         secure: {
-          title: "Secure & Safe",
-          description: "Bank-level security with biometric authentication",
+          title: "Military-Grade Security",
+          description:
+            "Your peace of mind is our top priority. We employ state-of-the-art encryption and bank-level security protocols, complemented by advanced biometric authentication, to ensure your funds and personal data remain protected 24/7.",
         },
         savings: {
-          title: "Savings Goals",
+          title: "Smart Savings Goals",
           description:
-            "Save specifically for your projects with automated rules",
+            "Turn your dreams into reality with our intelligent savings tools. Set specific goals for your future projects, apply automated saving rules, and watch your wealth grow steadily with our high-yield digital saving accounts.",
         },
         rewards: {
-          title: "Loyalty Rewards",
-          description: "Earn points on every transaction and redeem for prizes",
+          title: "Exclusive Loyalty Rewards",
+          description:
+            "Every transaction you make brings you closer to amazing benefits. Earn loyalty points on every purchase, unlock exclusive member-only offers, and redeem your points for a wide variety of exciting gifts and financial perks.",
         },
         cards: {
-          title: "Digital Cards",
-          description: "Manage your physical and virtual cards in one place",
+          title: "Advanced Digital Cards",
+          description:
+            "Take full control of your spending power. Instantly generate virtual cards for secure online shopping or manage your physical debit cards with advanced security features, custom spending limits, and real-time transaction tracking.",
         },
       },
       buttons: {
@@ -50,35 +56,37 @@ export const common = {
         payments: {
           title: "Paiements Faciles",
           description:
-            "Payez des factures, des commerçants et transférez de l'argent instantanément",
+            "Découvrez la liberté ultime de gérer vos finances. Payez vos factures, réglez vos achats chez les commerçants et transférez de l'argent à vos proches instantanément, partout dans le monde, en quelques clics seulement avec votre appareil mobile.",
         },
         services: {
-          title: "18+ Services",
+          title: "18+ Multi-Services",
           description:
-            "Crédit téléphonique, électricité, TV, assurance, et plus",
+            "Accédez à une suite complète de plus de 18 services essentiels dans une seule application. De la recharge de crédit téléphonique au paiement d'électricité, en passant par vos abonnements TV et vos polices d'assurance, nous couvrons tous vos besoins.",
         },
         currencies: {
-          title: "Multi-Devises",
-          description: "Support pour CDF et USD avec échange en temps réel",
+          title: "Support Multi-Devises",
+          description:
+            "Naviguez sur le marché mondial avec aisance. Notre plateforme offre un support complet et fluide pour le CDF et l'USD, avec des taux de change en temps réel et une conversion instantanée pour vous garantir la meilleure valeur pour votre argent.",
         },
         secure: {
-          title: "Sécurisé et Sûr",
-          description: "Sécurité bancaire avec authentification biométrique",
+          title: "Sécurité de Niveau Militaire",
+          description:
+            "Votre tranquillité d'esprit est notre priorité absolue. Nous utilisons un cryptage de pointe et des protocoles de sécurité bancaire, complétés par une authentification biométrique avancée, pour protéger vos fonds 24h/24 et 7j/7.",
         },
         savings: {
-          title: "Objectifs d'Épargne",
+          title: "Objectifs d'Épargne Intelligents",
           description:
-            "Épargnez spécifiquement pour vos projets avec des règles automatisées",
+            "Transformez vos rêves en réalité avec nos outils d'épargne intelligents. Fixez des objectifs précis pour vos futurs projets, appliquez des règles d'épargne automatiques et regardez votre patrimoine fructifier avec nos comptes d'épargne performants.",
         },
         rewards: {
-          title: "Récompenses de Fidélité",
+          title: "Récompenses de Fidélité Exclusives",
           description:
-            "Gagnez des points sur chaque transaction et échangez-les contre des prix",
+            "Chaque transaction vous rapproche d'avantages incroyables. Gagnez des points de fidélité sur chaque achat, débloquez des offres exclusives réservées aux membres et échangez vos points contre une grande variété de cadeaux et d'avantages.",
         },
         cards: {
-          title: "Cartes Digitales",
+          title: "Cartes Digitales Avancées",
           description:
-            "Gérez vos cartes physiques et virtuelles en un seul endroit",
+            "Prenez le contrôle total de votre pouvoir d'achat. Générez instantanément des cartes virtuelles pour des achats en ligne sécurisés ou gérez vos cartes de débit physiques avec des fonctionnalités de sécurité avancées et un suivi en temps réel.",
         },
       },
       buttons: {

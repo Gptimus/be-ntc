@@ -87,8 +87,8 @@ export default function GetStartedScreen() {
     index: number;
   }) => (
     <View
-      style={{ width, height: height * 0.6 }}
-      className="px-8 justify-end pb-12"
+      style={{ width, height: height * 0.55 }}
+      className="px-8 justify-end pb-6"
     >
       <Animated.View
         entering={FadeInDown.delay(index * 50).duration(600)}
@@ -97,7 +97,7 @@ export default function GetStartedScreen() {
         <Text className="text-5xl font-heading-bold text-white leading-[1.1] mb-4">
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
-        <Text className="text-base text-white/70 font-sans leading-relaxed text-left max-w-[95%]">
+        <Text className="text-base text-white/80 font-sans leading-relaxed text-left max-w-[95%]">
           {t(`common.getStarted.features.${item.key}.description`)}
         </Text>
       </Animated.View>
@@ -111,8 +111,9 @@ export default function GetStartedScreen() {
         source={require("@/assets/video/bg-gif.gif")}
         className="absolute inset-0"
         resizeMode="cover"
+        imageStyle={{ opacity: 0.45 }}
       >
-        <View className="absolute inset-0 bg-black/60" />
+        <View className="absolute inset-0 bg-black/50" />
       </ImageBackground>
 
       {/* Skip button Overlay */}
@@ -141,12 +142,12 @@ export default function GetStartedScreen() {
         />
 
         {/* Dots Indicator */}
-        <View className="flex-row gap-2 px-8 mb-8">
+        <View className="flex-row gap-2 px-8 mb-6">
           {FEATURES.map((_, index) => (
             <View
               key={index}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                activeIndex === index ? "w-8 bg-primary" : "w-1.5 bg-white/20"
+                activeIndex === index ? "w-8 bg-primary" : "w-1.5 bg-white/30"
               }`}
             />
           ))}
