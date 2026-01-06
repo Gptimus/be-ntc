@@ -81,13 +81,6 @@ function GuestLayout() {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="sign-up"
-        options={{
-          headerTitle: "Sign Up",
-          headerShown: false,
-        }}
-      />
     </Stack>
   );
 }

@@ -2,6 +2,7 @@ import { expo } from "@better-auth/expo";
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
 import { betterAuth, BetterAuthOptions } from "better-auth";
+import { magicLink } from "better-auth/plugins";
 import { v } from "convex/values";
 import authConfig from "./auth.config";
 
@@ -37,6 +38,23 @@ const createAuth = (ctx: GenericCtx<DataModel>) => {
     },
     plugins: [
       expo(),
+      magicLink({
+        sendMagicLink: async ({ email, url, token }, request) => {
+          // TODO: Implement email sending service
+          // For now, log the magic link URL for development
+          console.log(`Magic link for ${email}: ${url}`);
+          console.log(`Token: ${token}`);
+
+          // In production, you would send this via your email service:
+          // await sendEmail({
+          //   to: email,
+          //   subject: "Sign in to BE-NTC",
+          //   html: `Click here to sign in: <a href="${url}">${url}</a>`,
+          // });
+        },
+        expiresIn: 60 * 10, // 10 minutes
+        disableSignUp: false, // Allow new user registration via magic link
+      }),
       convex({
         authConfig,
         jwksRotateOnTokenGenerationError: true,

@@ -12,8 +12,7 @@ export default function SignUpScreen() {
   const insets = useSafeAreaInsets();
 
   const handleEmailSignIn = () => {
-    // We can navigate to a more traditional sign-up form or just show it
-    router.push("/(guest)/sign-in");
+    router.push("/(guest)/email-input");
   };
 
   return (
