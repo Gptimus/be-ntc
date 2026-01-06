@@ -15,14 +15,16 @@ import {
 import { Button } from "heroui-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAppTheme } from "@/contexts/app-theme-context";
+import { triggerHaptic } from "@/lib/haptics";
+import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import {
   CreditCardIcon,
   GridTableIcon,
   Exchange01Icon,
   Shield01Icon,
+  Login03Icon,
 } from "@hugeicons/core-free-icons";
-import { useAppTheme } from "@/contexts/app-theme-context";
-import { triggerHaptic } from "@/lib/haptics";
 
 const { width } = Dimensions.get("window");
 
@@ -190,6 +192,7 @@ export default function GetStartedScreen() {
               variant="primary"
               size="lg"
               onPress={handleNext}
+              className="rounded-2xl"
               pressableFeedbackVariant="ripple"
               pressableFeedbackRippleProps={{
                 animation: {
@@ -211,7 +214,7 @@ export default function GetStartedScreen() {
               variant="secondary"
               size="lg"
               onPress={handleSignIn}
-              className="border-white/10 bg-white/10"
+              className="border-white/10 bg-white/10 rounded-2xl"
               pressableFeedbackVariant="ripple"
               pressableFeedbackRippleProps={{
                 animation: {
@@ -220,6 +223,11 @@ export default function GetStartedScreen() {
                 },
               }}
             >
+              <StyledHugeIcon
+                icon={Login03Icon}
+                size={20}
+                className="text-white"
+              />
               <Button.Label className="text-white text-lg font-heading-bold">
                 {t("common.getStarted.buttons.signIn")}
               </Button.Label>
