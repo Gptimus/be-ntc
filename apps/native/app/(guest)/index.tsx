@@ -10,7 +10,7 @@ import {
   FlatList,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  Image,
+  ImageBackground,
 } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -87,17 +87,17 @@ export default function GetStartedScreen() {
     index: number;
   }) => (
     <View
-      style={{ width, height: height * 0.4 }}
-      className="px-8 justify-end pb-4"
+      style={{ width, height: height * 0.6 }}
+      className="px-8 justify-end pb-12"
     >
       <Animated.View
         entering={FadeInDown.delay(index * 50).duration(600)}
         className="items-start"
       >
-        <Text className="text-5xl font-heading-bold text-foreground leading-[1.1] mb-4">
+        <Text className="text-5xl font-heading-bold text-white leading-[1.1] mb-4">
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
-        <Text className="text-base text-muted font-sans leading-relaxed text-left max-w-[95%]">
+        <Text className="text-base text-white/70 font-sans leading-relaxed text-left max-w-[95%]">
           {t(`common.getStarted.features.${item.key}.description`)}
         </Text>
       </Animated.View>
@@ -105,23 +105,20 @@ export default function GetStartedScreen() {
   );
 
   return (
-    <View className="flex-1 bg-background">
-      {/* Hero Asset Area - Centered and non-animated */}
-      <View
-        style={{ height: height * 0.3 }}
-        className="items-center justify-center"
+    <View className="flex-1 bg-black">
+      {/* Dynamic Background Image */}
+      <ImageBackground
+        source={require("@/assets/video/bg-gif.gif")}
+        className="absolute inset-0"
+        resizeMode="cover"
       >
-        <Image
-          source={require("@/assets/onboarding/hero.png")}
-          style={{ width: width * 0.8, height: height * 0.28 }}
-          resizeMode="contain"
-        />
-      </View>
+        <View className="absolute inset-0 bg-black/60" />
+      </ImageBackground>
 
       {/* Skip button Overlay */}
       <View className="absolute top-12 right-6 z-20">
         <Pressable onPress={handleSkip} className="active:opacity-70 p-2">
-          <Text className="text-muted text-xs font-sans-bold tracking-[2px]">
+          <Text className="text-white/50 text-xs font-sans-bold tracking-[2px]">
             {t("common.getStarted.buttons.skip").toUpperCase()}
           </Text>
         </Pressable>
@@ -149,14 +146,14 @@ export default function GetStartedScreen() {
             <View
               key={index}
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                activeIndex === index ? "w-8 bg-primary" : "w-2 bg-muted"
+                activeIndex === index ? "w-8 bg-primary" : "w-1.5 bg-white/20"
               }`}
             />
           ))}
         </View>
       </View>
 
-      {/* CTA Buttons - Strictly Semantic Classes */}
+      {/* CTA Buttons */}
       <View
         className="px-6 pb-12 gap-4"
         style={{ paddingBottom: insets.bottom + 20 }}
@@ -164,7 +161,7 @@ export default function GetStartedScreen() {
         <Animated.View entering={FadeInDown.delay(400)}>
           <Pressable
             onPress={handleNext}
-            className="h-16 rounded-2xl items-center bg-primary justify-center active:opacity-95"
+            className="h-16 rounded-2xl items-center bg-primary justify-center active:opacity-95 shadow-lg shadow-primary/30"
           >
             <Text className="text-primary-foreground text-lg font-heading-bold tracking-tight">
               {activeIndex === FEATURES.length - 1
@@ -177,9 +174,9 @@ export default function GetStartedScreen() {
         <Animated.View entering={FadeInDown.delay(500)}>
           <Pressable
             onPress={handleSignIn}
-            className="bg-default border border-border h-16 rounded-2xl items-center justify-center active:opacity-70"
+            className="bg-white/10 border border-white/10 h-16 rounded-2xl items-center justify-center active:opacity-70 backdrop-blur-md"
           >
-            <Text className="text-foreground text-lg font-heading-bold">
+            <Text className="text-white text-lg font-heading-bold">
               {t("common.getStarted.buttons.signIn")}
             </Text>
           </Pressable>
