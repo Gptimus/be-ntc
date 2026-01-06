@@ -10,6 +10,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   ImageBackground,
+  Image,
 } from "react-native";
 import { Button } from "heroui-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -93,12 +94,19 @@ export default function GetStartedScreen() {
     item: (typeof FEATURES)[0];
     index: number;
   }) => (
-    <View style={{ width }} className="px-4 justify-end">
+    <View style={{ width }} className="px-4 justify-end pb-4">
+      <View className="items-center mb-8">
+        <Image
+          source={require("@/assets/onboarding/hero.webp")}
+          style={{ width: width * 0.65, height: width * 0.65 }}
+          resizeMode="contain"
+        />
+      </View>
       <Animated.View
         entering={FadeInDown.delay(index * 50).duration(600)}
         className="items-start"
       >
-        <Text className="text-5xl font-heading-bold text-white leading-[1.1] mb-3">
+        <Text className="text-6xl font-heading-bold text-white leading-[1.1] mb-3">
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
         <Text className="text-base text-white/80 font-sans leading-relaxed text-left max-w-[95%]">
