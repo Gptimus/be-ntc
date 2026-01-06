@@ -122,6 +122,7 @@ export default function GetStartedScreen() {
           onPress={handleSkip}
           feedbackVariant="highlight"
           className="rounded-full"
+          hitSlop={10}
         >
           <View className="p-4">
             <Text className="text-white/50 text-xs font-sans-bold tracking-[2px]">
