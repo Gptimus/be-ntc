@@ -20,6 +20,8 @@ import {
   Exchange01Icon,
   Shield01Icon,
 } from "@hugeicons/core-free-icons";
+import { useAppTheme } from "@/contexts/app-theme-context";
+import { triggerHaptic } from "@/lib/haptics";
 
 const { width } = Dimensions.get("window");
 
@@ -48,8 +50,10 @@ export default function GetStartedScreen() {
   const insets = useSafeAreaInsets();
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+  const { isLight } = useAppTheme();
 
   const handleNext = () => {
+    triggerHaptic();
     if (activeIndex < FEATURES.length - 1) {
       flatListRef.current?.scrollToIndex({
         index: activeIndex + 1,
@@ -62,11 +66,13 @@ export default function GetStartedScreen() {
   };
 
   const handleSignIn = () => {
+    triggerHaptic();
     storageHelpers.setHasSeenOnboarding(true);
     router.replace("/(guest)/sign-in");
   };
 
   const handleSkip = () => {
+    triggerHaptic();
     storageHelpers.setHasSeenOnboarding(true);
     router.replace("/(guest)/sign-in");
   };
@@ -167,7 +173,18 @@ export default function GetStartedScreen() {
           style={{ paddingBottom: insets.bottom + 20 }}
         >
           <Animated.View entering={FadeInDown.delay(400)}>
-            <Button variant="primary" size="lg" onPress={handleNext}>
+            <Button
+              variant="primary"
+              size="lg"
+              onPress={handleNext}
+              pressableFeedbackVariant="ripple"
+              pressableFeedbackRippleProps={{
+                animation: {
+                  backgroundColor: { value: isLight ? "white" : "black" },
+                  opacity: { value: [0, 0.3, 0] },
+                },
+              }}
+            >
               <Button.Label className="text-white text-lg font-heading-bold tracking-tight">
                 {activeIndex === FEATURES.length - 1
                   ? t("common.getStarted.buttons.start")
@@ -182,6 +199,13 @@ export default function GetStartedScreen() {
               size="lg"
               onPress={handleSignIn}
               className="border-white/10 bg-white/10"
+              pressableFeedbackVariant="ripple"
+              pressableFeedbackRippleProps={{
+                animation: {
+                  backgroundColor: { value: isLight ? "white" : "black" },
+                  opacity: { value: [0, 0.3, 0] },
+                },
+              }}
             >
               <Button.Label className="text-white text-lg font-heading-bold">
                 {t("common.getStarted.buttons.signIn")}
