@@ -2,11 +2,13 @@ import { storageHelpers } from "@/lib/storage";
 import { useConvexAuth } from "convex/react";
 import { Redirect, Stack, useSegments } from "expo-router";
 import { useThemeColor } from "heroui-native";
+import { useLocalization } from "@/localization/hooks/use-localization";
 import { useEffect, useState } from "react";
 
 import { FullScreenLoading } from "@/components/full-screen-loading";
 
 function GuestLayout() {
+  const { t } = useLocalization();
   const { isLoading, isAuthenticated } = useConvexAuth();
   const segments = useSegments();
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
@@ -26,7 +28,12 @@ function GuestLayout() {
 
   // Show loading spinner while checking auth or onboarding
   if (isLoading || hasSeenOnboarding === null) {
-    return <FullScreenLoading />;
+    return (
+      <FullScreenLoading
+        title={t("common.loading.init.title")}
+        subtitle={t("common.loading.init.subtitle")}
+      />
+    );
   }
 
   // Redirect to home if already authenticated

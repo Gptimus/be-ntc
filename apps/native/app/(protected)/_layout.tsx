@@ -8,8 +8,10 @@ import { Pressable, Text } from "react-native";
 
 import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useLocalization } from "@/localization/hooks/use-localization";
 
 function ProtectedLayout() {
+  const { t } = useLocalization();
   const { isLoading, isAuthenticated } = useConvexAuth();
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
@@ -18,7 +20,12 @@ function ProtectedLayout() {
 
   // Show loading spinner while checking auth
   if (isLoading) {
-    return <FullScreenLoading />;
+    return (
+      <FullScreenLoading
+        title={t("common.loading.auth.title")}
+        subtitle={t("common.loading.auth.subtitle")}
+      />
+    );
   }
 
   // Redirect to sign-in if not authenticated

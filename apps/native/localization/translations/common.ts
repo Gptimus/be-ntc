@@ -47,6 +47,16 @@ export const common = {
         skip: "Skip",
       },
     },
+    loading: {
+      auth: {
+        title: "Securing your access",
+        subtitle: "Verifying your credentials...",
+      },
+      init: {
+        title: "Welcome to BE-NTC",
+        subtitle: "Preparing your experience...",
+      },
+    },
   },
   fr: {
     getStarted: {
@@ -94,6 +104,16 @@ export const common = {
         start: "Commencer",
         signIn: "Se connecter",
         skip: "Passer",
+      },
+    },
+    loading: {
+      auth: {
+        title: "Sécurisation de votre accès",
+        subtitle: "Vérification de vos identifiants...",
+      },
+      init: {
+        title: "Bienvenue sur BE-NTC",
+        subtitle: "Préparation de votre expérience...",
       },
     },
   },

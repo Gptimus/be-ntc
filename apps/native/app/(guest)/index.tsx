@@ -92,7 +92,7 @@ export default function GetStartedScreen() {
     item: (typeof FEATURES)[0];
     index: number;
   }) => (
-    <View style={{ width }} className="px-8 justify-end">
+    <View style={{ width }} className="px-4 justify-end">
       <Animated.View
         entering={FadeInDown.delay(index * 50).duration(600)}
         className="items-start"
@@ -122,7 +122,7 @@ export default function GetStartedScreen() {
       {/* Skip button Area */}
       <View
         style={{ paddingTop: insets.top }}
-        className="flex-row justify-end px-6 z-20"
+        className="flex-row justify-end px-4 z-20"
       >
         <Button
           variant="ghost"
@@ -156,7 +156,7 @@ export default function GetStartedScreen() {
         </View>
 
         {/* Indicators */}
-        <View className="flex-row gap-2 px-8 mb-10">
+        <View className="flex-row gap-2 px-4 mb-10">
           {FEATURES.map((_, index) => (
             <View
               key={index}
@@ -169,7 +169,7 @@ export default function GetStartedScreen() {
 
         {/* Buttons */}
         <View
-          className="px-6 gap-4"
+          className="px-4 gap-4"
           style={{ paddingBottom: insets.bottom + 20 }}
         >
           <Animated.View entering={FadeInDown.delay(400)}>
