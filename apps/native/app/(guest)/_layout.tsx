@@ -14,6 +14,14 @@ function GuestLayout() {
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
     null
   );
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && hasSeenOnboarding !== null) {
+      setHasLoadedOnce(true);
+    }
+  }, [isLoading, hasSeenOnboarding]);
+
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
 
@@ -26,8 +34,8 @@ function GuestLayout() {
     checkOnboarding();
   }, []);
 
-  // Show loading spinner while checking auth or onboarding
-  if (isLoading || hasSeenOnboarding === null) {
+  // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
+  if ((isLoading || hasSeenOnboarding === null) && !hasLoadedOnce) {
     return (
       <FullScreenLoading
         title={t("common.loading.init.title")}

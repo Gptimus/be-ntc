@@ -13,13 +13,21 @@ import { useLocalization } from "@/localization/hooks/use-localization";
 function ProtectedLayout() {
   const { t } = useLocalization();
   const { isLoading, isAuthenticated } = useConvexAuth();
+  const [hasLoadedOnce, setHasLoadedOnce] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      setHasLoadedOnce(true);
+    }
+  }, [isLoading]);
+
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
 
   const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
 
-  // Show loading spinner while checking auth
-  if (isLoading) {
+  // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
+  if (isLoading && !hasLoadedOnce) {
     return (
       <FullScreenLoading
         title={t("common.loading.auth.title")}
