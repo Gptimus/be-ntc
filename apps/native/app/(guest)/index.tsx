@@ -1,6 +1,7 @@
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { storageHelpers } from "@/lib/storage";
 import { useRouter } from "expo-router";
+import { useThemeColor } from "heroui-native";
 import { useRef, useState, useEffect } from "react";
 import {
   View,
@@ -10,6 +11,7 @@ import {
   FlatList,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Image,
 } from "react-native";
 import Animated, {
   FadeInDown,
@@ -29,7 +31,6 @@ import {
   GiftIcon,
   ScratchCardIcon,
 } from "@hugeicons/core-free-icons";
-import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 
 const { width, height } = Dimensions.get("window");
 
@@ -37,7 +38,6 @@ const FEATURES = [
   {
     icon: CreditCardIcon,
     key: "payments" as const,
-    accentWord: "partner", // Just for design reference
   },
   {
     icon: GridTableIcon,
@@ -72,21 +72,23 @@ export default function GetStartedScreen() {
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
-  // Decorative glow animation
-  const glowOpacity = useSharedValue(0.3);
+  const primaryColor = useThemeColor("primary");
+
+  // Floating animation for the hero image
+  const heroY = useSharedValue(0);
   useEffect(() => {
-    glowOpacity.value = withRepeat(
+    heroY.value = withRepeat(
       withSequence(
-        withTiming(0.6, { duration: 3000 }),
-        withTiming(0.3, { duration: 3000 })
+        withTiming(-15, { duration: 2500 }),
+        withTiming(0, { duration: 2500 })
       ),
       -1,
       true
     );
   }, []);
 
-  const glowStyle = useAnimatedStyle(() => ({
-    opacity: glowOpacity.value,
+  const heroStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: heroY.value }],
   }));
 
   const handleGetStarted = () => {
@@ -120,17 +122,20 @@ export default function GetStartedScreen() {
     index: number;
   }) => (
     <View
-      style={{ width, height: height * 0.55 }}
-      className="px-8 justify-end pb-12"
+      style={{ width, height: height * 0.45 }}
+      className="px-8 justify-end pb-8"
     >
       <Animated.View
         entering={FadeInDown.delay(index * 100).duration(800)}
         className="items-start"
       >
-        <Text className="text-6xl font-heading-bold text-white leading-[1.1] mb-6">
+        <Text
+          className="text-5xl font-heading-bold text-white leading-[1.1] mb-5"
+          style={{ color: "#FFFFFF" }}
+        >
           {t(`common.getStarted.features.${item.key}.title`)}
         </Text>
-        <Text className="text-lg text-neutral-400 font-sans leading-relaxed text-left max-w-[90%]">
+        <Text className="text-lg text-neutral-400 font-sans leading-relaxed text-left max-w-[95%]">
           {t(`common.getStarted.features.${item.key}.description`)}
         </Text>
       </Animated.View>
@@ -139,61 +144,59 @@ export default function GetStartedScreen() {
 
   return (
     <View className="flex-1 bg-black">
-      {/* Top Background Glow */}
-      <Animated.View
-        style={[glowStyle]}
-        className="absolute top-[-100] self-center w-[width * 1.5] h-[width] rounded-full bg-yellow-500/20"
-        style={{
-          width: width * 1.5,
-          height: width,
-          borderRadius: width,
-          backgroundColor: "rgba(234, 179, 8, 0.15)",
-          transform: [{ scaleX: 1.5 }],
-          top: -width * 0.6,
-          left: -width * 0.25,
-        }}
-      />
-
-      {/* Decorative Avatars Mock (Mimicking the image) */}
+      {/* Background Hero Asset */}
       <View
-        style={{ paddingTop: insets.top + 40 }}
-        className="flex-row justify-center items-center h-48 overflow-hidden"
+        style={{ height: height * 0.45 }}
+        className="absolute top-0 left-0 right-0 overflow-hidden"
       >
-        <View className="flex-row items-center gap-[-20]">
-          <View className="w-24 h-24 rounded-3xl bg-neutral-800 rotate-[-10deg] border border-neutral-700 items-center justify-center">
-            <StyledHugeIcon
-              icon={FEATURES[0].icon}
-              size={40}
-              className="text-white/40"
-            />
-          </View>
-          <View className="w-28 h-28 rounded-[40px] bg-neutral-900 z-10 border-2 border-black items-center justify-center">
-            <StyledHugeIcon
-              icon={FEATURES[4].icon}
-              size={48}
-              className="text-yellow-500"
-            />
-          </View>
-          <View className="w-24 h-24 rounded-3xl bg-neutral-800 rotate-[10deg] border border-neutral-700 items-center justify-center">
-            <StyledHugeIcon
-              icon={FEATURES[1].icon}
-              size={40}
-              className="text-white/40"
-            />
-          </View>
-        </View>
+        <Animated.View style={[heroStyle, { flex: 1 }]}>
+          <Image
+            source={require("@/assets/onboarding/hero.png")}
+            style={{ width, height: height * 0.5, opacity: 0.8 }}
+            resizeMode="cover"
+          />
+        </Animated.View>
+        <View
+          className="absolute inset-x-0 bottom-0 h-32"
+          style={{
+            backgroundColor: "transparent",
+            // Simple gradient-like fade to black
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: -40 },
+            shadowOpacity: 1,
+            shadowRadius: 50,
+            elevation: 20,
+          }}
+        />
+        {/* Actual Bottom Fade using a View */}
+        <View
+          className="absolute inset-x-0 bottom-0 h-40"
+          style={{
+            backgroundColor: "rgba(0,0,0,0.8)",
+            // We'll use a more robust way if needed, but for now this mimics the shadow/fade
+          }}
+        />
       </View>
+
+      {/* Real Bottom Fade Overlay */}
+      <View
+        className="absolute top-0 left-0 right-0 h-full bg-black/20"
+        pointerEvents="none"
+      />
 
       {/* Skip button Overlay */}
       <View className="absolute top-12 right-6 z-20">
         <Pressable onPress={handleSkip} className="active:opacity-70 p-2">
-          <Text className="text-neutral-500 text-sm font-sans-medium tracking-wider">
+          <Text className="text-white/50 text-xs font-sans-bold tracking-[2px]">
             {t("common.getStarted.buttons.skip").toUpperCase()}
           </Text>
         </Pressable>
       </View>
 
       <View className="flex-1">
+        {/* Spacer for Hero Area */}
+        <View style={{ height: height * 0.35 }} />
+
         {/* Feature Swiper */}
         <FlatList
           ref={flatListRef}
@@ -210,21 +213,23 @@ export default function GetStartedScreen() {
         />
 
         {/* Dots Indicator */}
-        <View className="flex-row gap-2 px-8 mb-6">
+        <View className="flex-row gap-2 px-8 mb-8">
           {FEATURES.map((_, index) => (
             <View
               key={index}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                activeIndex === index
-                  ? "w-8 bg-yellow-500"
-                  : "w-1.5 bg-neutral-800"
+              className={`h-1 rounded-full transition-all duration-300 ${
+                activeIndex === index ? "w-10 bg-primary" : "w-2 bg-neutral-800"
               }`}
+              style={{
+                backgroundColor:
+                  activeIndex === index ? primaryColor : "#262626",
+              }}
             />
           ))}
         </View>
       </View>
 
-      {/* CTA Buttons - Matching the image style */}
+      {/* CTA Buttons - Matching Global Theme */}
       <View
         className="px-6 pb-12 gap-4"
         style={{ paddingBottom: insets.bottom + 20 }}
@@ -232,15 +237,9 @@ export default function GetStartedScreen() {
         <Animated.View entering={FadeInDown.delay(600)}>
           <Pressable
             onPress={handleGetStarted}
-            className="bg-white h-16 rounded-2xl items-center justify-center active:opacity-95"
-            style={{
-              shadowColor: "#fff",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-            }}
+            className="h-16 rounded-2xl items-center bg-primary justify-center active:opacity-95"
           >
-            <Text className="text-black text-lg font-heading-bold">
+            <Text className="text-white text-lg font-heading-bold tracking-tight">
               {t("common.getStarted.buttons.getStarted")}
             </Text>
           </Pressable>
@@ -249,7 +248,7 @@ export default function GetStartedScreen() {
         <Animated.View entering={FadeInDown.delay(700)}>
           <Pressable
             onPress={handleSignIn}
-            className="bg-neutral-900/50 border border-neutral-800 h-16 rounded-2xl items-center justify-center active:opacity-70"
+            className="bg-neutral-900 border border-neutral-800 h-16 rounded-2xl items-center justify-center active:opacity-70"
           >
             <Text className="text-white text-lg font-heading-bold">
               {t("common.getStarted.buttons.signIn")}
