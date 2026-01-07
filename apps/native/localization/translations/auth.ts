@@ -75,6 +75,12 @@ export const auth = {
       getStartedButton: "Get Started",
       skipButton: "Skip for now",
     },
+    signIn: {
+      lastUsed: "Last used",
+    },
+    errors: {
+      generic: "Something went wrong",
+    },
   },
   fr: {
     signUp: {
@@ -151,6 +157,12 @@ export const auth = {
       phonePlaceholder: "Numéro de téléphone (optionnel)",
       getStartedButton: "Commencer",
       skipButton: "Passer pour l'instant",
+    },
+    signIn: {
+      lastUsed: "Dernière connexion",
+    },
+    errors: {
+      generic: "Quelque chose s'est mal passé",
     },
   },
 };
