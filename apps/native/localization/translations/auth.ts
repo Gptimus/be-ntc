@@ -27,7 +27,7 @@ export const auth = {
       toast: {
         success: {
           title: "OTP code sent!",
-          description: "Check your inbox at {email}",
+          description: "Check your inbox at %{email}",
         },
         error: {
           title: "Failed to send code",
@@ -41,7 +41,7 @@ export const auth = {
     },
     verifyEmail: {
       title: "Verify your email",
-      description: "We've sent a 6-digit code to",
+      description: "We've sent a 6-digit code to %{email}",
       didntReceive: "Didn't receive the code?",
       resendButton: "Resend code",
       resendingButton: "Sending...",
@@ -104,7 +104,7 @@ export const auth = {
       toast: {
         success: {
           title: "Code OTP envoyé !",
-          description: "Vérifiez votre boîte de réception à {email}",
+          description: "Vérifiez votre boîte de réception à %{email}",
         },
         error: {
           title: "Échec de l'envoi du code",
@@ -118,7 +118,7 @@ export const auth = {
     },
     verifyEmail: {
       title: "Vérifiez votre email",
-      description: "Nous avons envoyé un code à 6 chiffres à",
+      description: "Nous avons envoyé un code à 6 chiffres à %{email}",
       didntReceive: "Vous n'avez pas reçu le code ?",
       resendButton: "Renvoyer le code",
       resendingButton: "Envoi en cours...",

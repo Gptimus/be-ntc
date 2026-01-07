@@ -69,9 +69,6 @@ export default function SignInScreen() {
         });
 
       if (authError) {
-        console.log({
-          authError,
-        });
         triggerHapticError();
         toast.show({
           variant: "danger",

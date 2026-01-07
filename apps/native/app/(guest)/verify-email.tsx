@@ -182,7 +182,7 @@ export default function VerifyEmailScreen() {
                   {t("auth.verifyEmail.title")}
                 </BottomSheet.Title>
                 <BottomSheet.Description className="text-sm text-foreground font-sans leading-snug">
-                  {t("auth.verifyEmail.description")}
+                  {t("auth.verifyEmail.description", { email })}
                 </BottomSheet.Description>
               </View>
 
