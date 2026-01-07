@@ -28,6 +28,8 @@ export default function SignInScreen() {
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(true);
 
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
   useFocusEffect(
     useCallback(() => {
       setIsSheetOpen(true);
@@ -127,7 +129,9 @@ export default function SignInScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={showEmailInput ? ["90%"] : ["55%"]}
+            snapPoints={
+              isAuthenticating ? ["15%"] : showEmailInput ? ["90%"] : ["55%"]
+            }
             enablePanDownToClose={false}
             backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
@@ -141,7 +145,47 @@ export default function SignInScreen() {
 
             {/* Content */}
             {!showEmailInput ? (
-              <SocialAuthButtons onEmailPress={handleEmailPress} />
+              <SocialAuthButtons
+                onEmailPress={handleEmailPress}
+                onSocialPress={async (provider) => {
+                  setIsAuthenticating(true);
+                  try {
+                    await authClient.signIn.social(
+                      {
+                        provider,
+                        callbackURL: "/",
+                      },
+                      {
+                        onError: (ctx) => {
+                          triggerHapticError();
+                          toast.show({
+                            variant: "danger",
+                            label:
+                              ctx.error.message ||
+                              t("auth.emailInput.toast.genericError.title"), // Using generic error title as fallback
+                            description: t(
+                              "auth.emailInput.toast.error.description"
+                            ),
+                            duration: 4000,
+                          });
+                        },
+                      }
+                    );
+                  } catch (error) {
+                    triggerHapticError();
+                    toast.show({
+                      variant: "danger",
+                      label: t("auth.emailInput.toast.genericError.title"),
+                      description: t(
+                        "auth.emailInput.toast.genericError.description"
+                      ),
+                      duration: 4000,
+                    });
+                  } finally {
+                    setIsAuthenticating(false);
+                  }
+                }}
+              />
             ) : (
               <KeyboardAwareScrollView
                 className="w-full flex-1"
