@@ -10,7 +10,7 @@ import { Mail01Icon } from "@hugeicons/core-free-icons";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  emailInputSchema,
+  createEmailInputSchema,
   type EmailInputFormData,
 } from "@/schemas/email-input.schema";
 
@@ -26,7 +26,7 @@ export default function EmailInputScreen() {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<EmailInputFormData>({
-    resolver: zodResolver(emailInputSchema),
+    resolver: zodResolver(createEmailInputSchema(t)),
     mode: "onChange",
     defaultValues: {
       email: "",
@@ -40,16 +40,17 @@ export default function EmailInputScreen() {
     try {
       // Using Better Auth magic link
       const { data: authData, error: authError } =
-        await authClient.signIn.magicLink({
+        await authClient.emailOtp.sendVerificationOtp({
           email: data.email,
-          callbackURL: "/(protected)",
+          type: "sign-in",
         });
 
       if (authError) {
         toast.show({
           variant: "danger",
-          label: "Failed to send magic link",
-          description: authError.message || "Please try again",
+          label: t("auth.emailInput.toast.error.title"),
+          description:
+            authError.message || t("auth.emailInput.toast.error.description"),
           duration: 4000,
         });
         setIsLoading(false);
@@ -59,8 +60,10 @@ export default function EmailInputScreen() {
       // Show success toast
       toast.show({
         variant: "success",
-        label: "Magic link sent!",
-        description: `Check your inbox at ${data.email}`,
+        label: t("auth.emailInput.toast.success.title"),
+        description: t("auth.emailInput.toast.success.description", {
+          email: data.email,
+        }),
         duration: 3000,
       });
 
@@ -72,8 +75,8 @@ export default function EmailInputScreen() {
     } catch (err) {
       toast.show({
         variant: "danger",
-        label: "Something went wrong",
-        description: "Please try again later",
+        label: t("auth.emailInput.toast.genericError.title"),
+        description: t("auth.emailInput.toast.genericError.description"),
         duration: 4000,
       });
       setIsLoading(false);
@@ -160,7 +163,7 @@ export default function EmailInputScreen() {
               variant="primary"
               size="lg"
               onPress={handleSubmit(onSubmit)}
-              disabled={!isValid || isLoading}
+              isDisabled={!isValid || isLoading}
               className="rounded-2xl mb-4"
               pressableFeedbackVariant="ripple"
             >

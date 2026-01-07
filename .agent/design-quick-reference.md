@@ -113,6 +113,10 @@ variant="destructive"   // Delete/danger
 // Sizes
 size="xs" size="sm" size="md" size="lg" size="huge" size="icon"
 
+// ⚠️ Native Gotcha
+// Use 'isDisabled' instead of 'disabled' for native HeroUI Buttons
+<Button variant="primary" isDisabled={isLoading}>Native Button</Button>
+
 // Examples
 <Button size="huge" variant="heavy">Primary CTA</Button>
 <Button size="lg" variant="outline">Secondary</Button>
@@ -142,26 +146,32 @@ modules/
 
 ---
 
-## 🔄 Zod Validation Pattern
+## 🔄 Zod Validation Pattern (Localized)
+
+Always use a creator function to allow for localized error messages.
 
 ```tsx
 // schemas/login-schema.ts
 import { z } from "zod";
 
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Min 8 characters"),
-});
+export const createLoginSchema = (t: (key: string) => string) => {
+  return z.object({
+    email: z.string().email(t("auth.validation.emailInvalid")),
+    password: z.string().min(8, t("auth.validation.passwordTooShort")),
+  });
+};
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+export type LoginFormData = z.infer<ReturnType<typeof createLoginSchema>>;
 
 // views/login-view.tsx
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginFormData } from "../schemas/login-schema";
+import { useLocalization } from "@/localization/hooks/use-localization";
+import { createLoginSchema, type LoginFormData } from "../schemas/login-schema";
 
+const { t } = useLocalization();
 const form = useForm<LoginFormData>({
-  resolver: zodResolver(loginSchema),
+  resolver: zodResolver(createLoginSchema(t)),
 });
 ```
 

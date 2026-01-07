@@ -50,9 +50,9 @@ export default function SignInScreen() {
 
     try {
       const { data: authData, error: authError } =
-        await authClient.signIn.magicLink({
+        await authClient.emailOtp.sendVerificationOtp({
           email: data.email,
-          callbackURL: "/(protected)",
+          type: "sign-in",
         });
 
       if (authError) {

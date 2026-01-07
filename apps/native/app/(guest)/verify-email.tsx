@@ -1,18 +1,27 @@
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { BottomSheet, Button } from "heroui-native";
+import {
+  BottomSheet,
+  Button,
+  TextField,
+  FormField,
+  useToast,
+} from "heroui-native";
 import { useState, useEffect } from "react";
 import { ImageBackground, Text, View, Image } from "react-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { authClient } from "@/lib/auth-client";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
-import { Mail01Icon, CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
+import { Mail01Icon, ZapIcon } from "@hugeicons/core-free-icons";
 
 export default function VerifyEmailScreen() {
   const router = useRouter();
   const { t } = useLocalization();
   const insets = useSafeAreaInsets();
   const { email } = useLocalSearchParams<{ email: string }>();
+  const { toast } = useToast();
+  const [otp, setOtp] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
@@ -38,9 +47,9 @@ export default function VerifyEmailScreen() {
 
     setIsResending(true);
     try {
-      await authClient.signIn.magicLink({
+      await authClient.emailOtp.sendVerificationOtp({
         email: email,
-        callbackURL: "/(protected)",
+        type: "sign-in",
       });
 
       // Reset timer
@@ -60,7 +69,44 @@ export default function VerifyEmailScreen() {
         });
       }, 1000);
     } catch (error) {
+      toast.show({
+        variant: "danger",
+        label: t("auth.verifyEmail.toast.resendError.title"),
+        description: t("auth.verifyEmail.toast.resendError.description"),
+      });
       setIsResending(false);
+    }
+  };
+
+  const handleVerify = async () => {
+    if (otp.length < 6 || isVerifying) return;
+
+    setIsVerifying(true);
+    try {
+      const { data, error } = await authClient.signIn.emailOtp({
+        email,
+        otp,
+      });
+
+      if (error) {
+        toast.show({
+          variant: "danger",
+          label: t("auth.verifyEmail.toast.error.title"),
+          description:
+            error.message || t("auth.verifyEmail.toast.error.description"),
+        });
+        setIsVerifying(false);
+        return;
+      }
+
+      router.replace("/(protected)");
+    } catch (error) {
+      toast.show({
+        variant: "danger",
+        label: t("auth.verifyEmail.toast.genericError.title"),
+        description: t("auth.verifyEmail.toast.genericError.description"),
+      });
+      setIsVerifying(false);
     }
   };
 
@@ -88,7 +134,7 @@ export default function VerifyEmailScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={["55%"]}
+            snapPoints={["70%"]}
             enablePanDownToClose={false}
             backgroundClassName="bg-background rounded-[55px] border border-border"
             handleIndicatorClassName="bg-background w-12"
@@ -126,26 +172,58 @@ export default function VerifyEmailScreen() {
               </Text>
             </View>
 
-            {/* Instructions */}
-            <View className="mb-6 p-4 bg-success/10 rounded-2xl flex-row items-start gap-3">
-              <StyledHugeIcon
-                icon={CheckmarkCircle02Icon}
-                size={20}
-                className="text-success mt-0.5"
-              />
-              <Text className="text-sm text-foreground font-sans leading-relaxed flex-1">
-                {t("auth.verifyEmail.checkSpam")}
-              </Text>
+            {/* OTP Input */}
+            <View className="mb-6">
+              <FormField>
+                <TextField className="h-16 rounded-2xl">
+                  <TextField.Input
+                    placeholder={t("auth.verifyEmail.otpPlaceholder")}
+                    value={otp}
+                    onChangeText={setOtp}
+                    keyboardType="number-pad"
+                    maxLength={6}
+                    autoFocus
+                    className="text-center text-2xl font-heading-bold tracking-[10px]"
+                  />
+                </TextField>
+              </FormField>
             </View>
 
             {/* Action Buttons */}
             <View className="gap-3">
+              {/* Verify Button */}
+              <Button
+                variant="primary"
+                size="lg"
+                onPress={handleVerify}
+                isDisabled={otp.length < 6 || isVerifying}
+                className="rounded-2xl h-14"
+                pressableFeedbackVariant="ripple"
+              >
+                {isVerifying ? (
+                  <Button.Label className="font-heading-bold">
+                    {t("auth.verifyEmail.verifying")}
+                  </Button.Label>
+                ) : (
+                  <>
+                    <Button.Label className="font-heading-bold">
+                      {t("auth.verifyEmail.confirmButton")}
+                    </Button.Label>
+                    <StyledHugeIcon
+                      icon={ZapIcon}
+                      size={20}
+                      className="text-background"
+                      variant="solid"
+                    />
+                  </>
+                )}
+              </Button>
               {/* Resend Button */}
               <Button
                 variant="secondary"
                 size="lg"
                 onPress={handleResend}
-                disabled={!canResend || isResending}
+                isDisabled={!canResend || isResending}
                 className="rounded-2xl"
                 pressableFeedbackVariant="ripple"
               >

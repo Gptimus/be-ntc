@@ -20,7 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  emailInputSchema,
+  createEmailInputSchema,
   type EmailInputFormData,
 } from "@/schemas/email-input.schema";
 import { authClient } from "@/lib/auth-client";
@@ -44,7 +44,7 @@ export default function AuthOptionsScreen() {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<EmailInputFormData>({
-    resolver: zodResolver(emailInputSchema),
+    resolver: zodResolver(createEmailInputSchema(t)),
     mode: "onChange",
     defaultValues: {
       email: "",
@@ -66,16 +66,17 @@ export default function AuthOptionsScreen() {
 
     try {
       const { data: authData, error: authError } =
-        await authClient.signIn.magicLink({
+        await authClient.emailOtp.sendVerificationOtp({
           email: data.email,
-          callbackURL: "/(protected)",
+          type: "sign-in",
         });
 
       if (authError) {
         toast.show({
           variant: "danger",
-          label: "Failed to send magic link",
-          description: authError.message || "Please try again",
+          label: t("auth.emailInput.toast.error.title"),
+          description:
+            authError.message || t("auth.emailInput.toast.error.description"),
           duration: 4000,
         });
         setIsLoading(false);
@@ -84,8 +85,10 @@ export default function AuthOptionsScreen() {
 
       toast.show({
         variant: "success",
-        label: "Magic link sent!",
-        description: `Check your inbox at ${data.email}`,
+        label: t("auth.emailInput.toast.success.title"),
+        description: t("auth.emailInput.toast.success.description", {
+          email: data.email,
+        }),
         duration: 3000,
       });
 
@@ -96,8 +99,8 @@ export default function AuthOptionsScreen() {
     } catch (err) {
       toast.show({
         variant: "danger",
-        label: "Something went wrong",
-        description: "Please try again later",
+        label: t("auth.emailInput.toast.genericError.title"),
+        description: t("auth.emailInput.toast.genericError.description"),
         duration: 4000,
       });
       setIsLoading(false);
@@ -124,7 +127,7 @@ export default function AuthOptionsScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={showEmailInput ? ["65%"] : ["55%"]}
+            snapPoints={showEmailInput ? ["50%"] : ["55%"]}
             enablePanDownToClose={false}
             backgroundClassName="bg-background rounded-[55px] border border-border"
             handleIndicatorClassName="bg-background w-12"
@@ -284,7 +287,7 @@ export default function AuthOptionsScreen() {
                   variant="primary"
                   size="lg"
                   onPress={handleSubmit(onSubmit)}
-                  disabled={!isValid || isLoading}
+                  isDisabled={!isValid || isLoading}
                   className="rounded-2xl"
                   pressableFeedbackVariant="ripple"
                 >

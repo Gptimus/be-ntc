@@ -339,8 +339,8 @@ When adding new components or patterns:
 
 ## 📝 Version
 
-- **Version**: 1.0.0
-- **Last Updated**: 2026-01-06
+- **Version**: 1.1.0
+- **Last Updated**: 2026-01-07
 - **Based On**: `apps/landing` design system
 
 ---

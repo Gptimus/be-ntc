@@ -15,7 +15,7 @@ export const auth = {
     emailInput: {
       title: "Enter your email",
       description:
-        "We'll send you a magic link to sign in securely without a password.",
+        "We'll send you a verification code to sign in securely without a password.",
       emailPlaceholder: "your@email.com",
       continueButton: "Continue",
       alreadyHaveAccount: "Already have an account? ",
@@ -26,11 +26,11 @@ export const auth = {
       },
       toast: {
         success: {
-          title: "Magic link sent!",
+          title: "OTP code sent!",
           description: "Check your inbox at {email}",
         },
         error: {
-          title: "Failed to send magic link",
+          title: "Failed to send code",
           description: "Please try again",
         },
         genericError: {
@@ -40,13 +40,30 @@ export const auth = {
       },
     },
     verifyEmail: {
-      title: "Check your email",
-      description: "We sent a magic link to",
-      didntReceive: "Didn't receive the email?",
-      resendButton: "Resend link",
+      title: "Verify your email",
+      description: "We've sent a 6-digit code to",
+      didntReceive: "Didn't receive the code?",
+      resendButton: "Resend code",
       resendingButton: "Sending...",
       changeEmail: "Change email",
       checkSpam: "Check your spam folder if you don't see it.",
+      otpPlaceholder: "Enter 6-digit code",
+      confirmButton: "Confirm Verification",
+      verifying: "Verifying...",
+      toast: {
+        error: {
+          title: "Verification failed",
+          description: "Invalid code",
+        },
+        genericError: {
+          title: "Error",
+          description: "Something went wrong",
+        },
+        resendError: {
+          title: "Error",
+          description: "Failed to resend code",
+        },
+      },
     },
     profileSetup: {
       title: "Complete your profile",
@@ -73,7 +90,7 @@ export const auth = {
     emailInput: {
       title: "Entrez votre email",
       description:
-        "Nous vous enverrons un lien magique pour vous connecter en toute sécurité sans mot de passe.",
+        "Nous vous enverrons un code de vérification pour vous connecter en toute sécurité sans mot de passe.",
       emailPlaceholder: "votre@email.com",
       continueButton: "Continuer",
       alreadyHaveAccount: "Vous avez déjà un compte ? ",
@@ -84,11 +101,11 @@ export const auth = {
       },
       toast: {
         success: {
-          title: "Lien magique envoyé !",
+          title: "Code OTP envoyé !",
           description: "Vérifiez votre boîte de réception à {email}",
         },
         error: {
-          title: "Échec de l'envoi du lien magique",
+          title: "Échec de l'envoi du code",
           description: "Veuillez réessayer",
         },
         genericError: {
@@ -99,12 +116,29 @@ export const auth = {
     },
     verifyEmail: {
       title: "Vérifiez votre email",
-      description: "Nous avons envoyé un lien magique à",
-      didntReceive: "Vous n'avez pas reçu l'email ?",
-      resendButton: "Renvoyer le lien",
+      description: "Nous avons envoyé un code à 6 chiffres à",
+      didntReceive: "Vous n'avez pas reçu le code ?",
+      resendButton: "Renvoyer le code",
       resendingButton: "Envoi en cours...",
       changeEmail: "Changer d'email",
-      checkSpam: "Vérifiez votre dossier spam si vous ne le voyez pas.",
+      checkSpam: "Vérifiez votre dossier spam si ne le voyez pas.",
+      otpPlaceholder: "Entrez le code à 6 chiffres",
+      confirmButton: "Confirmer la vérification",
+      verifying: "Vérification...",
+      toast: {
+        error: {
+          title: "Échec de la vérification",
+          description: "Code invalide",
+        },
+        genericError: {
+          title: "Erreur",
+          description: "Une erreur s'est produite",
+        },
+        resendError: {
+          title: "Erreur",
+          description: "Échec de l'envoi du code",
+        },
+      },
     },
     profileSetup: {
       title: "Complétez votre profil",

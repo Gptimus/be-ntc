@@ -590,31 +590,38 @@ export function UserAvatar() {}
 export default function TransactionListView() {}
 ```
 
-### Zod Schema Pattern
+### Localized Zod Schema Pattern
 
-All form validations and data validations should use Zod schemas:
+All form validations should use localized schemas by employing a creator function that accepts a translation function (`t`).
 
 ```tsx
 // modules/auth/schemas/login-schema.ts
 import { z } from "zod";
 
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
+export const createLoginSchema = (t: (key: string) => string) => {
+  return z.object({
+    email: z
+      .string()
+      .min(1, t("auth.validation.emailRequired"))
+      .email(t("auth.validation.emailInvalid")),
+    password: z.string().min(8, t("auth.validation.passwordTooShort")),
+  });
+};
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+export type LoginFormData = z.infer<ReturnType<typeof createLoginSchema>>;
 ```
 
 ```tsx
 // modules/auth/views/login-view.tsx
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginFormData } from "../schemas/login-schema";
+import { useLocalization } from "@/localization/hooks/use-localization";
+import { createLoginSchema, type LoginFormData } from "../schemas/login-schema";
 
 export function LoginView() {
+  const { t } = useLocalization();
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(createLoginSchema(t)),
   });
 
   const onSubmit = (data: LoginFormData) => {
@@ -1555,3 +1562,74 @@ export function TransactionListView({ transactions }) {
 **Last Updated**: 2026-01-06  
 **Version**: 1.0.0  
 **Maintained by**: BE-NTC Development Team
+
+---
+
+## Backend & Auth Patterns
+
+### Convex + Better Auth Integration
+
+The project uses Better Auth integrated with Convex.
+
+#### 1. Auth Client (Native)
+Always include the `emailOtpClient` in the plugins array of the `authClient`.
+
+```tsx
+// apps/native/lib/auth-client.ts
+export const authClient = createAuthClient({
+  baseURL: process.env.EXPO_PUBLIC_CONVEX_SITE_URL,
+  plugins: [
+    expoClient({ ... }),
+    emailOtpClient(),
+    convexClient(),
+  ],
+});
+```
+
+#### 2. Email OTP Flow
+The preferred method for email authentication is **Email OTP**. Use `sendVerificationOtp` and `signIn.emailOtp`.
+
+```tsx
+// Sending OTP
+await authClient.emailOtp.sendVerificationOtp({
+  email: data.email,
+  type: "sign-in",
+});
+
+// Verifying OTP
+await authClient.signIn.emailOtp({
+  email,
+  otp,
+});
+```
+
+#### 3. Convex Triggers
+Triggers for Better Auth (e.g., `onCreate`) should be handled via Convex internal mutations to ensure consistency across the DataModel.
+
+```tsx
+// packages/backend/convex/auth.ts
+export const authComponent = createClient<DataModel, typeof authSchema>(
+  components.betterAuth,
+  {
+    triggers: {
+      user: {
+        onCreate: async (ctx, doc) => {
+          await ctx.runMutation(internal.triggers.onUserCreated, {
+            userId: doc._id as Id<"user">,
+            name: doc.name,
+            email: doc.email,
+          });
+        },
+      },
+    },
+  }
+);
+```
+
+#### 4. Email Hooks
+Use `authHooks` in `convex/utils/emailHooks.ts` to handle all transactional emails. Ensure you always check for the presence of `user.email` before sending.
+
+```tsx
+if (!data.user.email) return;
+await getEmailSender().sendVerifyEmail(data.user.email, { ... });
+```
