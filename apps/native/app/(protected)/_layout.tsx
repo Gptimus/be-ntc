@@ -1,17 +1,45 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { useConvexAuth } from "convex/react";
+import { Link, Redirect } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useThemeColor } from "heroui-native";
 import React, { useCallback } from "react";
 import { Pressable, Text } from "react-native";
 
+import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useLocalization } from "@/localization/hooks/use-localization";
 
-function DrawerLayout() {
+function ProtectedLayout() {
+  const { t } = useLocalization();
+  const { isLoading, isAuthenticated } = useConvexAuth();
+  const [hasLoadedOnce, setHasLoadedOnce] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      setHasLoadedOnce(true);
+    }
+  }, [isLoading]);
+
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
 
   const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
+
+  // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
+  if (isLoading && !hasLoadedOnce) {
+    return (
+      <FullScreenLoading
+        title={t("common.loading.auth.title")}
+        subtitle={t("common.loading.auth.subtitle")}
+      />
+    );
+  }
+
+  // Redirect to sign-in if not authenticated
+  if (!isAuthenticated) {
+    return <Redirect href="/(guest)" />;
+  }
 
   return (
     <Drawer
@@ -31,7 +59,9 @@ function DrawerLayout() {
         options={{
           headerTitle: "Home",
           drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Home</Text>
+            <Text style={{ color: focused ? color : themeColorForeground }}>
+              Home
+            </Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
             <Ionicons
@@ -47,7 +77,9 @@ function DrawerLayout() {
         options={{
           headerTitle: "Tabs",
           drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Tabs</Text>
+            <Text style={{ color: focused ? color : themeColorForeground }}>
+              Tabs
+            </Text>
           ),
           drawerIcon: ({ size, color, focused }) => (
             <MaterialIcons
@@ -59,25 +91,13 @@ function DrawerLayout() {
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable className="mr-4">
-                <Ionicons name="add-outline" size={24} color={themeColorForeground} />
+                <Ionicons
+                  name="add-outline"
+                  size={24}
+                  color={themeColorForeground}
+                />
               </Pressable>
             </Link>
-          ),
-        }}
-      />
-      <Drawer.Screen
-        name="todos"
-        options={{
-          headerTitle: "Todos",
-          drawerLabel: ({ color, focused }) => (
-            <Text style={{ color: focused ? color : themeColorForeground }}>Todos</Text>
-          ),
-          drawerIcon: ({ size, color, focused }) => (
-            <Ionicons
-              name="checkbox-outline"
-              size={size}
-              color={focused ? color : themeColorForeground}
-            />
           ),
         }}
       />
@@ -85,4 +105,4 @@ function DrawerLayout() {
   );
 }
 
-export default DrawerLayout;
+export default ProtectedLayout;

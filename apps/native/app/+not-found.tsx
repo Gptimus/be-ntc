@@ -3,6 +3,8 @@ import { Card } from "heroui-native";
 import { Text, View, Pressable } from "react-native";
 
 import { Container } from "@/components/container";
+import { HelpCircleIcon } from "@hugeicons/core-free-icons";
+import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 
 export default function NotFoundScreen() {
   return (
@@ -11,14 +13,22 @@ export default function NotFoundScreen() {
       <Container>
         <View className="flex-1 justify-center items-center p-6">
           <Card variant="secondary" className="items-center p-8 max-w-md">
-            <Text className="text-6xl mb-4">🤔</Text>
-            <Card.Title className="text-2xl text-center mb-2">Page Not Found</Card.Title>
+            <StyledHugeIcon
+              icon={HelpCircleIcon}
+              size={64}
+              className="text-muted-foreground mb-4"
+            />
+            <Card.Title className="text-2xl text-center mb-2">
+              Page Not Found
+            </Card.Title>
             <Card.Description className="text-center mb-6">
               Sorry, the page you're looking for doesn't exist.
             </Card.Description>
             <Link href="/" asChild>
               <Pressable className="bg-accent px-6 py-3 rounded-lg active:opacity-70">
-                <Text className="text-accent-foreground font-medium text-base">Go to Home</Text>
+                <Text className="text-accent-foreground font-medium text-base">
+                  Go to Home
+                </Text>
               </Pressable>
             </Link>
           </Card>

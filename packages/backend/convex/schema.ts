@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { authTables } from "./betterAuth/schema";
 
 // ==========================================
 // Reusable Validation Schemas & Enums
@@ -15,7 +16,7 @@ const qrFields = {
 };
 
 const userReference = {
-  userId: v.id("users"),
+  userId: v.string(),
 };
 
 // Status Enums
@@ -165,28 +166,15 @@ const transactionDetailsFields = {
 // Schema Definition
 // ==========================================
 const schema = defineSchema({
+  ...authTables,
   // ==========================================
   // Core User & Authentication
   // ==========================================
-  users: defineTable({
-    identifier: v.optional(v.string()),
-    name: v.optional(v.string()),
-    image: v.optional(v.string()),
-    email: v.optional(v.string()),
-    emailVerificationTime: v.optional(v.number()),
-    phone: v.optional(v.string()),
-    phoneCountryCode: v.optional(v.string()),
-    phoneCountryNumber: v.optional(v.string()),
-    formattedPhoneNumber: v.optional(v.string()),
-    phoneVerificationTime: v.optional(v.number()),
-    isAnonymous: v.optional(v.boolean()),
-
-    clerkId: v.optional(v.string()),
+  userProfiles: defineTable({
+    userId: v.string(),
 
     // Basic Profile Info
-    firstName: v.optional(v.string()),
-    lastName: v.optional(v.string()),
-    status: v.optional(v.union(...Object.values(UserStatus).map(v.literal))),
+    displayName: v.optional(v.string()),
     gender: v.optional(v.union(...Object.values(Gender).map(v.literal))),
     dateOfBirth: v.optional(v.string()),
     address: v.optional(v.string()),
@@ -195,7 +183,7 @@ const schema = defineSchema({
 
     // Profile Type
     profileType: v.optional(
-      v.union(...Object.values(ProfileType).map(v.literal)),
+      v.union(...Object.values(ProfileType).map(v.literal))
     ),
 
     // KYC Info
@@ -207,6 +195,40 @@ const schema = defineSchema({
     preferredLanguage: v.optional(v.string()),
     preferredCurrency: v.optional(v.string()),
 
+    settings: v.optional(
+      v.object({
+        language: v.string(),
+        timezone: v.string(),
+        privacy: v.object({
+          showEmail: v.boolean(),
+          showPhone: v.boolean(),
+          showProfileToPublic: v.boolean(),
+          visibility: v.object({
+            showOnlineStatus: v.boolean(),
+            showLastSeen: v.boolean(),
+            showLocation: v.boolean(),
+          }),
+        }),
+        notifications: v.object({
+          email: v.object({
+            newsletter: v.boolean(),
+            promotions: v.boolean(),
+            securityAlerts: v.boolean(),
+          }),
+          push: v.object({
+            messages: v.boolean(),
+            follows: v.boolean(),
+            events: v.boolean(),
+            systemAlerts: v.boolean(),
+          }),
+          sms: v.object({
+            transactional: v.boolean(),
+            promotions: v.boolean(),
+          }),
+        }),
+      })
+    ),
+
     // Admin Fields
     isRoot: v.optional(v.boolean()),
     isAdmin: v.optional(v.boolean()),
@@ -214,22 +236,12 @@ const schema = defineSchema({
 
     qrData: v.optional(v.string()),
 
-    lastLogin: v.optional(v.number()),
-    configuredAt: v.optional(v.number()),
     ...commonFields,
   })
-    .index("by_email_deleted", ["email", "deletedAt"])
-    .index("by_phone_deleted", ["phone", "deletedAt"])
-    .index("by_status_created", ["status", "createdAt"])
     .index("by_roleId", ["roleId"])
-    .index("by_identifier", ["identifier"])
+    .index("by_userId", ["userId"])
     .index("by_country_createdAt", ["country", "createdAt"])
-    .index("by_profileType_status", ["profileType", "status"])
-    .searchIndex("search_users", {
-      searchField: "name",
-      filterFields: ["status", "deletedAt", "profileType", "country"],
-    }),
-
+    .index("by_profileType", ["profileType"]),
   // ==========================================
   // Merchants
   // ==========================================
@@ -237,7 +249,7 @@ const schema = defineSchema({
     name: v.string(),
     email: v.optional(v.string()),
     mobileMoneyPhoneNumber: v.string(),
-    userId: v.id("users"),
+    userId: v.string(),
     ...commonFields,
   })
     .index("active_by_userId", ["userId", "deletedAt"])
@@ -277,7 +289,7 @@ const schema = defineSchema({
       v.literal("utility_bill"),
       v.literal("bank_statement"),
       v.literal("residence_permit"),
-      v.literal("other"),
+      v.literal("other")
     ),
     idFront: v.optional(v.string()),
     idBack: v.optional(v.string()),
@@ -285,10 +297,10 @@ const schema = defineSchema({
     status: v.union(...Object.values(KYCStatus).map(v.literal)),
     ...qrFields,
     verifiedAt: v.optional(v.number()),
-    verifiedBy: v.optional(v.id("users")),
+    verifiedBy: v.optional(v.string()),
     verifiedReason: v.optional(v.string()),
     rejectedAt: v.optional(v.number()),
-    rejectedBy: v.optional(v.id("users")),
+    rejectedBy: v.optional(v.string()),
     rejectedReason: v.optional(v.string()),
     ...commonFields,
   })
@@ -336,7 +348,7 @@ const schema = defineSchema({
       v.literal("insurance"),
       v.literal("microfinance"),
       v.literal("betting"),
-      v.literal("hotel"),
+      v.literal("hotel")
     ),
     name: v.string(),
     logo: v.optional(v.string()),
@@ -424,7 +436,7 @@ const schema = defineSchema({
     status: v.union(
       v.literal("completed"),
       v.literal("pending"),
-      v.literal("failed"),
+      v.literal("failed")
     ),
     from: v.optional(v.string()),
     to: v.optional(v.string()),
@@ -479,7 +491,7 @@ const schema = defineSchema({
     auditableId: v.string(),
     auditableType: v.string(),
     event: v.union(...Object.values(AuditEvent).map(v.literal)),
-    userId: v.id("users"),
+    userId: v.string(),
     oldValues: v.optional(v.union(v.string(), v.record(v.string(), v.any()))),
     newValues: v.union(v.string(), v.record(v.string(), v.any())),
     url: v.string(),
@@ -501,7 +513,7 @@ const schema = defineSchema({
   // Auth Logs
   // ==========================================
   authLogs: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     action: v.string(),
     email: v.optional(v.string()),
     timestamp: v.number(),
@@ -517,7 +529,7 @@ const schema = defineSchema({
   // User Devices
   // ==========================================
   userDevices: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     deviceId: v.string(),
     deviceName: v.string(),
     deviceType: v.union(...Object.values(DeviceType).map(v.literal)),
@@ -538,7 +550,7 @@ const schema = defineSchema({
   // Notifications System
   // ==========================================
   notificationSettings: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     pushEnabled: v.boolean(),
     emailEnabled: v.boolean(),
     smsEnabled: v.boolean(),
@@ -556,14 +568,14 @@ const schema = defineSchema({
         startTime: v.string(),
         endTime: v.string(),
         timeZone: v.string(),
-      }),
+      })
     ),
     createdAt: v.number(),
     updatedAt: v.optional(v.number()),
   }).index("by_userId", ["userId"]),
 
   notifications: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     title: v.string(),
     body: v.string(),
     imageUrl: v.optional(v.string()),
@@ -574,11 +586,11 @@ const schema = defineSchema({
         type: v.union(
           v.literal("deeplink"),
           v.literal("url"),
-          v.literal("transaction"),
+          v.literal("transaction")
         ),
         value: v.string(),
         transactionId: v.optional(v.id("transactions")),
-      }),
+      })
     ),
     isRead: v.boolean(),
     sentVia: v.array(
@@ -586,8 +598,8 @@ const schema = defineSchema({
         v.literal("push"),
         v.literal("email"),
         v.literal("sms"),
-        v.literal("in_app"),
-      ),
+        v.literal("in_app")
+      )
     ),
     metadata: v.optional(v.record(v.string(), v.any())),
     createdAt: v.number(),
@@ -602,7 +614,7 @@ const schema = defineSchema({
   // Savings & Goals
   // ==========================================
   savingsGoals: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     name: v.string(),
     targetAmount: v.number(),
     currentAmount: v.number(),
@@ -614,7 +626,7 @@ const schema = defineSchema({
       v.literal("travel"),
       v.literal("emergency"),
       v.literal("retirement"),
-      v.literal("other"),
+      v.literal("other")
     ),
     iconName: v.optional(v.string()),
     isAutomated: v.boolean(),
@@ -623,13 +635,13 @@ const schema = defineSchema({
         frequency: v.union(
           v.literal("daily"),
           v.literal("weekly"),
-          v.literal("monthly"),
+          v.literal("monthly")
         ),
         amount: v.number(),
         dayOfWeek: v.optional(v.number()),
         dayOfMonth: v.optional(v.number()),
         nextExecutionTime: v.number(),
-      }),
+      })
     ),
     targetDate: v.optional(v.number()),
     progress: v.number(),
@@ -648,12 +660,12 @@ const schema = defineSchema({
 
   savingsTransactions: defineTable({
     goalId: v.id("savingsGoals"),
-    userId: v.id("users"),
+    userId: v.string(),
     ...amountFields,
     type: v.union(
       v.literal("deposit"),
       v.literal("withdrawal"),
-      v.literal("automated"),
+      v.literal("automated")
     ),
     balance: v.number(),
     createdAt: v.number(),
@@ -667,7 +679,7 @@ const schema = defineSchema({
   // Beneficiaries & Contacts
   // ==========================================
   beneficiaries: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     name: v.string(),
     nickname: v.optional(v.string()),
     accountType: v.union(...Object.values(AccountType).map(v.literal)),
@@ -696,7 +708,7 @@ const schema = defineSchema({
   // Cards & Payment Methods
   // ==========================================
   paymentMethods: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     type: v.union(...Object.values(PaymentMethodType).map(v.literal)),
     details: v.object({
       lastFour: v.optional(v.string()),
@@ -724,7 +736,7 @@ const schema = defineSchema({
   // Recurring Payments
   // ==========================================
   recurringPayments: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     name: v.string(),
     ...amountFields,
     serviceType: v.union(
@@ -733,14 +745,14 @@ const schema = defineSchema({
       v.literal("payWater"),
       v.literal("transferLocal"),
       v.literal("recharge"),
-      v.literal("other"),
+      v.literal("other")
     ),
     frequency: v.union(
       v.literal("daily"),
       v.literal("weekly"),
       v.literal("monthly"),
       v.literal("quarterly"),
-      v.literal("annually"),
+      v.literal("annually")
     ),
     details: v.object({
       beneficiaryId: v.optional(v.id("beneficiaries")),
@@ -764,7 +776,7 @@ const schema = defineSchema({
   // Rewards & Loyalty
   // ==========================================
   loyaltyPoints: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     balance: v.number(),
     lifetimePoints: v.number(),
     tier: v.union(...Object.values(LoyaltyTier).map(v.literal)),
@@ -776,13 +788,13 @@ const schema = defineSchema({
     .index("by_lastUpdated", ["lastUpdated"]),
 
   loyaltyTransactions: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     amount: v.number(),
     type: v.union(
       v.literal("earned"),
       v.literal("redeemed"),
       v.literal("expired"),
-      v.literal("bonus"),
+      v.literal("bonus")
     ),
     description: v.string(),
     transactionId: v.optional(v.id("transactions")),
@@ -801,7 +813,7 @@ const schema = defineSchema({
       v.literal("voucher"),
       v.literal("cashback"),
       v.literal("service"),
-      v.literal("merchandise"),
+      v.literal("merchandise")
     ),
     imageUrl: v.optional(v.string()),
     isActive: v.boolean(),
@@ -818,7 +830,7 @@ const schema = defineSchema({
     }),
 
   redemptions: defineTable({
-    userId: v.id("users"),
+    userId: v.string(),
     rewardId: v.id("loyaltyRewards"),
     pointsSpent: v.number(),
     voucherCode: v.optional(v.string()),
@@ -826,7 +838,7 @@ const schema = defineSchema({
       v.literal("issued"),
       v.literal("used"),
       v.literal("expired"),
-      v.literal("cancelled"),
+      v.literal("cancelled")
     ),
     expiresAt: v.optional(v.number()),
     createdAt: v.number(),
@@ -842,7 +854,7 @@ const schema = defineSchema({
   // ==========================================
   dailyTransactionSummaries: defineTable({
     date: v.string(),
-    userId: v.id("users"),
+    userId: v.string(),
     totalAmountCDF: v.number(),
     totalAmountUSD: v.number(),
     transactionCount: v.number(),

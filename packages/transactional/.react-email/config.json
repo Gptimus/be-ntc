@@ -1,0 +1,5 @@
+{
+  "dir": "src",
+  "port": 3333,
+  "host": "localhost"
+}

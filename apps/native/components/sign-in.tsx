@@ -1,6 +1,12 @@
 import { Card, useThemeColor } from "heroui-native";
 import { useState } from "react";
-import { ActivityIndicator, Text, TextInput, Pressable, View } from "react-native";
+import {
+  ActivityIndicator,
+  Text,
+  TextInput,
+  Pressable,
+  View,
+} from "react-native";
 
 import { authClient } from "@/lib/auth-client";
 
@@ -36,7 +42,7 @@ export function SignIn() {
         onFinished: () => {
           setIsLoading(false);
         },
-      },
+      }
     );
   };
 
@@ -72,7 +78,7 @@ export function SignIn() {
       <Pressable
         onPress={handleLogin}
         disabled={isLoading}
-        className="bg-accent p-4 rounded-lg flex-row justify-center items-center active:opacity-70"
+        className="bg-primary p-4 rounded-lg flex-row justify-center items-center active:opacity-70"
       >
         {isLoading ? (
           <ActivityIndicator size="small" color={foregroundColor} />
