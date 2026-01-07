@@ -23,6 +23,7 @@ import authSchema from "./betterAuth/schema";
 import { components, internal } from "./_generated/api";
 import { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
+
 import { authHooks } from "./utils/emailHooks";
 
 import { UAParser } from "ua-parser-js";
@@ -74,11 +75,12 @@ export const authComponent = createClient<DataModel, typeof authSchema>(
 );
 
 export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
-  const secret = process.env.BETTER_AUTH_SECRET;
+  const secret =
+    process.env.BETTER_AUTH_SECRET || "PLACEHOLDER_SECRET_FOR_INITIALIZATION";
 
   return {
     baseURL: siteUrl,
-    secret: secret!,
+    secret: secret,
     trustedOrigins: [
       "http://localhost:3000",
       "http://localhost:3001",
@@ -269,7 +271,7 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
         },
       }),
       customSession(async ({ user, session }) => {
-        const dbData = await ctx.runQuery(components.betterAuth.auth.getUser, {
+        const dbData = await ctx.runQuery(components.betterAuth.users.getUser, {
           userId: user.id,
         });
 
@@ -304,7 +306,7 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
         disableSignUp: isAdminApp,
         sendMagicLink: async ({ email, url, token }) => {
           const dbData = await ctx.runQuery(
-            components.betterAuth.auth.getUserByEmail,
+            components.betterAuth.users.getUserByEmail,
             {
               email,
             }
@@ -328,7 +330,7 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
         disableSignUp: isAdminApp,
         async sendVerificationOTP({ email, otp, type }) {
           const dbData = await ctx.runQuery(
-            components.betterAuth.auth.getUserByEmail,
+            components.betterAuth.users.getUserByEmail,
             {
               email,
             }
@@ -430,14 +432,14 @@ export { createAuth };
 export const getCurrentUser = query({
   args: {},
   handler: async (ctx) => {
-    return authComponent.getAuthUser(ctx as any);
+    return authComponent.getAuthUser(ctx);
   },
 });
 
 export const getIsRootUser = query({
   args: {},
   handler: async (ctx) => {
-    const user = await authComponent.getAuthUser(ctx as any);
+    const user = await authComponent.getAuthUser(ctx);
     return user?.isRoot || false;
   },
 });
