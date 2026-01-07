@@ -1560,7 +1560,7 @@ export declare const components: {
         any
       >;
     };
-    auth: {
+    users: {
       getUser: FunctionReference<
         "query",
         "internal",

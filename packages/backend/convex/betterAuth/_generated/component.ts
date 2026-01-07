@@ -1532,7 +1532,7 @@ export type ComponentApi<Name extends string | undefined = string | undefined> =
         Name
       >;
     };
-    auth: {
+    users: {
       getUser: FunctionReference<
         "query",
         "internal",
