@@ -6,8 +6,9 @@ import {
   useToast,
   Spinner,
 } from "heroui-native";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ImageBackground, Text, View, Image, Keyboard } from "react-native";
+import { useFocusEffect } from "expo-router";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import {
@@ -44,6 +45,12 @@ export default function AuthOptionsScreen() {
   const { toast } = useToast();
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSheetOpen(true);
+    }, [])
+  );
 
   const {
     control,

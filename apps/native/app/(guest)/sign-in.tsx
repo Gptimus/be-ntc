@@ -1,7 +1,8 @@
 import { useRouter } from "expo-router";
 import { BottomSheet, useToast } from "heroui-native";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ImageBackground, View, Keyboard } from "react-native";
+import { useFocusEffect } from "expo-router";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +27,12 @@ export default function SignInScreen() {
   const { toast } = useToast();
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSheetOpen(true);
+    }, [])
+  );
 
   const {
     control,

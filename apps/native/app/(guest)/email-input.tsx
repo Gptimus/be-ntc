@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import {
   BottomSheet,
   Button,
@@ -24,13 +24,19 @@ import {
   triggerHapticSuccess,
 } from "@/lib/haptics";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function EmailInputScreen() {
   const router = useRouter();
   const { t } = useLocalization();
   const { toast } = useToast();
   const [isSheetOpen, setIsSheetOpen] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSheetOpen(true);
+    }, [])
+  );
 
   const {
     control,

@@ -1,4 +1,4 @@
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter, useLocalSearchParams, useFocusEffect } from "expo-router";
 import {
   BottomSheet,
   Button,
@@ -6,7 +6,7 @@ import {
   useToast,
   Spinner,
 } from "heroui-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ImageBackground, Text, View, Image } from "react-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { authClient } from "@/lib/auth-client";
@@ -26,6 +26,12 @@ export default function VerifyEmailScreen() {
   const { email } = useLocalSearchParams<{ email: string }>();
   const { toast } = useToast();
   const [isSheetOpen, setIsSheetOpen] = useState(true);
+
+  useFocusEffect(
+    useCallback(() => {
+      setIsSheetOpen(true);
+    }, [])
+  );
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
