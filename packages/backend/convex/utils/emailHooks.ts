@@ -2,7 +2,7 @@ import { EmailSender } from "@be-ntc/transactional/src/sender";
 
 interface User {
   id: string;
-  email?: string;
+  email: string;
   name?: string;
   emailVerified?: boolean;
 }
@@ -47,7 +47,6 @@ function getEmailSender() {
 export const authHooks = {
   // Sign up verification
   async sendVerificationEmail(data: EmailData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendVerifyEmail(data.user.email, {
       userFirstName: data.user.name,
       userEmail: data.user.email,
@@ -59,7 +58,6 @@ export const authHooks = {
 
   // Sign in OTP
   async sendSignInOtp(data: OtpData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendOtpEmail(data.user.email, {
       userFirstName: data.user.name,
       otpCode: data.otp,
@@ -71,7 +69,6 @@ export const authHooks = {
 
   // Sign up OTP
   async sendSignUpOtp(data: OtpData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendOtpEmail(data.user.email, {
       userFirstName: data.user.name,
       otpCode: data.otp,
@@ -83,7 +80,6 @@ export const authHooks = {
 
   // Change email verification
   async sendChangeEmailVerification(data: ChangeEmailData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendChangeEmailVerification(data.newEmail, {
       userFirstName: data.user.name,
       oldEmail: data.user.email,
@@ -94,7 +90,6 @@ export const authHooks = {
 
   // Delete account verification
   async sendDeleteAccountVerification(data: EmailData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendDeleteAccountVerification(
       data.user.email,
       data.url,
@@ -104,7 +99,6 @@ export const authHooks = {
 
   // Password reset
   async sendPasswordReset(data: EmailData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendPasswordResetEmail(data.user.email, {
       userFirstName: data.user.name,
       resetUrl: data.url,
@@ -114,7 +108,6 @@ export const authHooks = {
 
   // Magic link
   async sendMagicLink(data: EmailData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendMagicLinkEmail(data.user.email, {
       userEmail: data.user.email,
       magicUrl: data.url,
@@ -124,7 +117,6 @@ export const authHooks = {
 
   // Welcome email after successful signup
   async sendWelcomeEmail(data: { user: User }): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendWelcomeEmail(data.user.email, {
       userFirstName: data.user.name,
       verificationUrl: `${process.env.SITE_URL}/verify`,
@@ -133,7 +125,6 @@ export const authHooks = {
 
   // Security alert
   async sendSecurityAlert(data: SecurityAlertData): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendSecurityAlertEmail(data.user.email, {
       userFirstName: data.user.name,
       alertType: data.alertType as
@@ -152,7 +143,6 @@ export const authHooks = {
 
   // Send tips email
   async sendTipsEmail(data: { user: User }): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendTipsEmail(data.user.email, {
       userFirstName: data.user.name,
     });
@@ -163,7 +153,6 @@ export const authHooks = {
     user: User;
     daysSinceLastActivity: number;
   }): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendEngagementEmail(data.user.email, {
       userFirstName: data.user.name,
       daysSinceLastActivity: data.daysSinceLastActivity,
@@ -173,7 +162,6 @@ export const authHooks = {
 
   // Send survey email
   async sendSurveyEmail(data: { user: User }): Promise<void> {
-    if (!data.user.email) return;
     await getEmailSender().sendSurveyEmail(data.user.email, {
       userFirstName: data.user.name,
       surveyUrl: `${process.env.SITE_URL}/survey`,
@@ -184,17 +172,13 @@ export const authHooks = {
   // Before delete user
   async beforeDeleteUser(data: { user: User }): Promise<void> {
     // Send final backup/export email or confirmation
-    if (data.user.email) {
-      console.log(`Preparing to delete user: ${data.user.email}`);
-    }
+    console.log(`Preparing to delete user: ${data.user.email}`);
   },
 
   // After delete user
   async afterDeleteUser(data: { user: User }): Promise<void> {
     // Send goodbye email or cleanup notification
-    if (data.user.email) {
-      console.log(`User deleted: ${data.user.email}`);
-    }
+    console.log(`User deleted: ${data.user.email}`);
   },
 
   // Organization Invitation

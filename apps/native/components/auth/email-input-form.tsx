@@ -1,10 +1,15 @@
-import { Button, TextField } from "heroui-native";
+import { Button, TextField, Spinner } from "heroui-native";
 import { View } from "react-native";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { Mail01Icon } from "@hugeicons/core-free-icons";
-import Animated, { FadeInRight, FadeOutRight } from "react-native-reanimated";
+import Animated, {
+  FadeInRight,
+  FadeOutRight,
+  LinearTransition,
+  FadeIn,
+} from "react-native-reanimated";
 import type { EmailInputFormData } from "@/schemas/email-input.schema";
 
 interface EmailInputFormProps {
@@ -17,7 +22,6 @@ interface EmailInputFormProps {
 
 export function EmailInputForm({
   control,
-  errors,
   isValid,
   isLoading,
   onSubmit,
@@ -71,6 +75,7 @@ export function EmailInputForm({
 
       {/* Continue Button */}
       <Button
+        layout={LinearTransition.springify()}
         variant="primary"
         size="lg"
         onPress={onSubmit}
@@ -79,9 +84,7 @@ export function EmailInputForm({
         pressableFeedbackVariant="ripple"
       >
         {isLoading ? (
-          <Button.Label className="font-heading-bold">
-            {t("auth.emailInput.continueButton")}...
-          </Button.Label>
+          <Spinner entering={FadeIn.delay(50)} color="white" />
         ) : (
           <>
             <Button.Label className="font-heading-bold text-white">

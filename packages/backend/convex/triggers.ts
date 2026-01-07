@@ -3,7 +3,7 @@ import { internalMutation } from "./_generated/server";
 
 export const onUserCreated = internalMutation({
   args: {
-    userId: v.id("user"),
+    userId: v.string(),
     name: v.optional(v.string()),
     email: v.optional(v.string()),
   },

@@ -16,7 +16,7 @@ const qrFields = {
 };
 
 const userReference = {
-  userId: v.id("user"),
+  userId: v.string(),
 };
 
 // Status Enums
@@ -171,7 +171,7 @@ const schema = defineSchema({
   // Core User & Authentication
   // ==========================================
   userProfiles: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
 
     // Basic Profile Info
     displayName: v.optional(v.string()),
@@ -249,7 +249,7 @@ const schema = defineSchema({
     name: v.string(),
     email: v.optional(v.string()),
     mobileMoneyPhoneNumber: v.string(),
-    userId: v.id("user"),
+    userId: v.string(),
     ...commonFields,
   })
     .index("active_by_userId", ["userId", "deletedAt"])
@@ -297,10 +297,10 @@ const schema = defineSchema({
     status: v.union(...Object.values(KYCStatus).map(v.literal)),
     ...qrFields,
     verifiedAt: v.optional(v.number()),
-    verifiedBy: v.optional(v.id("user")),
+    verifiedBy: v.optional(v.string()),
     verifiedReason: v.optional(v.string()),
     rejectedAt: v.optional(v.number()),
-    rejectedBy: v.optional(v.id("user")),
+    rejectedBy: v.optional(v.string()),
     rejectedReason: v.optional(v.string()),
     ...commonFields,
   })
@@ -491,7 +491,7 @@ const schema = defineSchema({
     auditableId: v.string(),
     auditableType: v.string(),
     event: v.union(...Object.values(AuditEvent).map(v.literal)),
-    userId: v.id("user"),
+    userId: v.string(),
     oldValues: v.optional(v.union(v.string(), v.record(v.string(), v.any()))),
     newValues: v.union(v.string(), v.record(v.string(), v.any())),
     url: v.string(),
@@ -513,7 +513,7 @@ const schema = defineSchema({
   // Auth Logs
   // ==========================================
   authLogs: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     action: v.string(),
     email: v.optional(v.string()),
     timestamp: v.number(),
@@ -529,7 +529,7 @@ const schema = defineSchema({
   // User Devices
   // ==========================================
   userDevices: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     deviceId: v.string(),
     deviceName: v.string(),
     deviceType: v.union(...Object.values(DeviceType).map(v.literal)),
@@ -550,7 +550,7 @@ const schema = defineSchema({
   // Notifications System
   // ==========================================
   notificationSettings: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     pushEnabled: v.boolean(),
     emailEnabled: v.boolean(),
     smsEnabled: v.boolean(),
@@ -575,7 +575,7 @@ const schema = defineSchema({
   }).index("by_userId", ["userId"]),
 
   notifications: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     title: v.string(),
     body: v.string(),
     imageUrl: v.optional(v.string()),
@@ -614,7 +614,7 @@ const schema = defineSchema({
   // Savings & Goals
   // ==========================================
   savingsGoals: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     name: v.string(),
     targetAmount: v.number(),
     currentAmount: v.number(),
@@ -660,7 +660,7 @@ const schema = defineSchema({
 
   savingsTransactions: defineTable({
     goalId: v.id("savingsGoals"),
-    userId: v.id("user"),
+    userId: v.string(),
     ...amountFields,
     type: v.union(
       v.literal("deposit"),
@@ -679,7 +679,7 @@ const schema = defineSchema({
   // Beneficiaries & Contacts
   // ==========================================
   beneficiaries: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     name: v.string(),
     nickname: v.optional(v.string()),
     accountType: v.union(...Object.values(AccountType).map(v.literal)),
@@ -708,7 +708,7 @@ const schema = defineSchema({
   // Cards & Payment Methods
   // ==========================================
   paymentMethods: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     type: v.union(...Object.values(PaymentMethodType).map(v.literal)),
     details: v.object({
       lastFour: v.optional(v.string()),
@@ -736,7 +736,7 @@ const schema = defineSchema({
   // Recurring Payments
   // ==========================================
   recurringPayments: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     name: v.string(),
     ...amountFields,
     serviceType: v.union(
@@ -776,7 +776,7 @@ const schema = defineSchema({
   // Rewards & Loyalty
   // ==========================================
   loyaltyPoints: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     balance: v.number(),
     lifetimePoints: v.number(),
     tier: v.union(...Object.values(LoyaltyTier).map(v.literal)),
@@ -788,7 +788,7 @@ const schema = defineSchema({
     .index("by_lastUpdated", ["lastUpdated"]),
 
   loyaltyTransactions: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     amount: v.number(),
     type: v.union(
       v.literal("earned"),
@@ -830,7 +830,7 @@ const schema = defineSchema({
     }),
 
   redemptions: defineTable({
-    userId: v.id("user"),
+    userId: v.string(),
     rewardId: v.id("loyaltyRewards"),
     pointsSpent: v.number(),
     voucherCode: v.optional(v.string()),
@@ -854,7 +854,7 @@ const schema = defineSchema({
   // ==========================================
   dailyTransactionSummaries: defineTable({
     date: v.string(),
-    userId: v.id("user"),
+    userId: v.string(),
     totalAmountCDF: v.number(),
     totalAmountUSD: v.number(),
     transactionCount: v.number(),

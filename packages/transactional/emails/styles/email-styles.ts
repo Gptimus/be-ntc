@@ -1,5 +1,5 @@
 // Mobile-friendly email styles for Be-ntc
-const primaryColor = process.env.PRIMARY_COLOR || "#fd5717";
+const primaryColor = process.env.PRIMARY_COLOR || "#9e19b3";
 
 export const emailStyles = {
   // Typography

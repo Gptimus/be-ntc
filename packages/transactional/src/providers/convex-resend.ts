@@ -18,7 +18,7 @@ export class ConvexResendProvider implements EmailProvider {
     html: string;
   }): Promise<void> {
     const fromName = process.env.FROM_NAME || "Be-ntc";
-    const fromEmail = process.env.FROM_EMAIL || "noreply@ozawapi.com";
+    const fromEmail = process.env.FROM_EMAIL || "noreply@be-ntc.com";
 
     await this.resendComponent.send({
       to: options.to,

@@ -2,9 +2,9 @@ import { useRouter } from "expo-router";
 import {
   BottomSheet,
   Button,
-  FormField,
   TextField,
   useToast,
+  Spinner,
 } from "heroui-native";
 import { useState } from "react";
 import { ImageBackground, Text, View, Image, Keyboard } from "react-native";
@@ -16,7 +16,6 @@ import {
   Mail01Icon,
   ArrowLeft01Icon,
 } from "@hugeicons/core-free-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -29,20 +28,27 @@ import Animated, {
   FadeOutLeft,
   FadeInLeft,
   FadeOutRight,
+  LinearTransition,
+  FadeIn,
 } from "react-native-reanimated";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function AuthOptionsScreen() {
   const router = useRouter();
   const { t } = useLocalization();
-  const insets = useSafeAreaInsets();
   const { toast } = useToast();
   const [showEmailInput, setShowEmailInput] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(true);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<EmailInputFormData>({
     resolver: zodResolver(createEmailInputSchema(t)),
     mode: "onChange",
@@ -61,7 +67,7 @@ export default function AuthOptionsScreen() {
   };
 
   const onSubmit = async (data: EmailInputFormData) => {
-    setIsLoading(true);
+    triggerHaptic();
     Keyboard.dismiss();
 
     try {
@@ -72,6 +78,7 @@ export default function AuthOptionsScreen() {
         });
 
       if (authError) {
+        triggerHapticError();
         toast.show({
           variant: "danger",
           label: t("auth.emailInput.toast.error.title"),
@@ -79,10 +86,10 @@ export default function AuthOptionsScreen() {
             authError.message || t("auth.emailInput.toast.error.description"),
           duration: 4000,
         });
-        setIsLoading(false);
         return;
       }
 
+      triggerHapticSuccess();
       toast.show({
         variant: "success",
         label: t("auth.emailInput.toast.success.title"),
@@ -92,18 +99,19 @@ export default function AuthOptionsScreen() {
         duration: 3000,
       });
 
+      setIsSheetOpen(false);
       router.push({
         pathname: "/(guest)/verify-email",
         params: { email: data.email },
       });
     } catch (err) {
+      triggerHapticError();
       toast.show({
         variant: "danger",
         label: t("auth.emailInput.toast.genericError.title"),
         description: t("auth.emailInput.toast.genericError.description"),
         duration: 4000,
       });
-      setIsLoading(false);
     }
   };
 
@@ -120,7 +128,7 @@ export default function AuthOptionsScreen() {
       </ImageBackground>
 
       {/* Main Bottom Sheet */}
-      <BottomSheet isOpen={true} onOpenChange={() => {}}>
+      <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <BottomSheet.Portal>
           <BottomSheet.Overlay
             isCloseOnPress={false}
@@ -129,7 +137,7 @@ export default function AuthOptionsScreen() {
           <BottomSheet.Content
             snapPoints={showEmailInput ? ["50%"] : ["55%"]}
             enablePanDownToClose={false}
-            backgroundClassName="bg-background rounded-[55px] border border-border"
+            backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
             contentContainerClassName="px-8 pt-4 pb-10"
           >
@@ -179,136 +187,162 @@ export default function AuthOptionsScreen() {
 
             {/* Content - Animated Switch */}
             {!showEmailInput ? (
-              <Animated.View
-                entering={FadeInLeft.duration(400)}
-                exiting={FadeOutLeft.duration(300)}
-                className="gap-3"
+              <KeyboardAwareScrollView
+                className="w-full flex-1"
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  width: "100%",
+                }}
               >
-                {/* Social Buttons */}
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="bg-foreground border-foreground h-14 rounded-2xl"
-                  pressableFeedbackVariant="ripple"
+                <Animated.View
+                  entering={FadeInLeft.duration(400)}
+                  exiting={FadeOutLeft.duration(300)}
+                  className="gap-3"
                 >
-                  <StyledHugeIcon
-                    icon={AppleIcon}
-                    size={20}
-                    variant="solid"
-                    className="text-background"
-                  />
-                  <Button.Label className="text-background font-heading-bold">
-                    {t("auth.signUp.continueWithApple")}
-                  </Button.Label>
-                </Button>
+                  {/* Social Buttons */}
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    className="bg-foreground border-foreground h-14 rounded-2xl"
+                    pressableFeedbackVariant="ripple"
+                  >
+                    <StyledHugeIcon
+                      icon={AppleIcon}
+                      size={20}
+                      variant="solid"
+                      className="text-background"
+                    />
+                    <Button.Label className="text-background font-heading-bold">
+                      {t("auth.signUp.continueWithApple")}
+                    </Button.Label>
+                  </Button>
 
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="bg-background border border-border rounded-2xl"
-                  pressableFeedbackVariant="ripple"
-                >
-                  <StyledHugeIcon
-                    icon={GoogleIcon}
-                    size={20}
-                    className="text-foreground"
-                  />
-                  <Button.Label className="text-foreground font-heading-bold">
-                    {t("auth.signUp.continueWithGoogle")}
-                  </Button.Label>
-                </Button>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="bg-background border border-border rounded-2xl"
+                    pressableFeedbackVariant="ripple"
+                  >
+                    <StyledHugeIcon
+                      icon={GoogleIcon}
+                      size={20}
+                      className="text-foreground"
+                    />
+                    <Button.Label className="text-foreground font-heading-bold">
+                      {t("auth.signUp.continueWithGoogle")}
+                    </Button.Label>
+                  </Button>
 
-                <Button
-                  variant="tertiary"
-                  size="lg"
-                  onPress={handleEmailPress}
-                  className="rounded-2xl"
-                  pressableFeedbackVariant="ripple"
-                >
-                  <StyledHugeIcon
-                    icon={Mail01Icon}
-                    size={20}
-                    className="text-foreground"
-                  />
-                  <Button.Label className="font-heading-bold">
-                    {t("auth.signUp.continueWithEmail")}
-                  </Button.Label>
-                </Button>
+                  <Button
+                    variant="tertiary"
+                    size="lg"
+                    onPress={handleEmailPress}
+                    className="rounded-2xl"
+                    pressableFeedbackVariant="ripple"
+                  >
+                    <StyledHugeIcon
+                      icon={Mail01Icon}
+                      size={20}
+                      className="text-foreground"
+                    />
+                    <Button.Label className="font-heading-bold">
+                      {t("auth.signUp.continueWithEmail")}
+                    </Button.Label>
+                  </Button>
 
-                {/* Footer */}
-                <View className="mt-8 flex-row flex-wrap justify-center">
-                  <Text className="text-xs text-foreground font-sans">
-                    {t("auth.signUp.terms.agreement")}
-                  </Text>
-                  <Text className="text-xs text-foreground font-sans-bold">
-                    {t("auth.signUp.terms.link")}
-                  </Text>
-                </View>
-              </Animated.View>
+                  {/* Footer */}
+                  <View className="mt-8 flex-row flex-wrap justify-center">
+                    <Text className="text-xs text-foreground font-sans">
+                      {t("auth.signUp.terms.agreement")}
+                    </Text>
+                    <Text className="text-xs text-foreground font-sans-bold">
+                      {t("auth.signUp.terms.link")}
+                    </Text>
+                  </View>
+                </Animated.View>
+              </KeyboardAwareScrollView>
             ) : (
-              <Animated.View
-                entering={FadeInRight.duration(400)}
-                exiting={FadeOutRight.duration(300)}
+              <KeyboardAwareScrollView
+                className="w-full flex-1"
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  flexGrow: 1,
+                  width: "100%",
+                }}
               >
-                {/* Email Form */}
-                <View className="gap-4 mb-6">
-                  <Controller
-                    control={control}
-                    name="email"
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <FormField isInvalid={!!errors.email}>
-                        <TextField>
+                <Animated.View
+                  entering={FadeInRight.duration(400)}
+                  exiting={FadeOutRight.duration(300)}
+                >
+                  {/* Email Form */}
+                  <View className="gap-4 mb-6">
+                    <Controller
+                      control={control}
+                      name="email"
+                      render={({
+                        field: { onChange, onBlur, value },
+                        fieldState: { error },
+                      }) => (
+                        <TextField isInvalid={!!error}>
+                          <TextField.Label
+                            className="text-sans text-foreground"
+                            style={{ fontFamily: "Geist_500Medium" }}
+                          >
+                            {t("auth.emailInput.title")}
+                          </TextField.Label>
                           <TextField.Input
-                            placeholder={t("auth.emailInput.emailPlaceholder")}
-                            value={value}
+                            value={value || ""}
                             onChangeText={onChange}
                             onBlur={onBlur}
+                            placeholder={t("auth.emailInput.emailPlaceholder")}
                             keyboardType="email-address"
                             autoCapitalize="none"
                             autoComplete="email"
                             autoCorrect={false}
                             autoFocus
-                            editable={!isLoading}
+                            editable={!isSubmitting}
                             className="h-14 rounded-2xl text-base"
+                            style={{ fontFamily: "Geist_400Regular" }}
                           />
+                          <TextField.Description>
+                            {t("auth.emailInput.description")}
+                          </TextField.Description>
+                          <TextField.ErrorMessage>
+                            {error?.message}
+                          </TextField.ErrorMessage>
                         </TextField>
-                        {errors.email && (
-                          <FormField.ErrorMessage>
-                            {errors.email.message}
-                          </FormField.ErrorMessage>
-                        )}
-                      </FormField>
-                    )}
-                  />
-                </View>
+                      )}
+                    />
+                  </View>
 
-                {/* Continue Button */}
-                <Button
-                  variant="primary"
-                  size="lg"
-                  onPress={handleSubmit(onSubmit)}
-                  isDisabled={!isValid || isLoading}
-                  className="rounded-2xl"
-                  pressableFeedbackVariant="ripple"
-                >
-                  {isLoading ? (
-                    <Button.Label className="font-heading-bold">
-                      {t("auth.emailInput.continueButton")}...
-                    </Button.Label>
-                  ) : (
-                    <>
-                      <Button.Label className="font-heading-bold">
-                        {t("auth.emailInput.continueButton")}
-                      </Button.Label>
-                      <StyledHugeIcon
-                        icon={Mail01Icon}
-                        size={20}
-                        className="text-background"
-                      />
-                    </>
-                  )}
-                </Button>
-              </Animated.View>
+                  {/* Continue Button */}
+                  <Button
+                    layout={LinearTransition.springify()}
+                    variant="primary"
+                    size="lg"
+                    onPress={handleSubmit(onSubmit)}
+                    isDisabled={!isValid || isSubmitting}
+                    className="rounded-2xl"
+                    pressableFeedbackVariant="ripple"
+                  >
+                    {isSubmitting ? (
+                      <Spinner entering={FadeIn.delay(50)} color="white" />
+                    ) : (
+                      <>
+                        <Button.Label className="font-heading-bold text-white">
+                          {t("auth.emailInput.continueButton")}
+                        </Button.Label>
+                        <StyledHugeIcon
+                          icon={Mail01Icon}
+                          size={20}
+                          className="text-white"
+                        />
+                      </>
+                    )}
+                  </Button>
+                </Animated.View>
+              </KeyboardAwareScrollView>
             )}
           </BottomSheet.Content>
         </BottomSheet.Portal>

@@ -3,23 +3,29 @@ import {
   BottomSheet,
   Button,
   TextField,
-  FormField,
   useToast,
+  Spinner,
 } from "heroui-native";
 import { useState, useEffect } from "react";
 import { ImageBackground, Text, View, Image } from "react-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { authClient } from "@/lib/auth-client";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { Mail01Icon, ZapIcon } from "@hugeicons/core-free-icons";
+import { FadeIn, LinearTransition } from "react-native-reanimated";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function VerifyEmailScreen() {
   const router = useRouter();
   const { t } = useLocalization();
-  const insets = useSafeAreaInsets();
   const { email } = useLocalSearchParams<{ email: string }>();
   const { toast } = useToast();
+  const [isSheetOpen, setIsSheetOpen] = useState(true);
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
@@ -43,6 +49,7 @@ export default function VerifyEmailScreen() {
   }, []);
 
   const handleResend = async () => {
+    triggerHaptic();
     if (!canResend || isResending) return;
 
     setIsResending(true);
@@ -69,6 +76,7 @@ export default function VerifyEmailScreen() {
         });
       }, 1000);
     } catch (error) {
+      triggerHapticError();
       toast.show({
         variant: "danger",
         label: t("auth.verifyEmail.toast.resendError.title"),
@@ -79,6 +87,7 @@ export default function VerifyEmailScreen() {
   };
 
   const handleVerify = async () => {
+    triggerHaptic();
     if (otp.length < 6 || isVerifying) return;
 
     setIsVerifying(true);
@@ -99,8 +108,11 @@ export default function VerifyEmailScreen() {
         return;
       }
 
+      triggerHapticSuccess();
+      setIsSheetOpen(false);
       router.replace("/(protected)");
     } catch (error) {
+      triggerHapticError();
       toast.show({
         variant: "danger",
         label: t("auth.verifyEmail.toast.genericError.title"),
@@ -111,6 +123,8 @@ export default function VerifyEmailScreen() {
   };
 
   const handleChangeEmail = () => {
+    triggerHaptic();
+    setIsSheetOpen(false);
     router.back();
   };
 
@@ -127,7 +141,7 @@ export default function VerifyEmailScreen() {
       </ImageBackground>
 
       {/* Main Bottom Sheet */}
-      <BottomSheet isOpen={true} onOpenChange={() => {}}>
+      <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <BottomSheet.Portal>
           <BottomSheet.Overlay
             isCloseOnPress={false}
@@ -136,46 +150,59 @@ export default function VerifyEmailScreen() {
           <BottomSheet.Content
             snapPoints={["70%"]}
             enablePanDownToClose={false}
-            backgroundClassName="bg-background rounded-[55px] border border-border"
+            backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
             contentContainerClassName="px-8 pt-4 pb-10"
           >
             {/* Header / Logo Section */}
-            <View className="mb-8">
-              <View className="rounded-xl items-start justify-center mb-6">
-                <Image
-                  source={require("@/assets/images/logo-fit.webp")}
-                  style={{ width: 32, height: 32 }}
-                  resizeMode="contain"
-                />
+            <KeyboardAwareScrollView
+              className="w-full flex-1"
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                flexGrow: 1,
+                width: "100%",
+              }}
+            >
+              <View className="mb-8">
+                <View className="rounded-xl items-start justify-center mb-6">
+                  <Image
+                    source={require("@/assets/images/logo-fit.webp")}
+                    style={{ width: 32, height: 32 }}
+                    resizeMode="contain"
+                  />
+                </View>
+
+                <BottomSheet.Title className="text-3xl font-heading-bold text-primary mb-2">
+                  {t("auth.verifyEmail.title")}
+                </BottomSheet.Title>
+                <BottomSheet.Description className="text-sm text-foreground font-sans leading-snug">
+                  {t("auth.verifyEmail.description")}
+                </BottomSheet.Description>
               </View>
 
-              <BottomSheet.Title className="text-3xl font-heading-bold text-primary mb-2">
-                {t("auth.verifyEmail.title")}
-              </BottomSheet.Title>
-              <BottomSheet.Description className="text-sm text-foreground font-sans leading-snug">
-                {t("auth.verifyEmail.description")}
-              </BottomSheet.Description>
-            </View>
-
-            {/* Email Display */}
-            <View className="mb-8 p-4 bg-muted rounded-2xl flex-row items-center gap-3">
-              <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center">
-                <StyledHugeIcon
-                  icon={Mail01Icon}
-                  size={20}
-                  className="text-primary"
-                />
+              {/* Email Display */}
+              <View className="mb-8 p-4 bg-surface rounded-2xl flex-row items-center gap-3">
+                <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center">
+                  <StyledHugeIcon
+                    icon={Mail01Icon}
+                    size={20}
+                    className="text-primary"
+                  />
+                </View>
+                <Text className="text-base font-sans-bold text-foreground flex-1">
+                  {email}
+                </Text>
               </View>
-              <Text className="text-base font-sans-bold text-foreground flex-1">
-                {email}
-              </Text>
-            </View>
 
-            {/* OTP Input */}
-            <View className="mb-6">
-              <FormField>
-                <TextField className="h-16 rounded-2xl">
+              {/* OTP Input */}
+              <View className="mb-6">
+                <TextField>
+                  <TextField.Label
+                    className="text-sans text-foreground"
+                    style={{ fontFamily: "Geist_500Medium" }}
+                  >
+                    {t("auth.verifyEmail.otpLabel")}
+                  </TextField.Label>
                   <TextField.Input
                     placeholder={t("auth.verifyEmail.otpPlaceholder")}
                     value={otp}
@@ -184,77 +211,87 @@ export default function VerifyEmailScreen() {
                     maxLength={6}
                     autoFocus
                     className="text-center text-2xl font-heading-bold tracking-[10px]"
+                    style={{ fontFamily: "Geist_700Bold" }}
                   />
+                  <TextField.ErrorMessage>
+                    {otp.length > 0 && otp.length < 6
+                      ? t("auth.verifyEmail.otpInvalid")
+                      : ""}
+                  </TextField.ErrorMessage>
                 </TextField>
-              </FormField>
-            </View>
+              </View>
 
-            {/* Action Buttons */}
-            <View className="gap-3">
-              {/* Verify Button */}
-              <Button
-                variant="primary"
-                size="lg"
-                onPress={handleVerify}
-                isDisabled={otp.length < 6 || isVerifying}
-                className="rounded-2xl h-14"
-                pressableFeedbackVariant="ripple"
-              >
-                {isVerifying ? (
-                  <Button.Label className="font-heading-bold">
-                    {t("auth.verifyEmail.verifying")}
-                  </Button.Label>
-                ) : (
-                  <>
-                    <Button.Label className="font-heading-bold">
-                      {t("auth.verifyEmail.confirmButton")}
+              {/* Action Buttons */}
+              <View className="gap-3">
+                {/* Verify Button */}
+                <Button
+                  layout={LinearTransition.springify()}
+                  variant="primary"
+                  size="lg"
+                  onPress={handleVerify}
+                  isDisabled={otp.length < 6 || isVerifying}
+                  className="rounded-2xl h-14"
+                  pressableFeedbackVariant="ripple"
+                >
+                  {isVerifying ? (
+                    <Spinner entering={FadeIn.delay(50)} color="white" />
+                  ) : (
+                    <>
+                      <Button.Label className="font-heading-bold text-white">
+                        {t("auth.verifyEmail.confirmButton")}
+                      </Button.Label>
+                      <StyledHugeIcon
+                        icon={ZapIcon}
+                        size={20}
+                        className="text-white"
+                        variant="solid"
+                      />
+                    </>
+                  )}
+                </Button>
+                {/* Resend Button */}
+                <Button
+                  layout={LinearTransition.springify()}
+                  variant="secondary"
+                  size="lg"
+                  onPress={handleResend}
+                  isDisabled={!canResend || isResending}
+                  className="rounded-2xl h-14"
+                  pressableFeedbackVariant="ripple"
+                >
+                  {isResending ? (
+                    <Spinner entering={FadeIn.delay(50)} color="white" />
+                  ) : (
+                    <Button.Label className="font-heading-bold text-foreground">
+                      {canResend
+                        ? t("auth.verifyEmail.resendButton")
+                        : `${t(
+                            "auth.verifyEmail.resendButton"
+                          )} (${resendTimer}s)`}
                     </Button.Label>
-                    <StyledHugeIcon
-                      icon={ZapIcon}
-                      size={20}
-                      className="text-background"
-                      variant="solid"
-                    />
-                  </>
-                )}
-              </Button>
-              {/* Resend Button */}
-              <Button
-                variant="secondary"
-                size="lg"
-                onPress={handleResend}
-                isDisabled={!canResend || isResending}
-                className="rounded-2xl"
-                pressableFeedbackVariant="ripple"
-              >
-                <Button.Label className="font-heading-bold">
-                  {isResending
-                    ? t("auth.verifyEmail.resendingButton")
-                    : canResend
-                    ? t("auth.verifyEmail.resendButton")
-                    : `${t("auth.verifyEmail.resendButton")} (${resendTimer}s)`}
-                </Button.Label>
-              </Button>
+                  )}
+                </Button>
 
-              {/* Change Email Button */}
-              <Button
-                variant="ghost"
-                size="lg"
-                onPress={handleChangeEmail}
-                className="rounded-2xl"
-              >
-                <Button.Label className="text-primary font-heading-bold">
-                  {t("auth.verifyEmail.changeEmail")}
-                </Button.Label>
-              </Button>
-            </View>
+                {/* Change Email Button */}
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  onPress={handleChangeEmail}
+                  className="rounded-2xl"
+                >
+                  <Button.Label className="text-primary font-heading-bold">
+                    {t("auth.verifyEmail.changeEmail")}
+                  </Button.Label>
+                </Button>
+              </View>
 
-            {/* Footer Note */}
-            <View className="mt-6">
-              <Text className="text-xs text-muted-foreground font-sans text-center">
-                {t("auth.verifyEmail.didntReceive")}
-              </Text>
-            </View>
+              {/* Footer Note */}
+              <View className="mt-6">
+                <Text className="text-xs text-muted-foreground font-sans text-center">
+                  {t("auth.verifyEmail.didntReceive")}
+                </Text>
+              </View>
+            </KeyboardAwareScrollView>
           </BottomSheet.Content>
         </BottomSheet.Portal>
       </BottomSheet>

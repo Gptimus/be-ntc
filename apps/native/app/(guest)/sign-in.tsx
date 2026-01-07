@@ -13,7 +13,11 @@ import { authClient } from "@/lib/auth-client";
 import { AuthHeader } from "@/components/auth/auth-header";
 import { SocialAuthButtons } from "@/components/auth/social-auth-buttons";
 import { EmailInputForm } from "@/components/auth/email-input-form";
-import { triggerHaptic } from "@/lib/haptics";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 export default function SignInScreen() {
@@ -21,6 +25,7 @@ export default function SignInScreen() {
   const { t } = useLocalization();
   const { toast } = useToast();
   const [showEmailInput, setShowEmailInput] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(true);
 
   const {
     control,
@@ -28,7 +33,7 @@ export default function SignInScreen() {
     formState: { errors, isValid, isSubmitting },
   } = useForm<EmailInputFormData>({
     resolver: zodResolver(createEmailInputSchema(t)),
-    mode: "all",
+    mode: "onChange",
     defaultValues: {
       email: "",
     },
@@ -46,16 +51,21 @@ export default function SignInScreen() {
   };
 
   const onSubmit = async (data: EmailInputFormData) => {
+    triggerHaptic();
     Keyboard.dismiss();
 
     try {
-      const { data: authData, error: authError } =
+      const { error: authError } =
         await authClient.emailOtp.sendVerificationOtp({
           email: data.email,
           type: "sign-in",
         });
 
       if (authError) {
+        console.log({
+          authError,
+        });
+        triggerHapticError();
         toast.show({
           variant: "danger",
           label: t("auth.emailInput.toast.error.title"),
@@ -66,6 +76,8 @@ export default function SignInScreen() {
         return;
       }
 
+      triggerHapticSuccess();
+
       toast.show({
         variant: "success",
         label: t("auth.emailInput.toast.success.title"),
@@ -75,11 +87,13 @@ export default function SignInScreen() {
         duration: 3000,
       });
 
+      setIsSheetOpen(false);
       router.push({
         pathname: "/(guest)/verify-email",
         params: { email: data.email },
       });
     } catch (err) {
+      triggerHapticError();
       toast.show({
         variant: "danger",
         label: t("auth.emailInput.toast.genericError.title"),
@@ -102,7 +116,7 @@ export default function SignInScreen() {
       </ImageBackground>
 
       {/* Main Bottom Sheet */}
-      <BottomSheet isOpen={true} onOpenChange={() => {}}>
+      <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <BottomSheet.Portal>
           <BottomSheet.Overlay
             isCloseOnPress={false}
@@ -111,7 +125,7 @@ export default function SignInScreen() {
           <BottomSheet.Content
             snapPoints={showEmailInput ? ["50%"] : ["55%"]}
             enablePanDownToClose={false}
-            backgroundClassName="bg-background rounded-[32px] border border-border"
+            backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
             contentContainerClassName="px-8 pt-4 pb-10"
           >

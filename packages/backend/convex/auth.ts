@@ -21,7 +21,7 @@ import authConfig from "./auth.config";
 import authSchema from "./betterAuth/schema";
 
 import { components, internal } from "./_generated/api";
-import { DataModel, Id } from "./_generated/dataModel";
+import { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 import { authHooks } from "./utils/emailHooks";
 
@@ -63,7 +63,7 @@ export const authComponent = createClient<DataModel, typeof authSchema>(
       user: {
         onCreate: async (ctx, doc) => {
           await ctx.runMutation(internal.triggers.onUserCreated, {
-            userId: doc._id as Id<"user">,
+            userId: doc._id,
             name: doc.name,
             email: doc.email,
           });
@@ -74,14 +74,18 @@ export const authComponent = createClient<DataModel, typeof authSchema>(
 );
 
 export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
+  const secret = process.env.BETTER_AUTH_SECRET;
+
   return {
     baseURL: siteUrl,
+    secret: secret!,
     trustedOrigins: [
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",
       "https://*.be-ntc.com",
       "bentc://",
+      "bentc://*",
       "exp://192.168.1.65:8081/",
       "exp://*/*",
       "exp://10.0.0.*:*/*",

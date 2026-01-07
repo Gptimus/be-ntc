@@ -1,9 +1,13 @@
 import { useRouter } from "expo-router";
-import { BottomSheet, Button, TextField, useToast } from "heroui-native";
-import { useState } from "react";
-import { ImageBackground, Text, View, Image, Keyboard } from "react-native";
+import {
+  BottomSheet,
+  Button,
+  TextField,
+  useToast,
+  Spinner,
+} from "heroui-native";
+import { ImageBackground, View, Image, Keyboard } from "react-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { authClient } from "@/lib/auth-client";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { Mail01Icon } from "@hugeicons/core-free-icons";
@@ -13,18 +17,25 @@ import {
   createEmailInputSchema,
   type EmailInputFormData,
 } from "@/schemas/email-input.schema";
+import { FadeIn, LinearTransition } from "react-native-reanimated";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { useState } from "react";
 
 export default function EmailInputScreen() {
   const router = useRouter();
   const { t } = useLocalization();
-  const insets = useSafeAreaInsets();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(true);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<EmailInputFormData>({
     resolver: zodResolver(createEmailInputSchema(t)),
     mode: "onChange",
@@ -34,7 +45,7 @@ export default function EmailInputScreen() {
   });
 
   const onSubmit = async (data: EmailInputFormData) => {
-    setIsLoading(true);
+    triggerHaptic();
     Keyboard.dismiss();
 
     try {
@@ -46,6 +57,7 @@ export default function EmailInputScreen() {
         });
 
       if (authError) {
+        triggerHapticError();
         toast.show({
           variant: "danger",
           label: t("auth.emailInput.toast.error.title"),
@@ -53,10 +65,10 @@ export default function EmailInputScreen() {
             authError.message || t("auth.emailInput.toast.error.description"),
           duration: 4000,
         });
-        setIsLoading(false);
         return;
       }
 
+      triggerHapticSuccess();
       // Show success toast
       toast.show({
         variant: "success",
@@ -67,19 +79,20 @@ export default function EmailInputScreen() {
         duration: 3000,
       });
 
+      setIsSheetOpen(false);
       // Navigate to verification screen
       router.push({
         pathname: "/(guest)/verify-email",
         params: { email: data.email },
       });
     } catch (err) {
+      triggerHapticError();
       toast.show({
         variant: "danger",
         label: t("auth.emailInput.toast.genericError.title"),
         description: t("auth.emailInput.toast.genericError.description"),
         duration: 4000,
       });
-      setIsLoading(false);
     }
   };
 
@@ -96,7 +109,7 @@ export default function EmailInputScreen() {
       </ImageBackground>
 
       {/* Main Bottom Sheet */}
-      <BottomSheet isOpen={true} onOpenChange={() => {}}>
+      <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <BottomSheet.Portal>
           <BottomSheet.Overlay
             isCloseOnPress={false}
@@ -105,7 +118,7 @@ export default function EmailInputScreen() {
           <BottomSheet.Content
             snapPoints={["60%"]}
             enablePanDownToClose={false}
-            backgroundClassName="bg-background rounded-[55px] border border-border"
+            backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
             contentContainerClassName="px-8 pt-4 pb-10"
           >
@@ -128,62 +141,80 @@ export default function EmailInputScreen() {
             </View>
 
             {/* Email Input with React Hook Form */}
-            <View className="gap-4 mb-6">
-              <Controller
-                control={control}
-                name="email"
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <TextField>
-                    <TextField.Input
-                      placeholder={t("auth.emailInput.emailPlaceholder")}
-                      value={value}
-                      onChangeText={onChange}
-                      onBlur={onBlur}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      autoComplete="email"
-                      autoCorrect={false}
-                      editable={!isLoading}
-                      className="h-14 rounded-2xl text-base"
-                    />
-                  </TextField>
-                )}
-              />
-
-              {/* Form Validation Error */}
-              {errors.email && (
-                <Text className="text-destructive text-sm font-sans">
-                  {errors.email.message}
-                </Text>
-              )}
-            </View>
-
-            {/* Continue Button */}
-            <Button
-              variant="primary"
-              size="lg"
-              onPress={handleSubmit(onSubmit)}
-              isDisabled={!isValid || isLoading}
-              className="rounded-2xl mb-4"
-              pressableFeedbackVariant="ripple"
+            <KeyboardAwareScrollView
+              className="w-full flex-1"
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                flexGrow: 1,
+                width: "100%",
+              }}
             >
-              {isLoading ? (
-                <Button.Label className="font-heading-bold">
-                  {t("auth.emailInput.continueButton")}...
-                </Button.Label>
-              ) : (
-                <>
-                  <Button.Label className="font-heading-bold">
-                    {t("auth.emailInput.continueButton")}
-                  </Button.Label>
-                  <StyledHugeIcon
-                    icon={Mail01Icon}
-                    size={20}
-                    className="text-background"
-                  />
-                </>
-              )}
-            </Button>
+              <View className="gap-4 mb-6">
+                <Controller
+                  control={control}
+                  name="email"
+                  render={({
+                    field: { onChange, onBlur, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField isInvalid={!!error}>
+                      <TextField.Label
+                        className="text-sans text-foreground"
+                        style={{ fontFamily: "Geist_500Medium" }}
+                      >
+                        {t("auth.emailInput.title")}
+                      </TextField.Label>
+                      <TextField.Input
+                        value={value || ""}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        placeholder={t("auth.emailInput.emailPlaceholder")}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        autoComplete="email"
+                        autoCorrect={false}
+                        autoFocus
+                        editable={!isSubmitting}
+                        className="h-14 rounded-2xl text-base"
+                        style={{ fontFamily: "Geist_400Regular" }}
+                      />
+                      <TextField.Description>
+                        {t("auth.emailInput.description")}
+                      </TextField.Description>
+                      <TextField.ErrorMessage>
+                        {error?.message}
+                      </TextField.ErrorMessage>
+                    </TextField>
+                  )}
+                />
+              </View>
+
+              {/* Continue Button */}
+              <Button
+                layout={LinearTransition.springify()}
+                variant="primary"
+                size="lg"
+                onPress={handleSubmit(onSubmit)}
+                isDisabled={!isValid || isSubmitting}
+                className="rounded-2xl mb-4"
+                pressableFeedbackVariant="ripple"
+              >
+                {isSubmitting ? (
+                  <Spinner entering={FadeIn.delay(50)} color="white" />
+                ) : (
+                  <>
+                    <Button.Label className="font-heading-bold text-white">
+                      {t("auth.emailInput.continueButton")}
+                    </Button.Label>
+                    <StyledHugeIcon
+                      icon={Mail01Icon}
+                      size={20}
+                      className="text-white"
+                    />
+                  </>
+                )}
+              </Button>
+            </KeyboardAwareScrollView>
           </BottomSheet.Content>
         </BottomSheet.Portal>
       </BottomSheet>

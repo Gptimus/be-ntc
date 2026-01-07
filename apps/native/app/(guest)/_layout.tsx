@@ -81,6 +81,30 @@ function GuestLayout() {
           headerShown: false,
         }}
       />
+
+      <Stack.Screen
+        name="verify-email"
+        options={{
+          headerTitle: "Verify Email",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="email-input"
+        options={{
+          headerTitle: "Enter your email",
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="auth-options"
+        options={{
+          headerTitle: "Choose your authentication method",
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

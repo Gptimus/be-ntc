@@ -48,6 +48,8 @@ export const auth = {
       changeEmail: "Change email",
       checkSpam: "Check your spam folder if you don't see it.",
       otpPlaceholder: "Enter 6-digit code",
+      otpLabel: "Verification Code",
+      otpInvalid: "Code must be 6 digits",
       confirmButton: "Confirm Verification",
       verifying: "Verifying...",
       toast: {
@@ -123,6 +125,8 @@ export const auth = {
       changeEmail: "Changer d'email",
       checkSpam: "Vérifiez votre dossier spam si ne le voyez pas.",
       otpPlaceholder: "Entrez le code à 6 chiffres",
+      otpLabel: "Code de vérification",
+      otpInvalid: "Le code doit comporter 6 chiffres",
       confirmButton: "Confirmer la vérification",
       verifying: "Vérification...",
       toast: {
