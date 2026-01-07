@@ -9,16 +9,21 @@
     "dev:setup": "convex dev --configure --until-success"
   },
   "dependencies": {
-    "convex": "catalog:",
-    "better-auth": "catalog:",
-    "@convex-dev/better-auth": "catalog:",
+    "@be-ntc/transactional": "workspace:*",
     "@better-auth/expo": "catalog:",
+    "@convex-dev/better-auth": "catalog:",
+    "better-auth": "catalog:",
+    "convex": "catalog:",
+    "convex-helpers": "^0.1.108",
     "dotenv": "catalog:",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "ua-parser-js": "^2.0.7",
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@be-ntc/config": "workspace:*",
     "@types/node": "^24.3.0",
-    "typescript": "catalog:",
-    "@be-ntc/config": "workspace:*"
+    "typescript": "catalog:"
   }
 }

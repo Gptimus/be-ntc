@@ -1,0 +1,25 @@
+{
+  "extends": "../config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./emails/*"],
+      "@oza-wapi/transactional/*": ["./emails/*"]
+    },
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true
+  },
+  "include": ["emails/**/*"],
+  "exclude": ["node_modules"]
+}

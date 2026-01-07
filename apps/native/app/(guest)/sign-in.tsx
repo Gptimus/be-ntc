@@ -109,9 +109,9 @@ export default function SignInScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={showEmailInput ? ["65%"] : ["55%"]}
+            snapPoints={showEmailInput ? ["50%"] : ["55%"]}
             enablePanDownToClose={false}
-            backgroundClassName="bg-background rounded-[55px] border border-border"
+            backgroundClassName="bg-background rounded-[32px] border border-border"
             handleIndicatorClassName="bg-background w-12"
             contentContainerClassName="px-8 pt-4 pb-10"
           >

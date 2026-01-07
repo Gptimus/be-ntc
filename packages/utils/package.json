@@ -1,0 +1,28 @@
+{
+  "name": "@oza-wapi/utils",
+  "version": "0.1.0",
+  "description": "Utility functions for date, string, and currency formatting",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --tsconfig ./tsconfig.json",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch --tsconfig ./tsconfig.json",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
+  }
+}

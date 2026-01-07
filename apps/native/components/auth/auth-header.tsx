@@ -1,7 +1,7 @@
-import { Button, BottomSheet } from "heroui-native";
+import { Button, BottomSheet, cn } from "heroui-native";
 import { View, Image } from "react-native";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
-import { ArrowLeft01Icon } from "@hugeicons/core-free-icons";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import Animated, { FadeInLeft, FadeOutLeft } from "react-native-reanimated";
 
@@ -15,7 +15,12 @@ export function AuthHeader({ showEmailInput, onBackPress }: AuthHeaderProps) {
 
   return (
     <View className="mb-8">
-      <View className="flex-row items-center justify-between mb-6">
+      <View
+        className={cn(
+          "flex-row items-center justify-between mb-6",
+          showEmailInput ? "justify-end" : "justify-between"
+        )}
+      >
         {showEmailInput ? (
           <Animated.View
             key="back-button"
@@ -23,17 +28,17 @@ export function AuthHeader({ showEmailInput, onBackPress }: AuthHeaderProps) {
             exiting={FadeOutLeft.duration(300)}
           >
             <Button
-              variant="primary"
+              variant="secondary"
               size="md"
               onPress={onBackPress}
               className="rounded-full -ml-2 w-10 h-10 p-0"
               pressableFeedbackVariant="ripple"
             >
               <StyledHugeIcon
-                icon={ArrowLeft01Icon}
+                icon={Cancel01Icon}
                 size={22}
                 variant="stroke"
-                className="text-white"
+                className="text-foreground"
               />
             </Button>
           </Animated.View>
