@@ -98,7 +98,7 @@ export default function VerifyEmailScreen() {
 
     setIsVerifying(true);
     try {
-      const { data, error } = await authClient.signIn.emailOtp({
+      const { error } = await authClient.signIn.emailOtp({
         email,
         otp,
       });
