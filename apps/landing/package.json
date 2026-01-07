@@ -46,8 +46,8 @@
     "@be-ntc/config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "tailwindcss": "^4.1.10",
     "typescript": "catalog:"
   }
