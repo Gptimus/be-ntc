@@ -87,6 +87,7 @@ export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
       "http://localhost:3002",
       "https://*.be-ntc.com",
       "bentc://",
+      "bentc:///",
       "bentc://*",
       "exp://192.168.1.65:8081/",
       "exp://*/*",

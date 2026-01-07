@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { BottomSheet, useToast } from "heroui-native";
+import { BottomSheet, Spinner, useToast } from "heroui-native";
 import { useState, useCallback } from "react";
 import { ImageBackground, View, Keyboard } from "react-native";
 import { useFocusEffect } from "expo-router";
@@ -20,6 +20,7 @@ import {
   triggerHapticSuccess,
 } from "@/lib/haptics";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -121,6 +122,17 @@ export default function SignInScreen() {
         <View className="absolute inset-0 bg-background/40" />
       </ImageBackground>
 
+      {/* Loading Spinner */}
+      {isAuthenticating && (
+        <Animated.View
+          entering={FadeIn}
+          exiting={FadeOut}
+          className="absolute inset-0 items-center justify-center z-50 bg-black/20"
+        >
+          <Spinner size="lg" color="white" />
+        </Animated.View>
+      )}
+
       {/* Main Bottom Sheet */}
       <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <BottomSheet.Portal>
@@ -129,9 +141,7 @@ export default function SignInScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={
-              isAuthenticating ? ["15%"] : showEmailInput ? ["90%"] : ["55%"]
-            }
+            snapPoints={showEmailInput ? ["90%"] : ["55%"]}
             enablePanDownToClose={false}
             backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
@@ -149,6 +159,7 @@ export default function SignInScreen() {
                 onEmailPress={handleEmailPress}
                 onSocialPress={async (provider) => {
                   setIsAuthenticating(true);
+                  setIsSheetOpen(false);
                   try {
                     await authClient.signIn.social(
                       {
@@ -183,6 +194,7 @@ export default function SignInScreen() {
                     });
                   } finally {
                     setIsAuthenticating(false);
+                    setIsSheetOpen(true);
                   }
                 }}
               />

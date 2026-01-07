@@ -1,15 +1,15 @@
 import { storageHelpers } from "@/lib/storage";
-import { useConvexAuth } from "convex/react";
 import { Redirect, Stack, useSegments } from "expo-router";
 import { useThemeColor } from "heroui-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { useEffect, useState } from "react";
 
 import { FullScreenLoading } from "@/components/full-screen-loading";
+import { useSession } from "@/lib/auth-client";
 
 function GuestLayout() {
   const { t } = useLocalization();
-  const { isLoading, isAuthenticated } = useConvexAuth();
+  const { data: session, isPending } = useSession();
   const segments = useSegments();
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
     null
@@ -17,10 +17,10 @@ function GuestLayout() {
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && hasSeenOnboarding !== null) {
+    if (!isPending && hasSeenOnboarding !== null) {
       setHasLoadedOnce(true);
     }
-  }, [isLoading, hasSeenOnboarding]);
+  }, [isPending, hasSeenOnboarding]);
 
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
@@ -35,7 +35,7 @@ function GuestLayout() {
   }, []);
 
   // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
-  if ((isLoading || hasSeenOnboarding === null) && !hasLoadedOnce) {
+  if ((isPending || hasSeenOnboarding === null) && !hasLoadedOnce) {
     return (
       <FullScreenLoading
         title={t("common.loading.init.title")}
@@ -45,7 +45,7 @@ function GuestLayout() {
   }
 
   // Redirect to home if already authenticated
-  if (isAuthenticated) {
+  if (session) {
     return <Redirect href="/(protected)" />;
   }
 

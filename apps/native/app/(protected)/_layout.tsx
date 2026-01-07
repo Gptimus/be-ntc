@@ -1,5 +1,4 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useConvexAuth } from "convex/react";
 import { Link, Redirect } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useThemeColor } from "heroui-native";
@@ -9,17 +8,18 @@ import { Pressable, Text } from "react-native";
 import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLocalization } from "@/localization/hooks/use-localization";
+import { useSession } from "@/lib/auth-client";
 
 function ProtectedLayout() {
   const { t } = useLocalization();
-  const { isLoading, isAuthenticated } = useConvexAuth();
+  const { data: session, isPending } = useSession();
   const [hasLoadedOnce, setHasLoadedOnce] = React.useState(false);
 
   React.useEffect(() => {
-    if (!isLoading) {
+    if (!isPending) {
       setHasLoadedOnce(true);
     }
-  }, [isLoading]);
+  }, [isPending]);
 
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
@@ -27,7 +27,7 @@ function ProtectedLayout() {
   const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
 
   // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
-  if (isLoading && !hasLoadedOnce) {
+  if (isPending && !hasLoadedOnce) {
     return (
       <FullScreenLoading
         title={t("common.loading.auth.title")}
@@ -37,7 +37,7 @@ function ProtectedLayout() {
   }
 
   // Redirect to sign-in if not authenticated
-  if (!isAuthenticated) {
+  if (!session) {
     return <Redirect href="/(guest)" />;
   }
 
