@@ -127,7 +127,7 @@ export default function SignInScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={showEmailInput ? ["50%"] : ["55%"]}
+            snapPoints={showEmailInput ? ["90%"] : ["55%"]}
             enablePanDownToClose={false}
             backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
@@ -145,6 +145,7 @@ export default function SignInScreen() {
             ) : (
               <KeyboardAwareScrollView
                 className="w-full flex-1"
+                bottomOffset={20}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   flexGrow: 1,
