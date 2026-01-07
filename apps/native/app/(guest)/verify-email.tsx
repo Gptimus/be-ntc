@@ -187,7 +187,7 @@ export default function VerifyEmailScreen() {
               </View>
 
               {/* Email Display */}
-              <View className="mb-8 p-4 bg-surface rounded-2xl flex-row items-center gap-3">
+              <View className="mb-8 p-4 bg-primary/10 rounded-2xl flex-row items-center gap-3">
                 <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center">
                   <StyledHugeIcon
                     icon={Mail01Icon}
@@ -195,7 +195,7 @@ export default function VerifyEmailScreen() {
                     className="text-primary"
                   />
                 </View>
-                <Text className="text-base font-sans-bold text-foreground flex-1">
+                <Text className="text-base font-sans-bold text-primary flex-1">
                   {email}
                 </Text>
               </View>
