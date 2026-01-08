@@ -82,7 +82,6 @@ export function useImagePicker(
       if (shouldUpload) {
         console.log("[useImagePicker] Starting upload...");
         const storageId = await uploadFile(localUri);
-        console.log("[useImagePicker] Upload finished, storageId:", storageId);
         onSelect(storageId);
       } else {
         onSelect(localUri);
@@ -270,7 +269,7 @@ export function FormImagePicker<T extends FieldValues>({
                     <StyledHugeIcon
                       icon={Camera01Icon}
                       size={32}
-                      color="#9e19b3"
+                      className="text-primary"
                     />
                   </Animated.View>
                   <View className="items-center">
@@ -287,11 +286,11 @@ export function FormImagePicker<T extends FieldValues>({
               {isUploading && (
                 <Animated.View
                   entering={FadeIn.duration(200)}
-                  className="absolute inset-0 bg-background/60 items-center justify-center backdrop-blur-sm"
+                  className="absolute inset-0 bg-background/60 items-center justify-center"
                 >
                   <View className="bg-background px-6 py-4 rounded-3xl shadow-xl items-center gap-3">
-                    <Spinner size="lg" color="#9e19b3" />
-                    <Text className="text-foreground font-sans-medium">
+                    <Spinner size="lg" className="text-primary" />
+                    <Text className="text-foreground font-sans-medium text-center px-2">
                       {t("common.fileUpload.uploading")}
                     </Text>
                   </View>
@@ -331,7 +330,7 @@ export function FormImagePicker<T extends FieldValues>({
                         triggerHaptic();
                         setIsSheetOpen(false);
                       }}
-                      className="w-10 h-10 items-center justify-center rounded-full bg-default"
+                      className="size-10 items-center justify-center rounded-full bg-default"
                     >
                       <StyledHugeIcon
                         icon={Cancel01Icon}
@@ -370,7 +369,7 @@ export function FormImagePicker<T extends FieldValues>({
                         <StyledHugeIcon
                           icon={Image01Icon}
                           size={32}
-                          color="#b39e19"
+                          className="text-secondary"
                         />
                       </View>
                       <Text className="text-foreground font-heading-semibold text-base text-center px-2">

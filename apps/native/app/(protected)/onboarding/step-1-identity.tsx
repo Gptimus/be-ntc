@@ -73,7 +73,7 @@ export default function Step1Identity() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     reset,
   } = useForm<IdentityFormData>({
     resolver: zodResolver(schema),
@@ -160,7 +160,7 @@ export default function Step1Identity() {
     }
   };
 
-  if (isLoadingProfile) {
+  if (isLoadingProfile && !userProfile) {
     return (
       <FullScreenLoading
         title={t("common.loading.auth.title")}
@@ -271,9 +271,7 @@ export default function Step1Identity() {
         <Animated.View entering={FadeInDown.delay(200)}>
           <Button
             onPress={handleSubmit(onSubmit)}
-            size="lg"
-            className="mt-4 rounded-2xl"
-            isDisabled={isSubmitting || isAnyUploading}
+            isDisabled={isSubmitting || isAnyUploading || !isValid}
             pressableFeedbackVariant="ripple"
             pressableFeedbackRippleProps={{
               animation: {

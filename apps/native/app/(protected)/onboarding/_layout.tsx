@@ -18,7 +18,7 @@ export default function OnboardingLayout() {
     convexQuery(api.userProfiles.getUserProfile)
   );
 
-  if (isLoadingProfile) {
+  if (isLoadingProfile && !userProfile) {
     return (
       <FullScreenLoading
         title={t("common.loading.auth.title")}

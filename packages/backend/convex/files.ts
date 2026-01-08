@@ -4,7 +4,8 @@ import { mutation, query } from "./_generated/server";
 export const generateUploadUrl = mutation({
   args: {},
   handler: async (ctx) => {
-    return await ctx.storage.generateUploadUrl();
+    const generateUploadUrl = await ctx.storage.generateUploadUrl();
+    return generateUploadUrl;
   },
 });
 

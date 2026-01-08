@@ -56,7 +56,7 @@ export default function Step2Location() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     reset,
   } = useForm<LocationFormData>({
     resolver: zodResolver(schema),
@@ -163,9 +163,7 @@ export default function Step2Location() {
         <Animated.View entering={FadeInDown.delay(200)}>
           <Button
             onPress={handleSubmit(onSubmit)}
-            size="lg"
-            className="mt-4 rounded-2xl"
-            isDisabled={isSubmitting}
+            isDisabled={isSubmitting || !isValid}
             pressableFeedbackVariant="ripple"
             pressableFeedbackRippleProps={{
               animation: {

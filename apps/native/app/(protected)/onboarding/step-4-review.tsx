@@ -103,7 +103,7 @@ export default function Step4Review() {
         description={t("common.onboarding.step4.description")}
       />
       <View className="gap-4">
-        <Card className="p-4 bg-content1 rounded-2xl">
+        <Card className="p-4 bg-default rounded-2xl">
           <Text className="text-lg font-heading-medium text-primary mb-2">
             {t("common.onboarding.identity")}
           </Text>
@@ -137,7 +137,7 @@ export default function Step4Review() {
           />
         </Card>
 
-        <Card className="p-4 bg-content1 rounded-2xl">
+        <Card className="p-4 bg-default rounded-2xl">
           <Text className="text-lg font-heading-medium text-primary mb-2">
             {t("common.onboarding.location")}
           </Text>
@@ -163,7 +163,7 @@ export default function Step4Review() {
           />
         </Card>
 
-        <Card className="p-4 bg-content1 rounded-2xl">
+        <Card className="p-4 bg-default rounded-2xl">
           <Text className="text-lg font-heading-medium text-primary mb-2">
             {t("common.onboarding.preferences")}
           </Text>
@@ -186,8 +186,6 @@ export default function Step4Review() {
         <Animated.View entering={FadeInDown.delay(200)}>
           <Button
             onPress={handleSubmit}
-            size="lg"
-            className="mt-4 rounded-2xl"
             isDisabled={isSubmitting}
             pressableFeedbackVariant="ripple"
             pressableFeedbackRippleProps={{
