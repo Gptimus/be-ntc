@@ -14,10 +14,7 @@ import { authClient } from "@/lib/auth-client";
 
 import { useFonts } from "expo-font";
 
-import {
-  KeyboardAvoidingView,
-  KeyboardProvider,
-} from "react-native-keyboard-controller";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import {
   Geist_400Regular,
@@ -115,15 +112,8 @@ export default function Layout() {
           <KeyboardProvider>
             <AppThemeProvider>
               <HeroUINativeProvider>
-                <KeyboardAvoidingView
-                  pointerEvents="box-none"
-                  behavior="padding"
-                  keyboardVerticalOffset={12}
-                  className="flex-1"
-                >
-                  <StackLayout />
-                  <FloatingDevTools environment="qa" />
-                </KeyboardAvoidingView>
+                <StackLayout />
+                <FloatingDevTools environment="qa" />
               </HeroUINativeProvider>
             </AppThemeProvider>
           </KeyboardProvider>
