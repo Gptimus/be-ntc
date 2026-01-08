@@ -4,7 +4,11 @@ import { Id, Doc } from "./_generated/dataModel";
 
 export const updateUserProfile = mutation({
   args: {
-    displayName: v.optional(v.string()),
+    firstName: v.optional(v.string()),
+    lastName: v.optional(v.string()),
+    phone: v.optional(v.string()),
+    phoneCountryCode: v.optional(v.string()),
+    phoneCountryNumber: v.optional(v.string()),
     gender: v.optional(v.union(v.literal("MALE"), v.literal("FEMALE"))),
     dateOfBirth: v.optional(v.string()),
     address: v.optional(v.string()),
@@ -61,17 +65,43 @@ export const updateUserProfile = mutation({
     }
     const userId = identity.subject;
 
+    // Prepare field segregation
+    const {
+      firstName,
+      lastName,
+      phone,
+      phoneCountryCode,
+      phoneCountryNumber,
+      profileImage,
+      ...profileData
+    } = args;
+
     // Update Auth User (BetterAuth table)
     const userUpdates: Partial<Doc<"user">> = {};
-    if (args.profileImage) userUpdates.image = args.profileImage;
-    if (args.displayName) userUpdates.name = args.displayName;
+    if (profileImage) userUpdates.image = profileImage;
+    if (firstName || lastName) {
+      userUpdates.name = [firstName, lastName].filter(Boolean).join(" ");
+    }
+    if (firstName) userUpdates.firstName = firstName;
+    if (lastName) userUpdates.lastName = lastName;
+    if (phone) userUpdates.phone = phone;
+    if (phoneCountryCode) userUpdates.phoneCountryCode = phoneCountryCode;
+    if (phoneCountryNumber) userUpdates.phoneCountryNumber = phoneCountryNumber;
 
     if (Object.keys(userUpdates).length > 0) {
       await ctx.db.patch(userId as Id<"user">, userUpdates);
     }
 
-    // Prepare UserProfile updates - remove 'profileImage' as it's not in userProfiles schema
-    const { profileImage, ...userProfileArgs } = args;
+    // Construct displayName for userProfiles table if name changed
+    const userProfileUpdates: Partial<Doc<"userProfiles">> = {
+      ...profileData,
+      updatedAt: Date.now(),
+    };
+    if (firstName || lastName) {
+      userProfileUpdates.displayName = [firstName, lastName]
+        .filter(Boolean)
+        .join(" ");
+    }
 
     const existingProfile = await ctx.db
       .query("userProfiles")
@@ -79,16 +109,12 @@ export const updateUserProfile = mutation({
       .first();
 
     if (existingProfile) {
-      await ctx.db.patch(existingProfile._id, {
-        ...userProfileArgs,
-        updatedAt: Date.now(),
-      });
+      await ctx.db.patch(existingProfile._id, userProfileUpdates);
     } else {
       await ctx.db.insert("userProfiles", {
         userId,
-        ...userProfileArgs,
+        ...userProfileUpdates,
         createdAt: Date.now(),
-        updatedAt: Date.now(),
       });
     }
   },
@@ -99,13 +125,26 @@ export const getUserProfile = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      return;
+      return null;
     }
     const userId = identity.subject;
 
-    return await ctx.db
+    const user = await ctx.db.get(userId as Id<"user">);
+    const profile = await ctx.db
       .query("userProfiles")
       .withIndex("by_userId", (q) => q.eq("userId", userId))
       .unique();
+
+    if (!profile && !user) return null;
+
+    return {
+      ...(profile || {}),
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      phone: user?.phone || "",
+      phoneCountryCode: user?.phoneCountryCode || "",
+      phoneCountryNumber: user?.phoneCountryNumber || "",
+      profileImage: user?.image || "",
+    };
   },
 });

@@ -1,9 +1,9 @@
 import React from "react";
 import { useRouter } from "expo-router";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, TextField, Spinner } from "heroui-native";
+import { Button, Spinner } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { FormDatePicker } from "@/components/ui/form-date-picker";
@@ -13,6 +13,7 @@ import { FormImagePicker } from "@/components/ui/form-image-picker";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 import { View } from "react-native";
 import { FormInlineRadio } from "@/components/ui/form-inline-radio";
+import { FormTextField } from "@/components/ui/form-text-field";
 import { useAppTheme } from "@/contexts/app-theme-context";
 import { useMutation } from "convex/react";
 import { api } from "@be-ntc/backend/convex/_generated/api";
@@ -29,7 +30,9 @@ import {
 
 const createIdentitySchema = (t: (key: string) => string) =>
   z.object({
-    displayName: z.string().min(2, t("common.validation.name_required")),
+    firstName: z.string().min(2, t("common.validation.firstName_required")),
+    lastName: z.string().min(2, t("common.validation.lastName_required")),
+    phone: z.string().optional(),
     gender: z.enum(["MALE", "FEMALE"], {
       error: t("common.validation.gender_required"),
     }),
@@ -75,7 +78,9 @@ export default function Step1Identity() {
   } = useForm<IdentityFormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      displayName: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
       gender: undefined,
       dateOfBirth: undefined,
       idCardImageUri: "",
@@ -87,7 +92,13 @@ export default function Step1Identity() {
   React.useEffect(() => {
     if (userProfile) {
       reset({
-        displayName: userProfile.displayName || session?.user?.name || "",
+        firstName:
+          userProfile.firstName || session?.user?.name?.split(" ")[0] || "",
+        lastName:
+          userProfile.lastName ||
+          session?.user?.name?.split(" ").slice(1).join(" ") ||
+          "",
+        phone: userProfile.phone || "",
         gender: userProfile.gender as "MALE" | "FEMALE" | undefined,
         dateOfBirth: userProfile.dateOfBirth
           ? new Date(userProfile.dateOfBirth)
@@ -96,8 +107,10 @@ export default function Step1Identity() {
         profileImageUri: session?.user?.image || "",
       });
     } else if (session?.user?.name) {
+      const parts = session.user.name.split(" ");
       reset({
-        displayName: session.user.name,
+        firstName: parts[0] || "",
+        lastName: parts.slice(1).join(" ") || "",
       });
     }
   }, [userProfile, session, reset]);
@@ -106,7 +119,9 @@ export default function Step1Identity() {
     try {
       triggerHaptic();
       await updateUserProfile({
-        displayName: data.displayName,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
         gender: data.gender,
         dateOfBirth: data.dateOfBirth.toISOString(),
         idCardImageUrl: data.idCardImageUri,
@@ -144,6 +159,7 @@ export default function Step1Identity() {
         flexGrow: 1,
         width: "100%",
         paddingTop: insets.top + 10,
+        paddingBottom: insets.bottom + 10,
       }}
       contentContainerClassName="px-4"
     >
@@ -172,33 +188,33 @@ export default function Step1Identity() {
           </View>
         </View>
 
-        <View>
-          <Controller
+        <View className="flex-row gap-4">
+          <FormTextField
+            className="flex-1"
             control={control}
-            name="displayName"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextField isInvalid={!!errors.displayName}>
-                <TextField.Label
-                  className="text-foreground"
-                  style={{ fontFamily: "Outfit_500Medium" }}
-                >
-                  {t("common.onboarding.displayName")}
-                </TextField.Label>
-                <TextField.Input
-                  placeholder={t("common.onboarding.displayNamePlaceholder")}
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  className="rounded-xl h-12"
-                  style={{ fontFamily: "Outfit_400Regular" }}
-                />
-                <TextField.ErrorMessage className="font-sans">
-                  {errors.displayName?.message}
-                </TextField.ErrorMessage>
-              </TextField>
-            )}
+            name="firstName"
+            label={t("common.onboarding.firstName")}
+            placeholder={t("common.onboarding.firstNamePlaceholder")}
+            error={errors.firstName?.message}
+          />
+          <FormTextField
+            className="flex-1"
+            control={control}
+            name="lastName"
+            label={t("common.onboarding.lastName")}
+            placeholder={t("common.onboarding.lastNamePlaceholder")}
+            error={errors.lastName?.message}
           />
         </View>
+
+        <FormTextField
+          control={control}
+          name="phone"
+          label={t("common.onboarding.phone")}
+          placeholder={t("common.onboarding.phonePlaceholder")}
+          error={errors.phone?.message}
+          keyboardType="phone-pad"
+        />
 
         <FormDatePicker
           control={control}

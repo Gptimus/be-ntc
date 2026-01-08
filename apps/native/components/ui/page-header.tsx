@@ -20,7 +20,7 @@ export function PageHeader({
   const router = useRouter();
 
   return (
-    <Animated.View entering={FadeInDown.duration(400)} className="mb-8">
+    <Animated.View entering={FadeInDown.duration(400)} className="mb-4">
       {showBackButton && (
         <Button
           variant="ghost"

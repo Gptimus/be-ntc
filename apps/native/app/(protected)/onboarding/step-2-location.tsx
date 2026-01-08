@@ -1,15 +1,16 @@
 import React from "react";
 import { View } from "react-native";
 import { useRouter } from "expo-router";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, TextField, Spinner, useThemeColor } from "heroui-native";
+import { Button, Spinner } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 import { FormInlineRadio } from "@/components/ui/form-inline-radio";
+import { FormTextField } from "@/components/ui/form-text-field";
 import { useAppTheme } from "@/contexts/app-theme-context";
 import { useMutation } from "convex/react";
 import { api } from "@be-ntc/backend/convex/_generated/api";
@@ -105,7 +106,6 @@ export default function Step2Location() {
   }
 
   const insets = useSafeAreaInsets();
-  const backgroundColor = useThemeColor("background");
 
   return (
     <KeyboardAwareScrollView
@@ -115,7 +115,8 @@ export default function Step2Location() {
       contentContainerStyle={{
         flexGrow: 1,
         width: "100%",
-        paddingTop: insets.top + 20,
+        paddingTop: insets.top + 10,
+        paddingBottom: insets.bottom + 10,
       }}
       contentContainerClassName="px-4"
     >
@@ -123,125 +124,66 @@ export default function Step2Location() {
         title={t("common.onboarding.step2.title")}
         description={t("common.onboarding.step2.description")}
       />
-      <FormInlineRadio
-        control={control}
-        name="profileType"
-        label={t("common.onboarding.profileType")}
-        error={errors.profileType?.message}
-        options={[
-          { label: t("common.onboarding.individual"), value: "individual" },
-          { label: t("common.onboarding.enterprise"), value: "enterprise" },
-        ]}
-      />
+      <View className="gap-4">
+        <FormInlineRadio
+          control={control}
+          name="profileType"
+          label={t("common.onboarding.profileType")}
+          error={errors.profileType?.message}
+          options={[
+            { label: t("common.onboarding.individual"), value: "individual" },
+            { label: t("common.onboarding.enterprise"), value: "enterprise" },
+          ]}
+        />
 
-      <View className="mb-6">
-        <Controller
+        <FormTextField
           control={control}
           name="country"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField isInvalid={!!errors.country}>
-              <TextField.Label
-                className="text-foreground"
-                style={{ fontFamily: "Outfit_500Medium" }}
-              >
-                {t("common.onboarding.country")}
-              </TextField.Label>
-              <TextField.Input
-                placeholder={t("common.onboarding.countryPlaceholder")}
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                className="h-16 rounded-2xl"
-                style={{ fontFamily: "Outfit_400Regular" }}
-              />
-              <TextField.ErrorMessage className="font-sans">
-                {errors.country?.message}
-              </TextField.ErrorMessage>
-            </TextField>
-          )}
+          label={t("common.onboarding.country")}
+          placeholder={t("common.onboarding.countryPlaceholder")}
+          error={errors.country?.message}
         />
-      </View>
 
-      <View className="mb-6">
-        <Controller
+        <FormTextField
           control={control}
           name="city"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField isInvalid={!!errors.city}>
-              <TextField.Label
-                className="text-foreground"
-                style={{ fontFamily: "Outfit_500Medium" }}
-              >
-                {t("common.onboarding.city")}
-              </TextField.Label>
-              <TextField.Input
-                placeholder={t("common.onboarding.cityPlaceholder")}
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                className="h-16 rounded-2xl"
-                style={{ fontFamily: "Outfit_400Regular" }}
-              />
-              <TextField.ErrorMessage className="font-sans">
-                {errors.city?.message}
-              </TextField.ErrorMessage>
-            </TextField>
-          )}
+          label={t("common.onboarding.city")}
+          placeholder={t("common.onboarding.cityPlaceholder")}
+          error={errors.city?.message}
         />
-      </View>
 
-      <View className="mb-8">
-        <Controller
+        <FormTextField
           control={control}
           name="address"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField isInvalid={!!errors.address}>
-              <TextField.Label
-                className="text-foreground"
-                style={{ fontFamily: "Outfit_500Medium" }}
-              >
-                {t("common.onboarding.address")}
-              </TextField.Label>
-              <TextField.Input
-                placeholder={t("common.onboarding.addressPlaceholder")}
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                className="h-16 rounded-2xl"
-                style={{ fontFamily: "Outfit_400Regular" }}
-              />
-              <TextField.ErrorMessage className="font-sans">
-                {errors.address?.message}
-              </TextField.ErrorMessage>
-            </TextField>
-          )}
+          label={t("common.onboarding.address")}
+          placeholder={t("common.onboarding.addressPlaceholder")}
+          error={errors.address?.message}
         />
-      </View>
 
-      <Animated.View entering={FadeInDown.delay(200)}>
-        <Button
-          onPress={handleSubmit(onSubmit)}
-          size="lg"
-          className="rounded-2xl"
-          isDisabled={isSubmitting}
-          pressableFeedbackVariant="ripple"
-          pressableFeedbackRippleProps={{
-            animation: {
-              backgroundColor: { value: isLight ? "white" : "black" },
-              opacity: { value: [0, 0.3, 0] },
-            },
-          }}
-        >
-          {isSubmitting ? (
-            <Spinner
-              entering={FadeIn.delay(50)}
-              color={isLight ? "black" : "white"}
-            />
-          ) : (
-            <Button.Label>{t("common.common.next")}</Button.Label>
-          )}
-        </Button>
-      </Animated.View>
+        <Animated.View entering={FadeInDown.delay(200)}>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            size="lg"
+            className="mt-4 rounded-2xl"
+            isDisabled={isSubmitting}
+            pressableFeedbackVariant="ripple"
+            pressableFeedbackRippleProps={{
+              animation: {
+                backgroundColor: { value: isLight ? "white" : "black" },
+                opacity: { value: [0, 0.3, 0] },
+              },
+            }}
+          >
+            {isSubmitting ? (
+              <Spinner entering={FadeIn.delay(50)} color="white" />
+            ) : (
+              <Button.Label className="text-white">
+                {t("common.common.next")}
+              </Button.Label>
+            )}
+          </Button>
+        </Animated.View>
+      </View>
     </KeyboardAwareScrollView>
   );
 }

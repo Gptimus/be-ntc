@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, Spinner, useThemeColor } from "heroui-native";
+import { Button, Spinner } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -22,6 +22,7 @@ import {
   triggerHapticError,
   triggerHapticSuccess,
 } from "@/lib/haptics";
+import { View } from "react-native";
 
 const createPreferencesSchema = (t: (key: string) => string) =>
   z.object({
@@ -100,7 +101,6 @@ export default function Step3Preferences() {
   }
 
   const insets = useSafeAreaInsets();
-  const backgroundColor = useThemeColor("background");
 
   return (
     <KeyboardAwareScrollView
@@ -110,7 +110,8 @@ export default function Step3Preferences() {
       contentContainerStyle={{
         flexGrow: 1,
         width: "100%",
-        paddingTop: insets.top + 20,
+        paddingTop: insets.top + 10,
+        paddingBottom: insets.bottom + 10,
       }}
       contentContainerClassName="px-4"
     >
@@ -118,52 +119,53 @@ export default function Step3Preferences() {
         title={t("common.onboarding.step3.title")}
         description={t("common.onboarding.step3.description")}
       />
-      <FormInlineRadio
-        control={control}
-        name="preferredLanguage"
-        label={t("common.onboarding.preferredLanguage")}
-        error={errors.preferredLanguage?.message}
-        options={[
-          { label: t("common.onboarding.languages.en"), value: "en" },
-          { label: t("common.onboarding.languages.fr"), value: "fr" },
-        ]}
-      />
+      <View className="gap-4">
+        <FormInlineRadio
+          control={control}
+          name="preferredLanguage"
+          label={t("common.onboarding.preferredLanguage")}
+          error={errors.preferredLanguage?.message}
+          options={[
+            { label: t("common.onboarding.languages.en"), value: "en" },
+            { label: t("common.onboarding.languages.fr"), value: "fr" },
+          ]}
+        />
 
-      <FormInlineRadio
-        control={control}
-        name="preferredCurrency"
-        label={t("common.onboarding.preferredCurrency")}
-        error={errors.preferredCurrency?.message}
-        options={[
-          { label: "USD ($)", value: "USD" },
-          { label: "CDF (FC)", value: "CDF" },
-        ]}
-      />
+        <FormInlineRadio
+          control={control}
+          name="preferredCurrency"
+          label={t("common.onboarding.preferredCurrency")}
+          error={errors.preferredCurrency?.message}
+          options={[
+            { label: "USD ($)", value: "USD" },
+            { label: "CDF (FC)", value: "CDF" },
+          ]}
+        />
 
-      <Animated.View entering={FadeInDown.delay(200)}>
-        <Button
-          onPress={handleSubmit(onSubmit)}
-          size="lg"
-          className="rounded-2xl"
-          isDisabled={isSubmitting}
-          pressableFeedbackVariant="ripple"
-          pressableFeedbackRippleProps={{
-            animation: {
-              backgroundColor: { value: isLight ? "white" : "black" },
-              opacity: { value: [0, 0.3, 0] },
-            },
-          }}
-        >
-          {isSubmitting ? (
-            <Spinner
-              entering={FadeIn.delay(50)}
-              color={isLight ? "black" : "white"}
-            />
-          ) : (
-            <Button.Label>{t("common.common.next")}</Button.Label>
-          )}
-        </Button>
-      </Animated.View>
+        <Animated.View entering={FadeInDown.delay(200)}>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            size="lg"
+            className="mt-4 rounded-2xl"
+            isDisabled={isSubmitting}
+            pressableFeedbackVariant="ripple"
+            pressableFeedbackRippleProps={{
+              animation: {
+                backgroundColor: { value: isLight ? "white" : "black" },
+                opacity: { value: [0, 0.3, 0] },
+              },
+            }}
+          >
+            {isSubmitting ? (
+              <Spinner entering={FadeIn.delay(50)} color="white" />
+            ) : (
+              <Button.Label className="text-white">
+                {t("common.common.next")}
+              </Button.Label>
+            )}
+          </Button>
+        </Animated.View>
+      </View>
     </KeyboardAwareScrollView>
   );
 }
