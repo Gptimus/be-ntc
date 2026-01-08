@@ -7,6 +7,12 @@ import { Camera01Icon } from "@hugeicons/core-free-icons";
 import { cn, PressableFeedback, useToast, Dialog, Button } from "heroui-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { useAppTheme } from "@/contexts/app-theme-context";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
 /**
  * Hook to handle Image Picker logic
@@ -26,10 +32,13 @@ export function useImagePicker() {
     if (permissionStatus?.status !== ImagePicker.PermissionStatus.GRANTED) {
       const { status } = await requestPermission();
       if (status !== ImagePicker.PermissionStatus.GRANTED) {
+        triggerHapticError();
         setIsPermissionDialogOpen(true);
         return;
       }
     }
+
+    triggerHaptic();
 
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,10 +50,12 @@ export function useImagePicker() {
       });
 
       if (!result.canceled) {
+        triggerHapticSuccess();
         onSelect(result.assets[0].uri);
       }
     } catch (error) {
       console.error("Image picker error:", error);
+      triggerHapticError();
       toast.show({
         variant: "danger",
         label: t("common.error.generic.title"),
@@ -96,40 +107,67 @@ export function FormImagePicker<T extends FieldValues>({
             <PressableFeedback
               onPress={() => pickImage(onChange)}
               className={cn(
-                "h-48 w-full rounded-2xl border-2 border-dashed items-center justify-center overflow-hidden bg-content2",
-                error ? "border-danger" : "border-border"
+                "h-48 w-full rounded-3xl border-2 border-dashed items-center justify-center overflow-hidden bg-content1",
+                error
+                  ? "border-destructive/50 bg-destructive/5"
+                  : "border-border bg-content1"
               )}
             >
               <PressableFeedback.Ripple
                 animation={{
-                  backgroundColor: { value: isLight ? "white" : "black" },
-                  opacity: { value: [0, 0.1, 0] },
+                  backgroundColor: { value: isLight ? "black" : "white" },
+                  opacity: { value: [0, 0.05, 0] },
                   progress: { baseDuration: 600 },
                 }}
               />
               {value ? (
-                <Image
-                  source={{ uri: value }}
+                <Animated.View
+                  entering={FadeIn.duration(400)}
                   className="w-full h-full"
-                  resizeMode="cover"
-                />
-              ) : (
-                <View className="items-center justify-center gap-2">
-                  <StyledHugeIcon
-                    icon={Camera01Icon}
-                    size={32}
-                    className="text-foreground"
+                >
+                  <Image
+                    source={{ uri: value }}
+                    className="w-full h-full"
+                    resizeMode="cover"
                   />
-                  <Text className="text-muted font-sans text-sm">
-                    {t("common.imagePicker.tapToUpload")}
-                  </Text>
+                  <View className="absolute inset-0 bg-black/10 items-center justify-center">
+                    <View className="bg-background/80 px-4 py-2 rounded-full backdrop-blur-md">
+                      <Text className="text-foreground text-xs font-sans-medium">
+                        {t("common.imagePicker.changeImage")}
+                      </Text>
+                    </View>
+                  </View>
+                </Animated.View>
+              ) : (
+                <View className="items-center justify-center gap-3">
+                  <Animated.View
+                    entering={FadeInDown.delay(100)}
+                    className="w-16 h-16 rounded-full bg-primary/10 items-center justify-center"
+                  >
+                    <StyledHugeIcon
+                      icon={Camera01Icon}
+                      size={32}
+                      className="text-primary"
+                    />
+                  </Animated.View>
+                  <View className="items-center">
+                    <Text className="text-foreground font-sans-medium text-base text-center px-2">
+                      {t("common.imagePicker.tapToUpload")}
+                    </Text>
+                    <Text className="text-muted font-sans text-xs mt-1">
+                      {t("common.imagePicker.supportMsg")}
+                    </Text>
+                  </View>
                 </View>
               )}
             </PressableFeedback>
             {error && (
-              <Text className="text-danger text-sm mt-1 font-sans">
+              <Animated.Text
+                entering={FadeInDown.duration(200)}
+                className="text-destructive text-sm mt-2 px-2 font-sans"
+              >
                 {error}
-              </Text>
+              </Animated.Text>
             )}
           </View>
         )}

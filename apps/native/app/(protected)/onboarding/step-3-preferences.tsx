@@ -17,6 +17,11 @@ import { convexQuery } from "@convex-dev/react-query";
 import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ErrorState } from "@/components/ui/error-state";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
 
 const createPreferencesSchema = (t: (key: string) => string) =>
   z.object({
@@ -70,8 +75,15 @@ export default function Step3Preferences() {
   }, [userProfile, reset]);
 
   const onSubmit = async (data: PreferencesFormData) => {
-    await updateUserProfile(data);
-    router.push("/(protected)/onboarding/step-4-review");
+    try {
+      triggerHaptic();
+      await updateUserProfile(data);
+      triggerHapticSuccess();
+      router.push("/(protected)/onboarding/step-4-review");
+    } catch (err) {
+      triggerHapticError();
+      console.error("Error updating profile:", err);
+    }
   };
 
   if (isLoadingProfile) {

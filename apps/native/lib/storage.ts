@@ -1,5 +1,6 @@
 import { createMMKV } from "react-native-mmkv";
 import { registerMMKVInstance } from "@buoy-gg/storage";
+
 // Create MMKV instance
 // Encryption key should be handled securely in production
 export const storage = createMMKV({

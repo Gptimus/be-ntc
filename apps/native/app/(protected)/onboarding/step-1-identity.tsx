@@ -3,13 +3,7 @@ import { useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Button,
-  TextField,
-  RadioGroup,
-  Spinner,
-  useThemeColor,
-} from "heroui-native";
+import { Button, TextField, RadioGroup, Spinner } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { FormDatePicker } from "@/components/ui/form-date-picker";
@@ -26,6 +20,11 @@ import { convexQuery } from "@convex-dev/react-query";
 import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ErrorState } from "@/components/ui/error-state";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
 
 const createIdentitySchema = (t: (key: string) => string) =>
   z.object({
@@ -103,14 +102,21 @@ export default function Step1Identity() {
   }, [userProfile, session, reset]);
 
   const onSubmit = async (data: IdentityFormData) => {
-    await updateUserProfile({
-      displayName: data.displayName,
-      gender: data.gender,
-      dateOfBirth: data.dateOfBirth.toISOString(),
-      idCardImageUrl: data.idCardImageUri,
-      profileImage: data.profileImageUri,
-    });
-    router.push("/(protected)/onboarding/step-2-location");
+    try {
+      triggerHaptic();
+      await updateUserProfile({
+        displayName: data.displayName,
+        gender: data.gender,
+        dateOfBirth: data.dateOfBirth.toISOString(),
+        idCardImageUrl: data.idCardImageUri,
+        profileImage: data.profileImageUri,
+      });
+      triggerHapticSuccess();
+      router.push("/(protected)/onboarding/step-2-location");
+    } catch (err) {
+      triggerHapticError();
+      console.error("Error updating profile:", err);
+    }
   };
 
   if (isLoadingProfile) {
@@ -127,7 +133,6 @@ export default function Step1Identity() {
   }
 
   const insets = useSafeAreaInsets();
-  const backgroundColor = useThemeColor("background");
 
   return (
     <KeyboardAwareScrollView
@@ -137,7 +142,7 @@ export default function Step1Identity() {
       contentContainerStyle={{
         flexGrow: 1,
         width: "100%",
-        paddingTop: insets.top + 20,
+        paddingTop: insets.top,
       }}
       contentContainerClassName="px-4"
     >
@@ -182,7 +187,7 @@ export default function Step1Identity() {
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                className="h-14 rounded-2xl"
+                className="rounded-xl h-12"
                 style={{ fontFamily: "Outfit_400Regular" }}
               />
               <TextField.ErrorMessage className="font-sans">

@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import { View, Pressable, Text } from "react-native";
+import Animated, {
+  FadeInDown,
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 import DatePicker from "react-native-date-picker";
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
-import { cn, useThemeColor } from "heroui-native";
-import { useLocalization } from "@/localization/hooks/use-localization";
+import { cn } from "heroui-native";
 import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
+import { triggerHaptic, triggerHapticSuccess } from "@/lib/haptics";
+import { useLocalization } from "@/localization/hooks/use-localization";
 
 interface FormDatePickerProps<T extends FieldValues> {
   control: Control<T>;
@@ -22,51 +29,99 @@ export function FormDatePicker<T extends FieldValues>({
   error,
   placeholder,
 }: FormDatePickerProps<T>) {
-  const [open, setOpen] = useState(false);
-  const textColor = useThemeColor("foreground");
   const { t } = useLocalization();
+  const [open, setOpen] = useState(false);
   const title = placeholder || t("common.datePicker.placeholder");
+
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.98);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+  };
 
   return (
     <Controller
       control={control}
       name={name}
       render={({ field: { onChange, value } }) => (
-        <View className="mb-4">
+        <View className="mb-6">
           {label && (
             <Text
-              className="text-base text-foreground mb-1.5"
+              className="text-base text-foreground mb-2 px-1"
               style={{ fontFamily: "Outfit_500Medium" }}
             >
               {label}
             </Text>
           )}
-          <Pressable
-            onPress={() => setOpen(true)}
-            className={cn(
-              "h-14 flex-row items-center justify-between px-4 rounded-2xl border",
-              error ? "border-danger" : "border-border",
-              "bg-content2"
-            )}
-          >
-            <Text
+          <Animated.View style={animatedStyle}>
+            <Pressable
+              onPressIn={handlePressIn}
+              onPressOut={handlePressOut}
+              onPress={() => {
+                triggerHaptic();
+                setOpen(true);
+              }}
               className={cn(
-                "text-base font-sans",
-                value ? "text-foreground" : "text-muted"
+                "h-12 flex-row items-center justify-between pr-5 pl-3 rounded-xl bg-default",
+                error
+                  ? "border-destructive/50 bg-destructive/5"
+                  : "border-border bg-default"
               )}
-              style={{ fontFamily: "Outfit_400Regular" }}
             >
-              {value ? value.toLocaleDateString() : title}
-            </Text>
-            <StyledHugeIcon
-              icon={Calendar03Icon}
-              size={20}
-              className="text-muted"
-            />
-          </Pressable>
+              <View className="flex-row items-center gap-4">
+                <View
+                  className={cn(
+                    "size-8 rounded-lg items-center justify-center",
+                    value ? "bg-primary/10" : "bg-muted/10"
+                  )}
+                >
+                  <StyledHugeIcon
+                    icon={Calendar03Icon}
+                    size={18}
+                    className={value ? "text-primary" : "text-foreground"}
+                  />
+                </View>
+                <View>
+                  {!value && (
+                    <Text className="text-foreground text-xs font-sans-medium tracking-wide uppercase">
+                      {label || t("common.onboarding.dateOfBirth")}
+                    </Text>
+                  )}
+                  <Text
+                    className={cn(
+                      "text-base font-sans-medium",
+                      value ? "text-foreground" : "text-foreground/60"
+                    )}
+                  >
+                    {value ? value.toLocaleDateString() : title}
+                  </Text>
+                </View>
+              </View>
+
+              {value && (
+                <View className="bg-primary/5 px-3 py-1 rounded-full">
+                  <Text className="text-primary text-[10px] font-sans-bold uppercase">
+                    {t("common.common.selected")}
+                  </Text>
+                </View>
+              )}
+            </Pressable>
+          </Animated.View>
 
           {error && (
-            <Text className="text-danger text-sm mt-1 font-sans">{error}</Text>
+            <Animated.Text
+              entering={FadeInDown.duration(200)}
+              className="text-destructive text-sm mt-2 px-2 font-sans"
+            >
+              {error}
+            </Animated.Text>
           )}
 
           <DatePicker
@@ -78,6 +133,7 @@ export function FormDatePicker<T extends FieldValues>({
             confirmText={t("common.datePicker.confirm")}
             cancelText={t("common.datePicker.cancel")}
             onConfirm={(date) => {
+              triggerHapticSuccess();
               setOpen(false);
               onChange(date);
             }}

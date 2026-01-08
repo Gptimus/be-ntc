@@ -13,6 +13,11 @@ import { useAppTheme } from "@/contexts/app-theme-context";
 import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ErrorState } from "@/components/ui/error-state";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
 
 export default function Step4Review() {
   const router = useRouter();
@@ -31,11 +36,13 @@ export default function Step4Review() {
 
   const handleSubmit = async () => {
     try {
+      triggerHaptic();
       setIsSubmitting(true);
       // Simulate a small delay for better UX if needed
       // await new Promise(resolve => setTimeout(resolve, 500));
 
       // Just redirect to main app, layout will handle access
+      triggerHapticSuccess();
       toast.show({
         variant: "success",
         label: t("common.onboarding.success.title"),
@@ -43,6 +50,7 @@ export default function Step4Review() {
       });
       router.replace("/(protected)/(tabs)");
     } catch (error) {
+      triggerHapticError();
       console.error("Error submitting onboarding:", error);
       setIsSubmitting(false);
     }

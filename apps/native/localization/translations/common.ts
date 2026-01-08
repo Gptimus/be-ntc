@@ -53,6 +53,7 @@ export const common = {
       male: "Male",
       female: "Female",
       review: "Review",
+      selected: "Selected",
     },
     validation: {
       name_required: "Name is required",
@@ -142,6 +143,8 @@ export const common = {
     },
     imagePicker: {
       tapToUpload: "Tap to upload image",
+      supportMsg: "JPG, PNG or WEBP (Max. 5MB)",
+      changeImage: "Change Image",
       permissionRequired: "Permission required",
       permissionDenied:
         "Sorry, we need camera roll permissions to make this work!",
@@ -207,6 +210,7 @@ export const common = {
       male: "Homme",
       female: "Femme",
       review: "Revoir",
+      selected: "Sélectionné",
     },
     validation: {
       name_required: "Le nom est requis",
@@ -299,6 +303,8 @@ export const common = {
     },
     imagePicker: {
       tapToUpload: "Appuyez pour télécharger une image",
+      supportMsg: "JPG, PNG or WEBP (Max. 5Mo)",
+      changeImage: "Changer l'image",
       permissionRequired: "Permission requise",
       permissionDenied:
         "Désolé, nous avons besoin des permissions pour accéder à la galerie !",

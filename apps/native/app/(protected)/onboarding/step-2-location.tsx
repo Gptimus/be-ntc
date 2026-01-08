@@ -23,6 +23,11 @@ import { convexQuery } from "@convex-dev/react-query";
 import { FullScreenLoading } from "@/components/full-screen-loading";
 import { ErrorState } from "@/components/ui/error-state";
 import { PageHeader } from "@/components/ui/page-header";
+import {
+  triggerHaptic,
+  triggerHapticError,
+  triggerHapticSuccess,
+} from "@/lib/haptics";
 
 const createLocationSchema = (t: (key: string) => string) =>
   z.object({
@@ -80,8 +85,15 @@ export default function Step2Location() {
   }, [userProfile, reset]);
 
   const onSubmit = async (data: LocationFormData) => {
-    await updateUserProfile(data);
-    router.push("/(protected)/onboarding/step-3-preferences");
+    try {
+      triggerHaptic();
+      await updateUserProfile(data);
+      triggerHapticSuccess();
+      router.push("/(protected)/onboarding/step-3-preferences");
+    } catch (err) {
+      triggerHapticError();
+      console.error("Error updating profile:", err);
+    }
   };
 
   if (isLoadingProfile) {
@@ -163,7 +175,7 @@ export default function Step2Location() {
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                className="h-14 rounded-2xl"
+                className="h-16 rounded-2xl"
                 style={{ fontFamily: "Outfit_400Regular" }}
               />
               <TextField.ErrorMessage className="font-sans">
@@ -191,7 +203,7 @@ export default function Step2Location() {
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                className="h-14 rounded-2xl"
+                className="h-16 rounded-2xl"
                 style={{ fontFamily: "Outfit_400Regular" }}
               />
               <TextField.ErrorMessage className="font-sans">
@@ -219,7 +231,7 @@ export default function Step2Location() {
                 value={value}
                 onBlur={onBlur}
                 onChangeText={onChange}
-                className="h-14 rounded-2xl"
+                className="h-16 rounded-2xl"
                 style={{ fontFamily: "Outfit_400Regular" }}
               />
               <TextField.ErrorMessage className="font-sans">
