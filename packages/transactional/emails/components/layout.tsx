@@ -28,7 +28,7 @@ export const EmailLayout = ({ preview, children }: EmailLayoutProps) => (
       <Container style={container}>
         <Section style={box}>
           <Img
-            src="https://www.be-ntc.com/images/logo-fit.webp"
+            src="https://www.be-ntc.com/images/logo-fit.png"
             width="30"
             height="30"
             alt="Be-ntc"
