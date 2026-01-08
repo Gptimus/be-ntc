@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, TextField, RadioGroup, Spinner } from "heroui-native";
+import { Button, TextField, Spinner } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { FormDatePicker } from "@/components/ui/form-date-picker";
@@ -12,6 +12,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { FormImagePicker } from "@/components/ui/form-image-picker";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 import { View } from "react-native";
+import { FormInlineRadio } from "@/components/ui/form-inline-radio";
 import { useAppTheme } from "@/contexts/app-theme-context";
 import { useMutation } from "convex/react";
 import { api } from "@be-ntc/backend/convex/_generated/api";
@@ -142,7 +143,7 @@ export default function Step1Identity() {
       contentContainerStyle={{
         flexGrow: 1,
         width: "100%",
-        paddingTop: insets.top,
+        paddingTop: insets.top + 10,
       }}
       contentContainerClassName="px-4"
     >
@@ -151,110 +152,96 @@ export default function Step1Identity() {
         description={t("common.onboarding.step1.description")}
         showBackButton={false}
       />
-      <View className="mb-6 flex-row gap-4">
-        <View className="flex-1">
-          <FormImagePicker
-            control={control}
-            name="profileImageUri"
-            label={t("common.onboarding.profileImage")}
-            error={errors.profileImageUri?.message}
-          />
+      <View className="gap-4">
+        <View className="flex-row gap-4">
+          <View className="flex-1">
+            <FormImagePicker
+              control={control}
+              name="profileImageUri"
+              label={t("common.onboarding.profileImage")}
+              error={errors.profileImageUri?.message}
+            />
+          </View>
+          <View className="flex-1">
+            <FormImagePicker
+              control={control}
+              name="idCardImageUri"
+              label={t("common.onboarding.idCardImage")}
+              error={errors.idCardImageUri?.message}
+            />
+          </View>
         </View>
-        <View className="flex-1">
-          <FormImagePicker
-            control={control}
-            name="idCardImageUri"
-            label={t("common.onboarding.idCardImage")}
-            error={errors.idCardImageUri?.message}
-          />
-        </View>
-      </View>
 
-      <View className="mb-6">
-        <Controller
+        <View>
+          <Controller
+            control={control}
+            name="displayName"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextField isInvalid={!!errors.displayName}>
+                <TextField.Label
+                  className="text-foreground"
+                  style={{ fontFamily: "Outfit_500Medium" }}
+                >
+                  {t("common.onboarding.displayName")}
+                </TextField.Label>
+                <TextField.Input
+                  placeholder={t("common.onboarding.displayNamePlaceholder")}
+                  value={value}
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  className="rounded-xl h-12"
+                  style={{ fontFamily: "Outfit_400Regular" }}
+                />
+                <TextField.ErrorMessage className="font-sans">
+                  {errors.displayName?.message}
+                </TextField.ErrorMessage>
+              </TextField>
+            )}
+          />
+        </View>
+
+        <FormDatePicker
           control={control}
-          name="displayName"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextField isInvalid={!!errors.displayName}>
-              <TextField.Label
-                className="text-foreground"
-                style={{ fontFamily: "Outfit_500Medium" }}
-              >
-                {t("common.onboarding.displayName")}
-              </TextField.Label>
-              <TextField.Input
-                placeholder={t("common.onboarding.displayNamePlaceholder")}
-                value={value}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                className="rounded-xl h-12"
-                style={{ fontFamily: "Outfit_400Regular" }}
-              />
-              <TextField.ErrorMessage className="font-sans">
-                {errors.displayName?.message}
-              </TextField.ErrorMessage>
-            </TextField>
-          )}
+          name="dateOfBirth"
+          label={t("common.onboarding.dateOfBirth")}
+          error={errors.dateOfBirth?.message as string}
         />
-      </View>
 
-      <FormDatePicker
-        control={control}
-        name="dateOfBirth"
-        label={t("common.onboarding.dateOfBirth")}
-        error={errors.dateOfBirth?.message as string}
-      />
-
-      <View className="mb-8">
-        <Controller
+        <FormInlineRadio
           control={control}
           name="gender"
-          render={({ field: { onChange, value } }) => (
-            <RadioGroup
-              value={value}
-              onValueChange={onChange}
-              isInvalid={!!errors.gender}
-            >
-              <RadioGroup.Item value="MALE">
-                <RadioGroup.Label>{t("common.common.male")}</RadioGroup.Label>
-              </RadioGroup.Item>
-              <RadioGroup.Item value="FEMALE">
-                <RadioGroup.Label>{t("common.common.female")}</RadioGroup.Label>
-              </RadioGroup.Item>
-              {errors.gender && (
-                <RadioGroup.ErrorMessage>
-                  {errors.gender.message}
-                </RadioGroup.ErrorMessage>
-              )}
-            </RadioGroup>
-          )}
+          label={t("common.onboarding.gender")}
+          error={errors.gender?.message}
+          options={[
+            { label: t("common.common.male"), value: "MALE" },
+            { label: t("common.common.female"), value: "FEMALE" },
+          ]}
         />
-      </View>
 
-      <Animated.View entering={FadeInDown.delay(200)}>
-        <Button
-          onPress={handleSubmit(onSubmit)}
-          size="lg"
-          className="mt-4 rounded-2xl"
-          isDisabled={isSubmitting}
-          pressableFeedbackVariant="ripple"
-          pressableFeedbackRippleProps={{
-            animation: {
-              backgroundColor: { value: isLight ? "white" : "black" },
-              opacity: { value: [0, 0.3, 0] },
-            },
-          }}
-        >
-          {isSubmitting ? (
-            <Spinner
-              entering={FadeIn.delay(50)}
-              color={isLight ? "black" : "white"}
-            />
-          ) : (
-            <Button.Label>{t("common.common.next")}</Button.Label>
-          )}
-        </Button>
-      </Animated.View>
+        <Animated.View entering={FadeInDown.delay(200)}>
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            size="lg"
+            className="mt-4 rounded-2xl"
+            isDisabled={isSubmitting}
+            pressableFeedbackVariant="ripple"
+            pressableFeedbackRippleProps={{
+              animation: {
+                backgroundColor: { value: isLight ? "white" : "black" },
+                opacity: { value: [0, 0.3, 0] },
+              },
+            }}
+          >
+            {isSubmitting ? (
+              <Spinner entering={FadeIn.delay(50)} color="white" />
+            ) : (
+              <Button.Label className="text-white">
+                {t("common.common.next")}
+              </Button.Label>
+            )}
+          </Button>
+        </Animated.View>
+      </View>
     </KeyboardAwareScrollView>
   );
 }

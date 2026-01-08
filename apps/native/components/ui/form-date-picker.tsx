@@ -13,6 +13,7 @@ import { StyledHugeIcon } from "@/components/ui/styled-huge-icon";
 import { Calendar03Icon } from "@hugeicons/core-free-icons";
 import { triggerHaptic, triggerHapticSuccess } from "@/lib/haptics";
 import { useLocalization } from "@/localization/hooks/use-localization";
+import { useAppTheme } from "@/contexts/app-theme-context";
 
 interface FormDatePickerProps<T extends FieldValues> {
   control: Control<T>;
@@ -32,6 +33,7 @@ export function FormDatePicker<T extends FieldValues>({
   const { t } = useLocalization();
   const [open, setOpen] = useState(false);
   const title = placeholder || t("common.datePicker.placeholder");
+  const { isLight } = useAppTheme();
 
   const scale = useSharedValue(1);
   const animatedStyle = useAnimatedStyle(() => ({
@@ -51,7 +53,7 @@ export function FormDatePicker<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field: { onChange, value } }) => (
-        <View className="mb-6">
+        <View>
           {label && (
             <Text
               className="text-base text-foreground mb-2 px-1"
@@ -140,7 +142,7 @@ export function FormDatePicker<T extends FieldValues>({
             onCancel={() => {
               setOpen(false);
             }}
-            theme="auto"
+            theme={isLight ? "light" : "dark"}
             // textColor={textColor}
           />
         </View>

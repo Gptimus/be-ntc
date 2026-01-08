@@ -4,17 +4,12 @@ import { useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Button,
-  TextField,
-  RadioGroup,
-  Spinner,
-  useThemeColor,
-} from "heroui-native";
+import { Button, TextField, Spinner, useThemeColor } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
+import { FormInlineRadio } from "@/components/ui/form-inline-radio";
 import { useAppTheme } from "@/contexts/app-theme-context";
 import { useMutation } from "convex/react";
 import { api } from "@be-ntc/backend/convex/_generated/api";
@@ -128,35 +123,16 @@ export default function Step2Location() {
         title={t("common.onboarding.step2.title")}
         description={t("common.onboarding.step2.description")}
       />
-      <View className="mb-6">
-        <Controller
-          control={control}
-          name="profileType"
-          render={({ field: { onChange, value } }) => (
-            <RadioGroup
-              value={value}
-              onValueChange={onChange}
-              isInvalid={!!errors.profileType}
-            >
-              <RadioGroup.Item value="individual">
-                <RadioGroup.Label>
-                  {t("common.onboarding.individual")}
-                </RadioGroup.Label>
-              </RadioGroup.Item>
-              <RadioGroup.Item value="enterprise">
-                <RadioGroup.Label>
-                  {t("common.onboarding.enterprise")}
-                </RadioGroup.Label>
-              </RadioGroup.Item>
-              {errors.profileType && (
-                <RadioGroup.ErrorMessage>
-                  {errors.profileType.message}
-                </RadioGroup.ErrorMessage>
-              )}
-            </RadioGroup>
-          )}
-        />
-      </View>
+      <FormInlineRadio
+        control={control}
+        name="profileType"
+        label={t("common.onboarding.profileType")}
+        error={errors.profileType?.message}
+        options={[
+          { label: t("common.onboarding.individual"), value: "individual" },
+          { label: t("common.onboarding.enterprise"), value: "enterprise" },
+        ]}
+      />
 
       <View className="mb-6">
         <Controller

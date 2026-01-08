@@ -1,15 +1,15 @@
 import React from "react";
-import { View } from "react-native";
 import { useRouter } from "expo-router";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button, RadioGroup, Spinner, useThemeColor } from "heroui-native";
+import { Button, Spinner, useThemeColor } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 import { useAppTheme } from "@/contexts/app-theme-context";
+import { FormInlineRadio } from "@/components/ui/form-inline-radio";
 import { useMutation } from "convex/react";
 import { api } from "@be-ntc/backend/convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
@@ -118,61 +118,27 @@ export default function Step3Preferences() {
         title={t("common.onboarding.step3.title")}
         description={t("common.onboarding.step3.description")}
       />
-      <View className="mb-8">
-        <Controller
-          control={control}
-          name="preferredLanguage"
-          render={({ field: { onChange, value } }) => (
-            <RadioGroup
-              value={value}
-              onValueChange={onChange}
-              isInvalid={!!errors.preferredLanguage}
-            >
-              <RadioGroup.Item value="en">
-                <RadioGroup.Label>
-                  {t("common.onboarding.languages.en")}
-                </RadioGroup.Label>
-              </RadioGroup.Item>
-              <RadioGroup.Item value="fr">
-                <RadioGroup.Label>
-                  {t("common.onboarding.languages.fr")}
-                </RadioGroup.Label>
-              </RadioGroup.Item>
-              {errors.preferredLanguage && (
-                <RadioGroup.ErrorMessage>
-                  {errors.preferredLanguage.message}
-                </RadioGroup.ErrorMessage>
-              )}
-            </RadioGroup>
-          )}
-        />
-      </View>
+      <FormInlineRadio
+        control={control}
+        name="preferredLanguage"
+        label={t("common.onboarding.preferredLanguage")}
+        error={errors.preferredLanguage?.message}
+        options={[
+          { label: t("common.onboarding.languages.en"), value: "en" },
+          { label: t("common.onboarding.languages.fr"), value: "fr" },
+        ]}
+      />
 
-      <View className="mb-8">
-        <Controller
-          control={control}
-          name="preferredCurrency"
-          render={({ field: { onChange, value } }) => (
-            <RadioGroup
-              value={value}
-              onValueChange={onChange}
-              isInvalid={!!errors.preferredCurrency}
-            >
-              <RadioGroup.Item value="USD">
-                <RadioGroup.Label>USD ($)</RadioGroup.Label>
-              </RadioGroup.Item>
-              <RadioGroup.Item value="CDF">
-                <RadioGroup.Label>CDF (FC)</RadioGroup.Label>
-              </RadioGroup.Item>
-              {errors.preferredCurrency && (
-                <RadioGroup.ErrorMessage>
-                  {errors.preferredCurrency.message}
-                </RadioGroup.ErrorMessage>
-              )}
-            </RadioGroup>
-          )}
-        />
-      </View>
+      <FormInlineRadio
+        control={control}
+        name="preferredCurrency"
+        label={t("common.onboarding.preferredCurrency")}
+        error={errors.preferredCurrency?.message}
+        options={[
+          { label: "USD ($)", value: "USD" },
+          { label: "CDF (FC)", value: "CDF" },
+        ]}
+      />
 
       <Animated.View entering={FadeInDown.delay(200)}>
         <Button
