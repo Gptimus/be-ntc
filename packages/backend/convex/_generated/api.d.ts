@@ -13,6 +13,7 @@ import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
 import type * as privateData from "../privateData.js";
 import type * as triggers from "../triggers.js";
+import type * as userProfiles from "../userProfiles.js";
 import type * as utils_emailHooks from "../utils/emailHooks.js";
 
 import type {
@@ -27,6 +28,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   privateData: typeof privateData;
   triggers: typeof triggers;
+  userProfiles: typeof userProfiles;
   "utils/emailHooks": typeof utils_emailHooks;
 }>;
 

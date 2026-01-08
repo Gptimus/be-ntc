@@ -46,7 +46,7 @@ function GuestLayout() {
 
   // Redirect to home if already authenticated
   if (session) {
-    return <Redirect href="/(protected)" />;
+    return <Redirect href="/(protected)/(tabs)" />;
   }
 
   // Redirect to sign-in if onboarding was already seen and we are on the index

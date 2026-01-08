@@ -4,6 +4,10 @@ import { ConvexReactClient } from "convex/react";
 import { SplashScreen, Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { FloatingDevTools } from "@buoy-gg/core";
+
+import { ConvexQueryClient } from "@convex-dev/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
@@ -53,6 +57,16 @@ const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
 const convex = new ConvexReactClient(convexUrl, {
   unsavedChangesWarning: false,
 });
+const convexQueryClient = new ConvexQueryClient(convex);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryKeyHashFn: convexQueryClient.hashFn(),
+      queryFn: convexQueryClient.queryFn(),
+    },
+  },
+});
+convexQueryClient.connect(queryClient);
 
 function StackLayout() {
   return (
@@ -95,23 +109,26 @@ export default function Layout() {
   }
 
   return (
-    <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider>
-          <AppThemeProvider>
-            <HeroUINativeProvider>
-              <KeyboardAvoidingView
-                pointerEvents="box-none"
-                behavior="padding"
-                keyboardVerticalOffset={12}
-                className="flex-1"
-              >
-                <StackLayout />
-              </KeyboardAvoidingView>
-            </HeroUINativeProvider>
-          </AppThemeProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
-    </ConvexBetterAuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConvexBetterAuthProvider client={convex} authClient={authClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardProvider>
+            <AppThemeProvider>
+              <HeroUINativeProvider>
+                <KeyboardAvoidingView
+                  pointerEvents="box-none"
+                  behavior="padding"
+                  keyboardVerticalOffset={12}
+                  className="flex-1"
+                >
+                  <StackLayout />
+                  <FloatingDevTools environment="qa" />
+                </KeyboardAvoidingView>
+              </HeroUINativeProvider>
+            </AppThemeProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </ConvexBetterAuthProvider>
+    </QueryClientProvider>
   );
 }

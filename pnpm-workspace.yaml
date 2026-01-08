@@ -12,6 +12,8 @@ catalog:
   zod: 4.2.1
 
 onlyBuiltDependencies:
+  - '@buoy-gg/highlight-updates'
+  - '@buoy-gg/shared-ui'
   - '@parcel/watcher'
   - '@swc/core'
   - esbuild

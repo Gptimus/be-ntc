@@ -25,5 +25,8 @@
     "turbo": "^2.6.3",
     "typescript": "catalog:"
   },
-  "packageManager": "pnpm@10.15.0"
+  "packageManager": "pnpm@10.15.0",
+  "patchedDependencies": {
+    "react-native-date-picker@5.0.13": "patches/react-native-date-picker@5.0.13.patch"
+  }
 }
