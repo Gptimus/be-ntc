@@ -14,7 +14,7 @@ export default function Home() {
     <Container className="p-6">
       <View className="py-4 mb-6">
         <Text className="text-4xl font-bold font-heading-bold text-foreground mb-2">
-          BETTER T STACK````
+          BETTER T STACK
         </Text>
       </View>
 

@@ -115,8 +115,6 @@ export default function VerifyEmailScreen() {
       }
 
       triggerHapticSuccess();
-      setIsSheetOpen(false);
-      router.replace("/(protected)");
     } catch (error) {
       triggerHapticError();
       toast.show({
@@ -205,7 +203,7 @@ export default function VerifyEmailScreen() {
                 <TextField>
                   <TextField.Label
                     className="text-sans text-foreground"
-                    style={{ fontFamily: "Geist_500Medium" }}
+                    style={{ fontFamily: "Outfit_500Medium" }}
                   >
                     {t("auth.verifyEmail.otpLabel")}
                   </TextField.Label>
@@ -217,9 +215,9 @@ export default function VerifyEmailScreen() {
                     maxLength={6}
                     autoFocus
                     className="text-center text-2xl font-heading-bold tracking-[10px]"
-                    style={{ fontFamily: "Geist_700Bold" }}
+                    style={{ fontFamily: "Outfit_700Bold" }}
                   />
-                  <TextField.ErrorMessage>
+                  <TextField.ErrorMessage className="font-sans">
                     {otp.length > 0 && otp.length < 6
                       ? t("auth.verifyEmail.otpInvalid")
                       : ""}
