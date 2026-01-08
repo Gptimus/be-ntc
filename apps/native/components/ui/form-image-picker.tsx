@@ -205,6 +205,11 @@ export function FormImagePicker<T extends FieldValues>({
   const { t } = useLocalization();
   const { isLight } = useAppTheme();
 
+  useEffect(() => {
+    console.log(`[FormImagePicker] MOUNTED: ${name}`);
+    return () => console.log(`[FormImagePicker] UNMOUNTED: ${name}`);
+  }, [name]);
+
   return (
     <>
       <Controller

@@ -176,6 +176,8 @@ export const common = {
       error: {
         title: "Upload Failed",
         description: "We couldn't upload your file. Please try again.",
+        alreadyUploading: "An upload is already in progress.",
+        offline: "You are offline. Please check your connection.",
       },
     },
   },
@@ -362,6 +364,8 @@ export const common = {
         title: "Échec du téléchargement",
         description:
           "Nous n'avons pas pu télécharger votre fichier. Veuillez réessayer.",
+        alreadyUploading: "Un téléchargement est déjà en cours.",
+        offline: "Vous êtes hors ligne. Veuillez vérifier votre connexion.",
       },
     },
   },
