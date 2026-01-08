@@ -18,6 +18,7 @@ interface FormInlineRadioProps<T extends FieldValues> {
   options: RadioOption[];
   error?: string;
   className?: string;
+  isDisabled?: boolean;
 }
 
 export function FormInlineRadio<T extends FieldValues>({
@@ -28,6 +29,7 @@ export function FormInlineRadio<T extends FieldValues>({
   options,
   error,
   className,
+  isDisabled = false,
 }: FormInlineRadioProps<T>) {
   return (
     <View className={cn(className)}>
@@ -52,14 +54,21 @@ export function FormInlineRadio<T extends FieldValues>({
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => (
-          <Surface className="w-full p-2 bg-default rounded-xl">
+          <Surface
+            className={cn(
+              "w-full p-2 bg-default rounded-xl",
+              isDisabled && "opacity-50"
+            )}
+          >
             <RadioGroup
               value={value}
               onValueChange={(val) => {
+                if (isDisabled) return;
                 triggerHaptic();
                 onChange(val);
               }}
               isInvalid={!!error}
+              isDisabled={isDisabled}
               className="flex-row gap-2"
             >
               {options.map((option) => (

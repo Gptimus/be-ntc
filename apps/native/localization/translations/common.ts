@@ -155,11 +155,28 @@ export const common = {
       permissionDenied:
         "Sorry, we need camera roll permissions to make this work!",
       openSettings: "Open Settings",
+      selectSource: "Select Source",
+      takePhoto: "Take Photo",
+      fromGallery: "Photo Library",
+      optimizationInfo:
+        "Images will be automatically optimized for better performance.",
     },
     datePicker: {
       placeholder: "Select date",
       cancel: "Cancel",
       confirm: "Confirm",
+    },
+    fileUpload: {
+      uploading: "Uploading Image",
+      pleaseWait: "Please wait while we secure your file...",
+      success: {
+        title: "Upload Successful",
+        description: "Your file has been saved to our secure storage.",
+      },
+      error: {
+        title: "Upload Failed",
+        description: "We couldn't upload your file. Please try again.",
+      },
     },
   },
   fr: {
@@ -321,11 +338,31 @@ export const common = {
       permissionDenied:
         "Désolé, nous avons besoin des permissions pour accéder à la galerie !",
       openSettings: "Ouvrir les paramètres",
+      selectSource: "Choisir la source",
+      takePhoto: "Prendre une photo",
+      fromGallery: "Galerie photos",
+      optimizationInfo:
+        "Les images seront automatiquement optimisées pour de meilleures performances.",
     },
     datePicker: {
       placeholder: "Sélectionner une date",
       cancel: "Annuler",
       confirm: "Confirmer",
+    },
+    fileUpload: {
+      uploading: "Téléchargement de l'image",
+      pleaseWait:
+        "Veuillez patienter pendant que nous sécurisons votre fichier...",
+      success: {
+        title: "Téléchargement réussi",
+        description:
+          "Votre fichier a été enregistré dans notre stockage sécurisé.",
+      },
+      error: {
+        title: "Échec du téléchargement",
+        description:
+          "Nous n'avons pas pu télécharger votre fichier. Veuillez réessayer.",
+      },
     },
   },
 };

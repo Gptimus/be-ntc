@@ -21,6 +21,7 @@ interface FormDatePickerProps<T extends FieldValues> {
   label?: string;
   error?: string;
   placeholder?: string;
+  isDisabled?: boolean;
 }
 
 export function FormDatePicker<T extends FieldValues>({
@@ -29,6 +30,7 @@ export function FormDatePicker<T extends FieldValues>({
   label,
   error,
   placeholder,
+  isDisabled = false,
 }: FormDatePickerProps<T>) {
   const { t } = useLocalization();
   const [open, setOpen] = useState(false);

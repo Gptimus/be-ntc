@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -88,8 +88,33 @@ export default function Step1Identity() {
     },
   });
 
+  const [uploadingFields, setUploadingFields] = useState<
+    Record<string, boolean>
+  >({});
+  const isAnyUploading = Object.values(uploadingFields).some((v) => v);
+
+  const handleProfileImageUploadingChange = useCallback(
+    (isUploading: boolean) => {
+      setUploadingFields((prev) => {
+        if (prev.profileImageUri === isUploading) return prev;
+        return { ...prev, profileImageUri: isUploading };
+      });
+    },
+    []
+  );
+
+  const handleIdCardImageUploadingChange = useCallback(
+    (isUploading: boolean) => {
+      setUploadingFields((prev) => {
+        if (prev.idCardImageUri === isUploading) return prev;
+        return { ...prev, idCardImageUri: isUploading };
+      });
+    },
+    []
+  );
+
   // Effect to reset form when userProfile is loaded
-  React.useEffect(() => {
+  useEffect(() => {
     if (userProfile) {
       reset({
         firstName:
@@ -176,6 +201,8 @@ export default function Step1Identity() {
               name="profileImageUri"
               label={t("common.onboarding.profileImage")}
               error={errors.profileImageUri?.message}
+              isDisabled={isAnyUploading}
+              onUploadingChange={handleProfileImageUploadingChange}
             />
           </View>
           <View className="flex-1">
@@ -184,6 +211,8 @@ export default function Step1Identity() {
               name="idCardImageUri"
               label={t("common.onboarding.idCardImage")}
               error={errors.idCardImageUri?.message}
+              isDisabled={isAnyUploading}
+              onUploadingChange={handleIdCardImageUploadingChange}
             />
           </View>
         </View>
@@ -196,6 +225,7 @@ export default function Step1Identity() {
             label={t("common.onboarding.firstName")}
             placeholder={t("common.onboarding.firstNamePlaceholder")}
             error={errors.firstName?.message}
+            isDisabled={isAnyUploading}
           />
           <FormTextField
             className="flex-1"
@@ -204,6 +234,7 @@ export default function Step1Identity() {
             label={t("common.onboarding.lastName")}
             placeholder={t("common.onboarding.lastNamePlaceholder")}
             error={errors.lastName?.message}
+            isDisabled={isAnyUploading}
           />
         </View>
 
@@ -214,6 +245,7 @@ export default function Step1Identity() {
           placeholder={t("common.onboarding.phonePlaceholder")}
           error={errors.phone?.message}
           keyboardType="phone-pad"
+          isDisabled={isAnyUploading}
         />
 
         <FormDatePicker
@@ -221,6 +253,7 @@ export default function Step1Identity() {
           name="dateOfBirth"
           label={t("common.onboarding.dateOfBirth")}
           error={errors.dateOfBirth?.message as string}
+          isDisabled={isAnyUploading}
         />
 
         <FormInlineRadio
@@ -228,6 +261,7 @@ export default function Step1Identity() {
           name="gender"
           label={t("common.onboarding.gender")}
           error={errors.gender?.message}
+          isDisabled={isAnyUploading}
           options={[
             { label: t("common.common.male"), value: "MALE" },
             { label: t("common.common.female"), value: "FEMALE" },
@@ -239,7 +273,7 @@ export default function Step1Identity() {
             onPress={handleSubmit(onSubmit)}
             size="lg"
             className="mt-4 rounded-2xl"
-            isDisabled={isSubmitting}
+            isDisabled={isSubmitting || isAnyUploading}
             pressableFeedbackVariant="ripple"
             pressableFeedbackRippleProps={{
               animation: {
@@ -249,7 +283,7 @@ export default function Step1Identity() {
             }}
           >
             {isSubmitting ? (
-              <Spinner entering={FadeIn.delay(50)} color="white" />
+              <Spinner entering={FadeIn.delay(50)} color="#ffffff" />
             ) : (
               <Button.Label className="text-white">
                 {t("common.common.next")}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -65,7 +65,7 @@ export default function Step3Preferences() {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userProfile) {
       reset({
         preferredLanguage: userProfile.preferredLanguage || "en",

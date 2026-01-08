@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { useForm } from "react-hook-form";
@@ -68,7 +68,7 @@ export default function Step2Location() {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (userProfile) {
       reset({
         profileType:

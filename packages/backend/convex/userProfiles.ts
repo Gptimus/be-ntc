@@ -137,6 +137,28 @@ export const getUserProfile = query({
 
     if (!profile && !user) return null;
 
+    const profileImage = user?.image;
+    let profileImageUrl = profileImage;
+    if (profileImage && !profileImage.startsWith("http")) {
+      try {
+        const url = await ctx.storage.getUrl(profileImage as Id<"_storage">);
+        if (url) profileImageUrl = url;
+      } catch {
+        // Not a storage ID or error
+      }
+    }
+
+    const idCardImage = profile?.idCardImageUrl;
+    let idCardImageUrl = idCardImage;
+    if (idCardImage && !idCardImage.startsWith("http")) {
+      try {
+        const url = await ctx.storage.getUrl(idCardImage as Id<"_storage">);
+        if (url) idCardImageUrl = url;
+      } catch {
+        // Not a storage ID or error
+      }
+    }
+
     return {
       ...(profile || {}),
       firstName: user?.firstName || "",
@@ -144,7 +166,8 @@ export const getUserProfile = query({
       phone: user?.phone || "",
       phoneCountryCode: user?.phoneCountryCode || "",
       phoneCountryNumber: user?.phoneCountryNumber || "",
-      profileImage: user?.image || "",
+      profileImage: profileImageUrl || "",
+      idCardImageUrl: idCardImageUrl || undefined,
     };
   },
 });

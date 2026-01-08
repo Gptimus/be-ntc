@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { useRouter } from "expo-router";
 import { Button, useToast, Card, Spinner } from "heroui-native";
@@ -32,7 +32,7 @@ export default function Step4Review() {
     refetch,
   } = useQuery(convexQuery(api.userProfiles.getUserProfile));
 
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     try {

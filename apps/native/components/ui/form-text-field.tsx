@@ -14,6 +14,7 @@ interface FormTextFieldProps<T extends FieldValues> {
   secureTextEntry?: boolean;
   keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
+  isDisabled?: boolean;
 }
 
 export function FormTextField<T extends FieldValues>({
@@ -26,6 +27,7 @@ export function FormTextField<T extends FieldValues>({
   secureTextEntry,
   keyboardType = "default",
   autoCapitalize = "sentences",
+  isDisabled = false,
 }: FormTextFieldProps<T>) {
   return (
     <View className={cn(className)}>
@@ -33,7 +35,7 @@ export function FormTextField<T extends FieldValues>({
         control={control}
         name={name}
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextField isInvalid={!!error}>
+          <TextField isInvalid={!!error} isDisabled={isDisabled}>
             <TextField.Label
               className="text-foreground"
               style={{ fontFamily: "Outfit_500Medium" }}
@@ -49,6 +51,7 @@ export function FormTextField<T extends FieldValues>({
               keyboardType={keyboardType}
               autoCapitalize={autoCapitalize}
               className="rounded-xl h-12"
+              editable={!isDisabled}
               style={{ fontFamily: "Outfit_400Regular" }}
             />
             <TextField.ErrorMessage className="font-sans">
