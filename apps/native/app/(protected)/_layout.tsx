@@ -1,21 +1,19 @@
-import { Redirect, Slot, useSegments } from "expo-router";
-import { useThemeColor } from "heroui-native";
-import React, { useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@be-ntc/backend/convex/_generated/api";
-
 import { FullScreenLoading } from "@/components/full-screen-loading";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { ErrorState } from "@/components/ui/error-state";
 import { useLocalization } from "@/localization/hooks/use-localization";
-import { useSession } from "@/lib/auth-client";
+import { api } from "@be-ntc/backend/convex/_generated/api";
 import { convexQuery } from "@convex-dev/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useConvexAuth } from "convex/react";
+import { Redirect, Slot, useSegments } from "expo-router";
+import React from "react";
 
 function ProtectedLayout() {
   const { t } = useLocalization();
-  const { data: session, isPending } = useSession();
   const [hasLoadedOnce, setHasLoadedOnce] = React.useState(false);
   const segments = useSegments();
+
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
   // Load user profile to check if configured
   const {
@@ -26,19 +24,19 @@ function ProtectedLayout() {
   } = useQuery(convexQuery(api.userProfiles.getUserProfile));
 
   React.useEffect(() => {
-    if (!isPending) {
+    if (!isLoading) {
       setHasLoadedOnce(true);
     }
-  }, [isPending]);
+  }, [isLoading]);
 
-  const themeColorForeground = useThemeColor("foreground");
-  const themeColorBackground = useThemeColor("background");
+  //const themeColorForeground = useThemeColor("foreground");
+  //const themeColorBackground = useThemeColor("background");
 
-  const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
+  //const renderThemeToggle = useCallback(() => <ThemeToggle />, []);
 
   // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
   // Also wait for profile check to avoid premature redirect loop
-  if ((isPending && !hasLoadedOnce) || (session && isLoadingProfile)) {
+  if ((isLoading && !hasLoadedOnce) || (isAuthenticated && isLoadingProfile)) {
     return (
       <FullScreenLoading
         title={t("common.loading.auth.title")}
@@ -48,7 +46,7 @@ function ProtectedLayout() {
   }
 
   // Redirect to sign-in if not authenticated
-  if (!session) {
+  if (!isAuthenticated) {
     return <Redirect href="/(guest)" />;
   }
 

@@ -145,7 +145,6 @@ export function FormDatePicker<T extends FieldValues>({
               setOpen(false);
             }}
             theme={isLight ? "light" : "dark"}
-            // textColor={textColor}
           />
         </View>
       )}

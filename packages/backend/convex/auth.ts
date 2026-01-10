@@ -5,7 +5,7 @@ import {
   type GenericCtx,
 } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
-import { betterAuth, BetterAuthOptions } from "better-auth";
+import { betterAuth, BetterAuthOptions } from "better-auth/minimal";
 import {
   admin,
   createAuthMiddleware,
@@ -75,12 +75,8 @@ export const authComponent = createClient<DataModel, typeof authSchema>(
 );
 
 export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
-  const secret =
-    process.env.BETTER_AUTH_SECRET || "PLACEHOLDER_SECRET_FOR_INITIALIZATION";
-
   return {
     baseURL: siteUrl,
-    secret: secret,
     trustedOrigins: [
       "http://localhost:3000",
       "http://localhost:3001",

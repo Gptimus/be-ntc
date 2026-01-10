@@ -17,7 +17,7 @@ export function EmptyState({ title, description }: EmptyStateProps) {
         <StyledHugeIcon
           icon={InboxIcon}
           size={48}
-          className="text-muted-foreground"
+          className="text-foreground"
         />
       </View>
       <Text className="text-xl font-heading-medium text-foreground mb-2 text-center">

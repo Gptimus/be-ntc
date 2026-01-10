@@ -3,19 +3,19 @@ packages:
   - packages/*
 
 catalog:
-  '@better-auth/expo': 1.4.7
-  '@convex-dev/better-auth': ^0.10.0
-  better-auth: 1.4.7
+  "@better-auth/expo": 1.4.9
+  "@convex-dev/better-auth": 0.10.9
+  better-auth: 1.4.9
   convex: ^1.29.3
   dotenv: ^17.2.2
   typescript: ^5
   zod: 4.2.1
 
 onlyBuiltDependencies:
-  - '@buoy-gg/highlight-updates'
-  - '@buoy-gg/shared-ui'
-  - '@parcel/watcher'
-  - '@swc/core'
+  - "@buoy-gg/highlight-updates"
+  - "@buoy-gg/shared-ui"
+  - "@parcel/watcher"
+  - "@swc/core"
   - esbuild
   - msw
   - sharp

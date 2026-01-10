@@ -81,7 +81,7 @@ export function SocialAuthButtons({
         <Button
           variant="primary"
           size="lg"
-          className="bg-foreground border-foreground h-14 rounded-2xl"
+          className="bg-foreground border-foreground h-14"
           pressableFeedbackVariant="ripple"
           onPress={() => handleOAuthSignIn("apple")}
           isDisabled={loadingProvider !== null}
@@ -112,7 +112,7 @@ export function SocialAuthButtons({
         <Button
           variant="secondary"
           size="lg"
-          className="bg-background border border-border rounded-2xl h-14"
+          className="bg-background border border-border h-14"
           pressableFeedbackVariant="ripple"
           onPress={() => handleOAuthSignIn("google")}
           isDisabled={loadingProvider !== null}
@@ -155,7 +155,7 @@ export function SocialAuthButtons({
         variant="tertiary"
         size="lg"
         onPress={onEmailPress}
-        className="rounded-2xl h-14"
+        className="h-14"
         pressableFeedbackVariant="ripple"
         isDisabled={loadingProvider !== null}
       >

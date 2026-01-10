@@ -7,7 +7,7 @@ import { Button, Spinner } from "heroui-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { FormDatePicker } from "@/components/ui/form-date-picker";
-import { useSession } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { FormImagePicker } from "@/components/ui/form-image-picker";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
@@ -149,8 +149,8 @@ export default function Step1Identity() {
         phone: data.phone,
         gender: data.gender,
         dateOfBirth: data.dateOfBirth.toISOString(),
-        idCardImageUrl: data.idCardImageUri,
-        profileImage: data.profileImageUri,
+        // Images are updated silently immediately after upload
+        // So we don't need to send them here
       });
       triggerHapticSuccess();
       router.push("/(protected)/onboarding/step-2-location");
@@ -175,6 +175,37 @@ export default function Step1Identity() {
 
   const insets = useSafeAreaInsets();
 
+  // Handlers for upload success - update profile immediately
+  const handleProfileImageUploadSuccess = useCallback(
+    async (storageId: string) => {
+      console.log("[Step1] Profile image upload success, updating profile...");
+      try {
+        await updateUserProfile({ profileImage: storageId });
+        console.log("[Step1] Profile image updated in DB");
+      } catch (err) {
+        console.error("[Step1] Failed to update profile image:", err);
+      }
+    },
+    [updateUserProfile]
+  );
+
+  const handleIdCardImageUploadSuccess = useCallback(
+    async (storageId: string) => {
+      console.log("[Step1] ID Card image upload success, updating profile...");
+      try {
+        await updateUserProfile({ idCardImageUrl: storageId });
+        console.log("[Step1] ID Card image updated in DB");
+      } catch (err) {
+        console.error("[Step1] Failed to update ID card image:", err);
+      }
+    },
+    [updateUserProfile]
+  );
+
+  const handleLogout = () => {
+    authClient.signOut();
+  };
+
   return (
     <KeyboardAwareScrollView
       className="flex-1 bg-background"
@@ -194,6 +225,7 @@ export default function Step1Identity() {
         showBackButton={false}
       />
       <View className="gap-4">
+        <Button onPress={handleLogout}>Sign out</Button>
         <View className="flex-row gap-4">
           <View className="flex-1">
             <FormImagePicker
@@ -203,6 +235,7 @@ export default function Step1Identity() {
               error={errors.profileImageUri?.message}
               isDisabled={isAnyUploading}
               onUploadingChange={handleProfileImageUploadingChange}
+              onUploadSuccess={handleProfileImageUploadSuccess}
             />
           </View>
           <View className="flex-1">
@@ -213,6 +246,7 @@ export default function Step1Identity() {
               error={errors.idCardImageUri?.message}
               isDisabled={isAnyUploading}
               onUploadingChange={handleIdCardImageUploadingChange}
+              onUploadSuccess={handleIdCardImageUploadSuccess}
             />
           </View>
         </View>

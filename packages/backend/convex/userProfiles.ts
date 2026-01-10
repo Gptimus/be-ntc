@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Id, Doc } from "./_generated/dataModel";
+import { getUrlFromStorage } from "./lib/storage";
 
 export const updateUserProfile = mutation({
   args: {
@@ -73,10 +74,11 @@ export const updateUserProfile = mutation({
       phoneCountryCode,
       phoneCountryNumber,
       profileImage,
-      ...profileData
+      idCardImageUrl,
+      ...otherProfileData
     } = args;
 
-    // Update Auth User (BetterAuth table)
+    // Update Auth User (BetterAuth table - saving profileImage to 'image' field)
     const userUpdates: Partial<Doc<"user">> = {};
     if (profileImage) userUpdates.image = profileImage;
     if (firstName || lastName) {
@@ -94,9 +96,15 @@ export const updateUserProfile = mutation({
 
     // Construct displayName for userProfiles table if name changed
     const userProfileUpdates: Partial<Doc<"userProfiles">> = {
-      ...profileData,
+      ...otherProfileData,
       updatedAt: Date.now(),
     };
+
+    // Explicitly add idCardImageUrl if present (Saving to 'userProfiles' table)
+    if (idCardImageUrl) {
+      userProfileUpdates.idCardImageUrl = idCardImageUrl;
+    }
+
     if (firstName || lastName) {
       userProfileUpdates.displayName = [firstName, lastName]
         .filter(Boolean)
@@ -137,27 +145,12 @@ export const getUserProfile = query({
 
     if (!profile && !user) return null;
 
-    const profileImage = user?.image;
-    let profileImageUrl = profileImage;
-    if (profileImage && !profileImage.startsWith("http")) {
-      try {
-        const url = await ctx.storage.getUrl(profileImage as Id<"_storage">);
-        if (url) profileImageUrl = url;
-      } catch {
-        // Not a storage ID or error
-      }
-    }
-
-    const idCardImage = profile?.idCardImageUrl;
-    let idCardImageUrl = idCardImage;
-    if (idCardImage && !idCardImage.startsWith("http")) {
-      try {
-        const url = await ctx.storage.getUrl(idCardImage as Id<"_storage">);
-        if (url) idCardImageUrl = url;
-      } catch {
-        // Not a storage ID or error
-      }
-    }
+    // Convert storageIds to URLs
+    const profileImageUrl = await getUrlFromStorage(ctx, user?.image);
+    const idCardImageUrl = await getUrlFromStorage(
+      ctx,
+      profile?.idCardImageUrl
+    );
 
     return {
       ...(profile || {}),

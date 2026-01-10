@@ -5,11 +5,11 @@ import { useLocalization } from "@/localization/hooks/use-localization";
 import { useEffect, useState } from "react";
 
 import { FullScreenLoading } from "@/components/full-screen-loading";
-import { useSession } from "@/lib/auth-client";
+import { useConvexAuth } from "convex/react";
 
 function GuestLayout() {
   const { t } = useLocalization();
-  const { data: session, isPending } = useSession();
+  const { isAuthenticated, isLoading } = useConvexAuth();
   const segments = useSegments();
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
     null
@@ -17,10 +17,10 @@ function GuestLayout() {
   const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   useEffect(() => {
-    if (!isPending && hasSeenOnboarding !== null) {
+    if (!isLoading && hasSeenOnboarding !== null) {
       setHasLoadedOnce(true);
     }
-  }, [isPending, hasSeenOnboarding]);
+  }, [isLoading, hasSeenOnboarding]);
 
   const themeColorForeground = useThemeColor("foreground");
   const themeColorBackground = useThemeColor("background");
@@ -35,7 +35,7 @@ function GuestLayout() {
   }, []);
 
   // Show loading spinner ONLY on the initial load to avoid background-to-foreground flicker
-  if ((isPending || hasSeenOnboarding === null) && !hasLoadedOnce) {
+  if ((isLoading || hasSeenOnboarding === null) && !hasLoadedOnce) {
     return (
       <FullScreenLoading
         title={t("common.loading.init.title")}
@@ -45,7 +45,7 @@ function GuestLayout() {
   }
 
   // Redirect to home if already authenticated
-  if (session) {
+  if (isAuthenticated) {
     return <Redirect href="/(protected)/(tabs)" />;
   }
 

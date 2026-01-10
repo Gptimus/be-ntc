@@ -9,6 +9,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: "./assets/images/icons/icon.png",
   web: {
     bundler: "metro",
+    output: "server",
   },
   name: "Be-ntc",
   slug: "be-ntc",
@@ -62,6 +63,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       "expo-local-authentication",
       {
         faceIDPermission: "Allow $(PRODUCT_NAME) to use Face ID.",
+      },
+    ],
+    [
+      "expo-secure-store",
+      {
+        configureAndroidBackup: true,
+        faceIDPermission: "Allow $(PRODUCT_NAME) to save your session data.",
       },
     ],
   ],

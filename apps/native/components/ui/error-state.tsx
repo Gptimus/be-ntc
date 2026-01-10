@@ -22,7 +22,7 @@ export function ErrorState({
   const { isLight } = useAppTheme();
 
   return (
-    <View className="flex-1 items-center justify-center p-6 bg-background">
+    <View className="flex-1 items-center justify-center p-6 bg-background border">
       <View className="mb-6 bg-danger/10 p-6 rounded-full">
         <StyledHugeIcon icon={Alert02Icon} size={48} className="text-danger" />
       </View>
@@ -35,8 +35,7 @@ export function ErrorState({
       {retry && (
         <Button
           onPress={retry}
-          size="lg"
-          className="rounded-2xl"
+          className="w-full flex-1"
           pressableFeedbackVariant="ripple"
           pressableFeedbackRippleProps={{
             animation: {
@@ -50,7 +49,7 @@ export function ErrorState({
             size={20}
             className="text-white mr-2"
           />
-          <Button.Label>
+          <Button.Label className="text-white">
             {retryLabel || t("common.error.generic.retry")}
           </Button.Label>
         </Button>

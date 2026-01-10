@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { View, Image, Text, Linking } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
@@ -13,8 +13,6 @@ import {
   PressableFeedback,
   Dialog,
   Button,
-  useToast,
-  Spinner,
   BottomSheet,
 } from "heroui-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
@@ -31,10 +29,9 @@ import { useFileUpload } from "@/hooks/use-file-upload";
  * Hook to handle Image Picker logic with source selection
  */
 export function useImagePicker(
-  onUploadingChange?: (isUploading: boolean) => void
+  onUploadingChange?: (isUploading: boolean) => void,
+  onUploadSuccess?: (storageId: string) => void
 ) {
-  const { t } = useLocalization();
-  const { toast } = useToast();
   const [libraryPermission, requestLibraryPermission] =
     ImagePicker.useMediaLibraryPermissions();
   const [cameraPermission, requestCameraPermission] =
@@ -47,17 +44,16 @@ export function useImagePicker(
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { uploadFile, isUploading: isFileUploading } = useFileUpload();
 
+  // Store mapping of local URIs to storageIds
+  const uploadedFilesRef = useRef<Map<string, string>>(new Map());
+
   console.log("[useImagePicker] Render, isFileUploading:", isFileUploading);
 
   const isUploading = isFileUploading;
-  const lastReportedIsUploading = React.useRef(isUploading);
 
   useEffect(() => {
     console.log("[useImagePicker] isUploading changed:", isUploading);
-    if (lastReportedIsUploading.current !== isUploading) {
-      onUploadingChange?.(isUploading);
-      lastReportedIsUploading.current = isUploading;
-    }
+    onUploadingChange?.(isUploading);
   }, [isUploading, onUploadingChange]);
 
   const openPicker = useCallback(() => {
@@ -74,16 +70,52 @@ export function useImagePicker(
       "[useImagePicker] handleImageResult, canceled:",
       result.canceled
     );
+
     if (!result.canceled) {
       triggerHapticSuccess();
       const localUri = result.assets[0].uri;
       console.log("[useImagePicker] localUri:", localUri);
 
       if (shouldUpload) {
-        console.log("[useImagePicker] Starting upload...");
-        const storageId = await uploadFile(localUri);
-        onSelect(storageId);
+        // 🔥 CRITICAL FIX: Show preview BUT don't block on upload completion
+        console.log("[useImagePicker] Setting local preview immediately");
+        onSelect(localUri);
+
+        // 🔥 Start upload WITHOUT awaiting it immediately
+        console.log("[useImagePicker] Starting background upload...");
+
+        // Store the upload promise but don't await it here
+        const uploadPromise = uploadFile(localUri)
+          .then((storageId) => {
+            console.log(
+              "[useImagePicker] Upload complete, storageId:",
+              storageId
+            );
+
+            // Store the mapping
+            uploadedFilesRef.current.set(localUri, storageId);
+            console.log(
+              "[useImagePicker] Stored mapping:",
+              localUri,
+              "->",
+              storageId
+            );
+
+            // Notify parent about success
+            onUploadSuccess?.(storageId);
+            return storageId;
+          })
+          .catch((error) => {
+            console.error("[useImagePicker] Upload failed:", error);
+            // Optionally, you could show an error state in the UI here
+            throw error; // Re-throw if you want the error to bubble up
+          });
+
+        // 🔥 IMPORTANT: Return the promise so the caller can await if needed
+        // BUT don't await here - let the upload happen in background
+        return uploadPromise;
       } else {
+        // If not uploading, just set the local URI
         onSelect(localUri);
       }
     }
@@ -157,6 +189,10 @@ export function useImagePicker(
     }
   };
 
+  const getStorageId = useCallback((localUri: string): string | undefined => {
+    return uploadedFilesRef.current.get(localUri);
+  }, []);
+
   return {
     openPicker,
     pickFromGallery,
@@ -167,6 +203,7 @@ export function useImagePicker(
     setIsPermissionDialogOpen,
     permissionType,
     isUploading,
+    getStorageId,
   };
 }
 
@@ -178,6 +215,7 @@ interface FormImagePickerProps<T extends FieldValues> {
   shouldUpload?: boolean;
   isDisabled?: boolean;
   onUploadingChange?: (isUploading: boolean) => void;
+  onUploadSuccess?: (storageId: string) => void;
 }
 
 export function FormImagePicker<T extends FieldValues>({
@@ -188,6 +226,7 @@ export function FormImagePicker<T extends FieldValues>({
   shouldUpload = true,
   isDisabled = false,
   onUploadingChange,
+  onUploadSuccess,
 }: FormImagePickerProps<T>) {
   const {
     openPicker,
@@ -199,7 +238,7 @@ export function FormImagePicker<T extends FieldValues>({
     setIsPermissionDialogOpen,
     permissionType,
     isUploading,
-  } = useImagePicker(onUploadingChange);
+  } = useImagePicker(onUploadingChange, onUploadSuccess);
 
   const { t } = useLocalization();
   const { isLight } = useAppTheme();
@@ -287,14 +326,7 @@ export function FormImagePicker<T extends FieldValues>({
                 <Animated.View
                   entering={FadeIn.duration(200)}
                   className="absolute inset-0 bg-background/60 items-center justify-center"
-                >
-                  <View className="bg-background px-6 py-4 rounded-3xl shadow-xl items-center gap-3">
-                    <Spinner size="lg" className="text-primary" />
-                    <Text className="text-foreground font-sans-medium text-center px-2">
-                      {t("common.fileUpload.uploading")}
-                    </Text>
-                  </View>
-                </Animated.View>
+                />
               )}
             </PressableFeedback>
             {error && (

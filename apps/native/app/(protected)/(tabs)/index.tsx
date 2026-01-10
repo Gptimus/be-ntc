@@ -2,8 +2,14 @@ import { Card } from "heroui-native";
 import { View } from "react-native";
 
 import { Container } from "@/components/container";
+import { useConvexAuth } from "convex/react";
 
 export default function Home() {
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  console.log({
+    isLoading,
+    isAuthenticated,
+  });
   return (
     <Container className="p-6">
       <View className="flex-1 justify-center items-center">

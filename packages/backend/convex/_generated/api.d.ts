@@ -12,6 +12,7 @@ import type * as auth from "../auth.js";
 import type * as files from "../files.js";
 import type * as healthCheck from "../healthCheck.js";
 import type * as http from "../http.js";
+import type * as lib_storage from "../lib/storage.js";
 import type * as privateData from "../privateData.js";
 import type * as triggers from "../triggers.js";
 import type * as userProfiles from "../userProfiles.js";
@@ -28,6 +29,7 @@ declare const fullApi: ApiFromModules<{
   files: typeof files;
   healthCheck: typeof healthCheck;
   http: typeof http;
+  "lib/storage": typeof lib_storage;
   privateData: typeof privateData;
   triggers: typeof triggers;
   userProfiles: typeof userProfiles;
@@ -747,6 +749,7 @@ export declare const components: {
         "query",
         "internal",
         {
+          join?: any;
           limit?: number;
           model:
             | "user"
@@ -797,6 +800,7 @@ export declare const components: {
         "query",
         "internal",
         {
+          join?: any;
           model:
             | "user"
             | "session"

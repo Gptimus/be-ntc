@@ -9,7 +9,7 @@ const config = withUniwindConfig(
   {
     cssEntryFile: "./global.css",
     dtsFile: "./uniwind-types.d.ts",
-  }
+  },
 );
 
 // XXX: Resolve our exports in workspace packages
