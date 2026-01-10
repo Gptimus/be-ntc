@@ -178,7 +178,7 @@ export default function SignInScreen() {
                             variant: "danger",
                             label:
                               ctx.error.message ||
-                              t("auth.emailInput.toast.genericError.title"), // Using generic error title as fallback
+                              t("auth.emailInput.toast.genericError.title"),
                             description: t(
                               "auth.emailInput.toast.error.description"
                             ),
