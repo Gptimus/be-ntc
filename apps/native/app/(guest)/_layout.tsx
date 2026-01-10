@@ -97,14 +97,6 @@ function GuestLayout() {
           headerShown: false,
         }}
       />
-
-      <Stack.Screen
-        name="auth-options"
-        options={{
-          headerTitle: "Choose your authentication method",
-          headerShown: false,
-        }}
-      />
     </Stack>
   );
 }

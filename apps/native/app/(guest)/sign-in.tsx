@@ -134,11 +134,16 @@ export default function SignInScreen() {
       )}
 
       {/* Main Bottom Sheet */}
-      <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
+      <BottomSheet
+        isOpen={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+        style={{ zIndex: 1 }}
+      >
         <BottomSheet.Portal>
           <BottomSheet.Overlay
             isCloseOnPress={false}
             className="bg-transparent"
+            style={{ zIndex: 0 }}
           />
           <BottomSheet.Content
             snapPoints={showEmailInput ? ["90%"] : ["55%"]}

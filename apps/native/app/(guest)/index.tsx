@@ -68,7 +68,7 @@ export default function GetStartedScreen() {
       });
     } else {
       storageHelpers.setHasSeenOnboarding(true);
-      router.replace("/(guest)/auth-options");
+      router.replace("/(guest)/sign-in");
     }
   };
 
