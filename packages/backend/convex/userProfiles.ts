@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { Id, Doc } from "./_generated/dataModel";
+import type { Id, Doc } from "./_generated/dataModel";
 import { getUrlFromStorage } from "./lib/storage";
 
 export const updateUserProfile = mutation({
