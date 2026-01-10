@@ -5,7 +5,7 @@ import {
   type GenericCtx,
 } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
-import { betterAuth, BetterAuthOptions } from "better-auth/minimal";
+import { betterAuth, BetterAuthOptions } from "better-auth";
 import {
   admin,
   createAuthMiddleware,
@@ -25,7 +25,6 @@ import { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 
 import { authHooks } from "./utils/emailHooks";
-
 import { UAParser } from "ua-parser-js";
 
 const siteUrl = process.env.SITE_URL!;
