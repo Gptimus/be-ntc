@@ -1,19 +1,20 @@
 import "@/global.css";
+import { FloatingDevTools } from "@buoy-gg/core";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { ConvexReactClient } from "convex/react";
+import { ConvexReactClient, useConvexAuth } from "convex/react";
 import { SplashScreen, Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import { ConvexQueryClient } from "@convex-dev/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
 
 import { useFonts } from "expo-font";
 
-import {
-  KeyboardAvoidingView,
-  KeyboardProvider,
-} from "react-native-keyboard-controller";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 import {
   Geist_400Regular,
@@ -50,19 +51,38 @@ export const unstable_settings = {
 };
 
 const convexUrl = process.env.EXPO_PUBLIC_CONVEX_URL || "";
+
 const convex = new ConvexReactClient(convexUrl, {
+  expectAuth: true,
   unsavedChangesWarning: false,
 });
 
+const convexQueryClient = new ConvexQueryClient(convex);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryKeyHashFn: convexQueryClient.hashFn(),
+      queryFn: convexQueryClient.queryFn(),
+    },
+  },
+});
+convexQueryClient.connect(queryClient);
+
 function StackLayout() {
+  const { isAuthenticated } = useConvexAuth();
+
+  console.log({
+    isAuthenticated,
+  });
+
   return (
-    <Stack screenOptions={{}}>
-      <Stack.Screen name="(protected)" options={{ headerShown: false }} />
-      <Stack.Screen name="(guest)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="modal"
-        options={{ title: "Modal", presentation: "modal" }}
-      />
+    <Stack>
+      <Stack.Protected guard={!!isAuthenticated}>
+        <Stack.Screen name="(protected)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={!isAuthenticated}>
+        <Stack.Screen name="(guest)" options={{ headerShown: false }} />
+      </Stack.Protected>
     </Stack>
   );
 }
@@ -96,22 +116,18 @@ export default function Layout() {
 
   return (
     <ConvexBetterAuthProvider client={convex} authClient={authClient}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <KeyboardProvider>
-          <AppThemeProvider>
-            <HeroUINativeProvider>
-              <KeyboardAvoidingView
-                pointerEvents="box-none"
-                behavior="padding"
-                keyboardVerticalOffset={12}
-                className="flex-1"
-              >
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <KeyboardProvider>
+            <AppThemeProvider>
+              <HeroUINativeProvider>
                 <StackLayout />
-              </KeyboardAvoidingView>
-            </HeroUINativeProvider>
-          </AppThemeProvider>
-        </KeyboardProvider>
-      </GestureHandlerRootView>
+                <FloatingDevTools environment="qa" />
+              </HeroUINativeProvider>
+            </AppThemeProvider>
+          </KeyboardProvider>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
     </ConvexBetterAuthProvider>
   );
 }

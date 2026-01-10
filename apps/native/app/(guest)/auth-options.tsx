@@ -294,7 +294,7 @@ export default function AuthOptionsScreen() {
                         <TextField isInvalid={!!error}>
                           <TextField.Label
                             className="text-sans text-foreground"
-                            style={{ fontFamily: "Geist_500Medium" }}
+                            style={{ fontFamily: "Outfit_500Medium" }}
                           >
                             {t("auth.emailInput.title")}
                           </TextField.Label>
@@ -310,12 +310,14 @@ export default function AuthOptionsScreen() {
                             autoFocus
                             editable={!isSubmitting}
                             className="h-14 rounded-2xl text-base"
-                            style={{ fontFamily: "Geist_400Regular" }}
+                            style={{ fontFamily: "Outfit_400Regular" }}
                           />
-                          <TextField.Description>
+                          <TextField.Description
+                            style={{ fontFamily: "Outfit_400Regular" }}
+                          >
                             {t("auth.emailInput.description")}
                           </TextField.Description>
-                          <TextField.ErrorMessage>
+                          <TextField.ErrorMessage className="font-sans">
                             {error?.message}
                           </TextField.ErrorMessage>
                         </TextField>

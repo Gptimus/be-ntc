@@ -98,7 +98,7 @@ export default function VerifyEmailScreen() {
 
     setIsVerifying(true);
     try {
-      const { data, error } = await authClient.signIn.emailOtp({
+      const { error } = await authClient.signIn.emailOtp({
         email,
         otp,
       });
@@ -115,8 +115,6 @@ export default function VerifyEmailScreen() {
       }
 
       triggerHapticSuccess();
-      setIsSheetOpen(false);
-      router.replace("/(protected)");
     } catch (error) {
       triggerHapticError();
       toast.show({
@@ -187,7 +185,7 @@ export default function VerifyEmailScreen() {
               </View>
 
               {/* Email Display */}
-              <View className="mb-8 p-4 bg-surface rounded-2xl flex-row items-center gap-3">
+              <View className="mb-8 p-4 bg-primary/10 rounded-2xl flex-row items-center gap-3">
                 <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center">
                   <StyledHugeIcon
                     icon={Mail01Icon}
@@ -195,7 +193,7 @@ export default function VerifyEmailScreen() {
                     className="text-primary"
                   />
                 </View>
-                <Text className="text-base font-sans-bold text-foreground flex-1">
+                <Text className="text-base font-sans-bold text-primary flex-1">
                   {email}
                 </Text>
               </View>
@@ -205,7 +203,7 @@ export default function VerifyEmailScreen() {
                 <TextField>
                   <TextField.Label
                     className="text-sans text-foreground"
-                    style={{ fontFamily: "Geist_500Medium" }}
+                    style={{ fontFamily: "Outfit_500Medium" }}
                   >
                     {t("auth.verifyEmail.otpLabel")}
                   </TextField.Label>
@@ -217,9 +215,9 @@ export default function VerifyEmailScreen() {
                     maxLength={6}
                     autoFocus
                     className="text-center text-2xl font-heading-bold tracking-[10px]"
-                    style={{ fontFamily: "Geist_700Bold" }}
+                    style={{ fontFamily: "Outfit_700Bold" }}
                   />
-                  <TextField.ErrorMessage>
+                  <TextField.ErrorMessage className="font-sans">
                     {otp.length > 0 && otp.length < 6
                       ? t("auth.verifyEmail.otpInvalid")
                       : ""}

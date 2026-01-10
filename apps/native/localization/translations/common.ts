@@ -47,6 +47,82 @@ export const common = {
         skip: "Skip",
       },
     },
+    common: {
+      next: "Next",
+      finish: "Finish",
+      male: "Male",
+      female: "Female",
+      review: "Review",
+      selected: "Selected",
+    },
+    validation: {
+      firstName_required: "First name is required",
+      lastName_required: "Last name is required",
+      gender_required: "Gender is required",
+      dob_required: "Date of birth is required",
+      idCard_required: "ID Card image is required",
+      profileImage_required: "Profile image is required",
+      profileType_required: "Profile type is required",
+      country_required: "Country is required",
+      city_required: "City is required",
+      address_required: "Address is required",
+      language_required: "Language is required",
+      currency_required: "Currency is required",
+    },
+    onboarding: {
+      profileImage: "Profile Photo",
+      idCardImage: "ID Card",
+      firstName: "First Name",
+      firstNamePlaceholder: "e.g. John",
+      lastName: "Last Name",
+      lastNamePlaceholder: "e.g. Doe",
+      phone: "Phone Number",
+      phonePlaceholder: "e.g. +243...",
+      formattedPhone: "Formatted Phone",
+      dateOfBirth: "Date of Birth",
+      gender: "Gender",
+      profileType: "Profile Type",
+      individual: "Individual",
+      enterprise: "Enterprise",
+      country: "Country",
+      countryPlaceholder: "e.g. Congo, France",
+      city: "City",
+      cityPlaceholder: "e.g. Kinshasa",
+      address: "Address",
+      addressPlaceholder: "Street, House No.",
+      preferredLanguage: "Preferred Language",
+      preferredCurrency: "Preferred Currency",
+      languages: {
+        en: "English",
+        fr: "French",
+      },
+      identity: "Identity",
+      location: "Location",
+      preferences: "Preferences",
+      step1: {
+        title: "Your Identity",
+        description: "Please provide your basic information to get started.",
+      },
+      step2: {
+        title: "Your Location",
+        description: "Tell us where you are based for regional services.",
+      },
+      step3: {
+        title: "Your Preferences",
+        description: "Customize your experience with language and currency.",
+      },
+      step4: {
+        title: "Review",
+        description: "Double check your information before finishing.",
+      },
+      review: {
+        title: "Review Information",
+      },
+      success: {
+        title: "Profile Updated",
+        description: "Your profile has been successfully set up.",
+      },
+    },
     loading: {
       auth: {
         title: "Securing your access",
@@ -55,6 +131,53 @@ export const common = {
       init: {
         title: "Welcome to BE-NTC",
         subtitle: "Preparing your experience...",
+      },
+    },
+    error: {
+      generic: {
+        title: "Something went wrong",
+        description:
+          "We couldn't load your data. Please check your connection and try again.",
+        retry: "Try Again",
+      },
+    },
+    empty: {
+      generic: {
+        title: "No Data Found",
+        description: "There is nothing to display here at the moment.",
+      },
+    },
+    imagePicker: {
+      tapToUpload: "Tap to upload image",
+      supportMsg: "JPG, PNG or WEBP (Max. 5MB)",
+      changeImage: "Change Image",
+      permissionRequired: "Permission required",
+      permissionDenied:
+        "Sorry, we need camera roll permissions to make this work!",
+      openSettings: "Open Settings",
+      selectSource: "Select Source",
+      takePhoto: "Take Photo",
+      fromGallery: "Photo Library",
+      optimizationInfo:
+        "Images will be automatically optimized for better performance.",
+    },
+    datePicker: {
+      placeholder: "Select date",
+      cancel: "Cancel",
+      confirm: "Confirm",
+    },
+    fileUpload: {
+      uploading: "Uploading Image",
+      pleaseWait: "Please wait while we secure your file...",
+      success: {
+        title: "Upload Successful",
+        description: "Your file has been saved to our secure storage.",
+      },
+      error: {
+        title: "Upload Failed",
+        description: "We couldn't upload your file. Please try again.",
+        alreadyUploading: "An upload is already in progress.",
+        offline: "You are offline. Please check your connection.",
       },
     },
   },
@@ -106,6 +229,85 @@ export const common = {
         skip: "Passer",
       },
     },
+    common: {
+      next: "Suivant",
+      finish: "Terminer",
+      male: "Homme",
+      female: "Femme",
+      review: "Revoir",
+      selected: "Sélectionné",
+    },
+    validation: {
+      firstName_required: "Le prénom est requis",
+      lastName_required: "Le nom est requis",
+      gender_required: "Le genre est requis",
+      dob_required: "La date de naissance est requise",
+      idCard_required: "L'image de la carte d'identité est requise",
+      profileImage_required: "La photo de profil est requise",
+      profileType_required: "Le type de profil est requis",
+      country_required: "Le pays est requis",
+      city_required: "La ville est requise",
+      address_required: "L'adresse est requise",
+      language_required: "La langue est requise",
+      currency_required: "La devise est requise",
+    },
+    onboarding: {
+      profileImage: "Photo de profil",
+      idCardImage: "Carte d'identité",
+      firstName: "Prénom",
+      firstNamePlaceholder: "ex. Jean",
+      lastName: "Nom",
+      lastNamePlaceholder: "ex. Dupont",
+      phone: "Numéro de téléphone",
+      phonePlaceholder: "ex. +243...",
+      formattedPhone: "Téléphone formaté",
+      dateOfBirth: "Date de naissance",
+      gender: "Genre",
+      profileType: "Type de profil",
+      individual: "Particulier",
+      enterprise: "Entreprise",
+      country: "Pays",
+      countryPlaceholder: "ex. Congo, France",
+      city: "Ville",
+      cityPlaceholder: "ex. Kinshasa",
+      address: "Adresse",
+      addressPlaceholder: "Rue, n° de maison",
+      preferredLanguage: "Langue préférée",
+      preferredCurrency: "Devise préférée",
+      languages: {
+        en: "Anglais",
+        fr: "Français",
+      },
+      identity: "Identité",
+      location: "Localisation",
+      preferences: "Préférences",
+      step1: {
+        title: "Votre Identité",
+        description:
+          "Veuillez fournir vos informations de base pour commencer.",
+      },
+      step2: {
+        title: "Votre Localisation",
+        description:
+          "Dites-nous où vous êtes basé pour les services régionaux.",
+      },
+      step3: {
+        title: "Vos Préférences",
+        description:
+          "Personnalisez votre expérience avec la langue et la devise.",
+      },
+      step4: {
+        title: "Révisions",
+        description: "Vérifiez vos informations avant de terminer.",
+      },
+      review: {
+        title: "Vérifier les informations",
+      },
+      success: {
+        title: "Profil mis à jour",
+        description: "Votre profil a été configuré avec succès.",
+      },
+    },
     loading: {
       auth: {
         title: "Sécurisation de votre accès",
@@ -114,6 +316,56 @@ export const common = {
       init: {
         title: "Bienvenue sur BE-NTC",
         subtitle: "Préparation de votre expérience...",
+      },
+    },
+    error: {
+      generic: {
+        title: "Quelque chose s'est mal passé",
+        description:
+          "Nous n'avons pas pu charger vos données. Veuillez vérifier votre connexion et réessayer.",
+        retry: "Réessayer",
+      },
+    },
+    empty: {
+      generic: {
+        title: "Aucune donnée trouvée",
+        description: "Il n'y a rien à afficher ici pour le moment.",
+      },
+    },
+    imagePicker: {
+      tapToUpload: "Appuyez pour télécharger une image",
+      supportMsg: "JPG, PNG or WEBP (Max. 5Mo)",
+      changeImage: "Changer l'image",
+      permissionRequired: "Permission requise",
+      permissionDenied:
+        "Désolé, nous avons besoin des permissions pour accéder à la galerie !",
+      openSettings: "Ouvrir les paramètres",
+      selectSource: "Choisir la source",
+      takePhoto: "Prendre une photo",
+      fromGallery: "Galerie photos",
+      optimizationInfo:
+        "Les images seront automatiquement optimisées pour de meilleures performances.",
+    },
+    datePicker: {
+      placeholder: "Sélectionner une date",
+      cancel: "Annuler",
+      confirm: "Confirmer",
+    },
+    fileUpload: {
+      uploading: "Téléchargement de l'image",
+      pleaseWait:
+        "Veuillez patienter pendant que nous sécurisons votre fichier...",
+      success: {
+        title: "Téléchargement réussi",
+        description:
+          "Votre fichier a été enregistré dans notre stockage sécurisé.",
+      },
+      error: {
+        title: "Échec du téléchargement",
+        description:
+          "Nous n'avons pas pu télécharger votre fichier. Veuillez réessayer.",
+        alreadyUploading: "Un téléchargement est déjà en cours.",
+        offline: "Vous êtes hors ligne. Veuillez vérifier votre connexion.",
       },
     },
   },

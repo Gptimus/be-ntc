@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { BottomSheet, useToast } from "heroui-native";
+import { BottomSheet, Spinner, useToast } from "heroui-native";
 import { useState, useCallback } from "react";
 import { ImageBackground, View, Keyboard } from "react-native";
 import { useFocusEffect } from "expo-router";
@@ -20,6 +20,7 @@ import {
   triggerHapticSuccess,
 } from "@/lib/haptics";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -27,6 +28,8 @@ export default function SignInScreen() {
   const { toast } = useToast();
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(true);
+
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -119,6 +122,17 @@ export default function SignInScreen() {
         <View className="absolute inset-0 bg-background/40" />
       </ImageBackground>
 
+      {/* Loading Spinner */}
+      {isAuthenticating && (
+        <Animated.View
+          entering={FadeIn}
+          exiting={FadeOut}
+          className="absolute inset-0 items-center justify-center z-50 bg-black/20"
+        >
+          <Spinner size="lg" color="white" />
+        </Animated.View>
+      )}
+
       {/* Main Bottom Sheet */}
       <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <BottomSheet.Portal>
@@ -127,7 +141,7 @@ export default function SignInScreen() {
             className="bg-transparent"
           />
           <BottomSheet.Content
-            snapPoints={showEmailInput ? ["50%"] : ["55%"]}
+            snapPoints={showEmailInput ? ["90%"] : ["55%"]}
             enablePanDownToClose={false}
             backgroundClassName="bg-background border border-border"
             handleIndicatorClassName="bg-background w-12"
@@ -141,10 +155,53 @@ export default function SignInScreen() {
 
             {/* Content */}
             {!showEmailInput ? (
-              <SocialAuthButtons onEmailPress={handleEmailPress} />
+              <SocialAuthButtons
+                onEmailPress={handleEmailPress}
+                onSocialPress={async (provider) => {
+                  setIsAuthenticating(true);
+                  setIsSheetOpen(false);
+                  try {
+                    await authClient.signIn.social(
+                      {
+                        provider,
+                        callbackURL: "/",
+                      },
+                      {
+                        onError: (ctx) => {
+                          triggerHapticError();
+                          toast.show({
+                            variant: "danger",
+                            label:
+                              ctx.error.message ||
+                              t("auth.emailInput.toast.genericError.title"), // Using generic error title as fallback
+                            description: t(
+                              "auth.emailInput.toast.error.description"
+                            ),
+                            duration: 4000,
+                          });
+                        },
+                      }
+                    );
+                  } catch (error) {
+                    triggerHapticError();
+                    toast.show({
+                      variant: "danger",
+                      label: t("auth.emailInput.toast.genericError.title"),
+                      description: t(
+                        "auth.emailInput.toast.genericError.description"
+                      ),
+                      duration: 4000,
+                    });
+                  } finally {
+                    setIsAuthenticating(false);
+                    setIsSheetOpen(true);
+                  }
+                }}
+              />
             ) : (
               <KeyboardAwareScrollView
                 className="w-full flex-1"
+                bottomOffset={20}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   flexGrow: 1,

@@ -1,4 +1,5 @@
 import * as Localization from "expo-localization";
+import { TranslateOptions } from "i18n-js";
 import { useCallback, useState } from "react";
 import { i18n } from "../i18n";
 
@@ -14,7 +15,7 @@ export function useLocalization() {
     setLocaleState(newLocale);
   }, []);
 
-  const t = useCallback((key: string, options?: any) => {
+  const t = useCallback((key: string, options?: TranslateOptions) => {
     return i18n.t(key, options);
   }, []);
 

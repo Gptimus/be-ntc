@@ -103,12 +103,12 @@
 }
 
 @theme {
-  --font-sans: "Geist_400Regular";
-  --font-sans-medium: "Geist_500Medium";
-  --font-sans-semi-bold: "Geist_600SemiBold";
-  --font-sans-bold: "Geist_700Bold";
-  --font-sans-extrabold: "Geist_800ExtraBold";
-  --font-sans-black: "Geist_900Black";
+  --font-sans: "Outfit_400Regular";
+  --font-sans-medium: "Outfit_500Medium";
+  --font-sans-semi-bold: "Outfit_500Medium";
+  --font-sans-bold: "Outfit_700Bold";
+  --font-sans-extrabold: "Outfit_800ExtraBold";
+  --font-sans-black: "Outfit_900Black";
 
   --font-heading: "Outfit_400Regular";
   --font-heading-medium: "Outfit_500Medium";

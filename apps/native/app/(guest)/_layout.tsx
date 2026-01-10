@@ -1,15 +1,15 @@
 import { storageHelpers } from "@/lib/storage";
-import { useConvexAuth } from "convex/react";
 import { Redirect, Stack, useSegments } from "expo-router";
 import { useThemeColor } from "heroui-native";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { useEffect, useState } from "react";
 
 import { FullScreenLoading } from "@/components/full-screen-loading";
+import { useConvexAuth } from "convex/react";
 
 function GuestLayout() {
   const { t } = useLocalization();
-  const { isLoading, isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
   const segments = useSegments();
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean | null>(
     null
@@ -46,7 +46,7 @@ function GuestLayout() {
 
   // Redirect to home if already authenticated
   if (isAuthenticated) {
-    return <Redirect href="/(protected)" />;
+    return <Redirect href="/(protected)/(tabs)" />;
   }
 
   // Redirect to sign-in if onboarding was already seen and we are on the index

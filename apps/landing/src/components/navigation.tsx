@@ -1,11 +1,14 @@
 "use client";
 
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { Button } from "@be-ntc/ui/components/button";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { usePathname, useRouter } from "@/i18n/navigation";
-import { useTransition } from "react";
 import Image from "next/image";
-import { Button } from "@be-ntc/ui/components/button";
+import { useTransition } from "react";
+import { api } from "@be-ntc/backend/convex/_generated/api";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { authClient } from "@/lib/auth-client";
 
 export function Navigation() {
   const locale = useLocale();
@@ -13,10 +16,30 @@ export function Navigation() {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
+  const mutateSomething = useQuery(api.healthCheck.get);
+  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  console.log("Task created with ID3:", mutateSomething);
+
+  console.log({
+    isAuthenticated,
+    isLoading,
+  });
 
   const handleLanguageChange = (newLocale: string) => {
     startTransition(() => {
       router.replace(pathname, { locale: newLocale });
+    });
+  };
+
+  const handlePress = async () => {
+    const { data, error } = await authClient.signIn.magicLink({
+      email: "guerthmanzala@gmail.com", // required
+      name: "Guerth Manzala",
+      callbackURL: "/",
+      newUserCallbackURL: "/",
+      errorCallbackURL: "/",
     });
   };
 
@@ -29,6 +52,7 @@ export function Navigation() {
     >
       <div className="container mx-auto px-6 md:px-12 lg:px-16">
         <div className="flex items-center justify-between h-20">
+          <Button onClick={handlePress}>Call</Button>
           {/* Logo */}
           <a href="/" className="flex items-center">
             <Image

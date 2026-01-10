@@ -5,7 +5,8 @@ import {
   type GenericCtx,
 } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
-import { betterAuth, BetterAuthOptions } from "better-auth";
+import { betterAuth } from "better-auth";
+import type { BetterAuthOptions } from "better-auth";
 import {
   admin,
   createAuthMiddleware,
@@ -21,11 +22,10 @@ import authConfig from "./auth.config";
 import authSchema from "./betterAuth/schema";
 
 import { components, internal } from "./_generated/api";
-import { DataModel } from "./_generated/dataModel";
+import type { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 
 import { authHooks } from "./utils/emailHooks";
-
 import { UAParser } from "ua-parser-js";
 
 const siteUrl = process.env.SITE_URL!;
@@ -75,18 +75,15 @@ export const authComponent = createClient<DataModel, typeof authSchema>(
 );
 
 export const createAuthOptions = (ctx: GenericCtx<DataModel>) => {
-  const secret =
-    process.env.BETTER_AUTH_SECRET || "PLACEHOLDER_SECRET_FOR_INITIALIZATION";
-
   return {
     baseURL: siteUrl,
-    secret: secret,
     trustedOrigins: [
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",
       "https://*.be-ntc.com",
       "bentc://",
+      "bentc:///",
       "bentc://*",
       "exp://192.168.1.65:8081/",
       "exp://*/*",

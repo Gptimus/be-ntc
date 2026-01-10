@@ -192,7 +192,6 @@ export default function GetStartedScreen() {
               variant="primary"
               size="lg"
               onPress={handleNext}
-              className="rounded-2xl"
               pressableFeedbackVariant="ripple"
               pressableFeedbackRippleProps={{
                 animation: {
@@ -214,7 +213,7 @@ export default function GetStartedScreen() {
               variant="secondary"
               size="lg"
               onPress={handleSignIn}
-              className="border-white/10 bg-white/10 rounded-2xl"
+              className="border-white/10 bg-white/10"
               pressableFeedbackVariant="ripple"
               pressableFeedbackRippleProps={{
                 animation: {
