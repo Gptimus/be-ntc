@@ -12,6 +12,12 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
 
+    "verbatimModuleSyntax": true,
+    "noImplicitReturns": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
     /* These compiler options are required by Convex */
     "target": "ESNext",
     "lib": ["ES2021", "dom"],
