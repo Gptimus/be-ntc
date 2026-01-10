@@ -52,7 +52,7 @@ export function Navigation() {
     >
       <div className="container mx-auto px-6 md:px-12 lg:px-16">
         <div className="flex items-center justify-between h-20">
-          <Button onClick={handlePress}>Call</Button>
+          {/* <Button onClick={handlePress}>Call</Button> */}
           {/* Logo */}
           <a href="/" className="flex items-center">
             <Image
