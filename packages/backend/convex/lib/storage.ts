@@ -1,5 +1,5 @@
-import { Id } from "../_generated/dataModel";
-import { QueryCtx, MutationCtx } from "../_generated/server";
+import type { Id } from "../_generated/dataModel";
+import type { QueryCtx, MutationCtx } from "../_generated/server";
 
 // List of all fields in the schema that contain file/image/photo/logo URLs
 export const STORAGE_URL_FIELDS = [
