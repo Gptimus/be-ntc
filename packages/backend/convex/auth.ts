@@ -22,7 +22,7 @@ import authConfig from "./auth.config";
 import authSchema from "./betterAuth/schema";
 
 import { components, internal } from "./_generated/api";
-import { DataModel } from "./_generated/dataModel";
+import type { DataModel } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 
 import { authHooks } from "./utils/emailHooks";
