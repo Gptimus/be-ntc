@@ -197,13 +197,13 @@ export const authHooks = {
     });
   },
 
-  // Organization Welcome
-  async sendOrganizationWelcome(data: {
-    email: string;
-    userFirstName: string;
-    organizationName: string;
-    dashboardUrl: string;
-  }): Promise<void> {},
+  // // Organization Welcome
+  // async sendOrganizationWelcome(data: {
+  //   email: string;
+  //   userFirstName: string;
+  //   organizationName: string;
+  //   dashboardUrl: string;
+  // }): Promise<void> {},
 
   // Organization Role Updated
   async sendOrganizationRoleUpdated(data: {

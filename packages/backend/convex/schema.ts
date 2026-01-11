@@ -15,17 +15,17 @@ const qrFields = {
   qrData: v.optional(v.string()),
 };
 
-const userReference = {
-  userId: v.string(),
-};
+// const userReference = {
+//   userId: v.string(),
+// };
 
-// Status Enums
-const UserStatus = {
-  PENDING: "PENDING",
-  ACTIVE: "ACTIVE",
-  SUSPENDED: "SUSPENDED",
-  BANNED: "BANNED",
-} as const;
+// // Status Enums
+// const UserStatus = {
+//   PENDING: "PENDING",
+//   ACTIVE: "ACTIVE",
+//   SUSPENDED: "SUSPENDED",
+//   BANNED: "BANNED",
+// } as const;
 
 const AuditEvent = {
   CREATED: "CREATED",

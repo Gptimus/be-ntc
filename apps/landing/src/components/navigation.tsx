@@ -7,7 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
 import { useTransition } from "react";
 import { api } from "@be-ntc/backend/convex/_generated/api";
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { authClient } from "@/lib/auth-client";
 
 export function Navigation() {
@@ -16,10 +16,9 @@ export function Navigation() {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
-  const mutateSomething = useQuery(api.healthCheck.get);
-  const generateUploadUrl = useMutation(api.files.generateUploadUrl);
   const { isAuthenticated, isLoading } = useConvexAuth();
 
+  const mutateSomething = useQuery(api.healthCheck.get);
   console.log("Task created with ID3:", mutateSomething);
 
   console.log({

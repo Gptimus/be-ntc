@@ -15,7 +15,7 @@
     "verbatimModuleSyntax": true,
     "noImplicitReturns": true,
     "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
+    //"noUnusedLocals": true,
     "noUnusedParameters": true,
 
     /* These compiler options are required by Convex */

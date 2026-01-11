@@ -1,7 +1,7 @@
 import "@/global.css";
 import { FloatingDevTools } from "@buoy-gg/core";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
-import { ConvexReactClient, useConvexAuth } from "convex/react";
+import { ConvexReactClient, useConvexAuth, useQuery } from "convex/react";
 import { SplashScreen, Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -38,6 +38,8 @@ import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from "react-native-reanimated";
+import { api } from "@be-ntc/backend/convex/_generated/api";
+import { StyleSheet } from "react-native";
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
@@ -69,10 +71,13 @@ const queryClient = new QueryClient({
 convexQueryClient.connect(queryClient);
 
 function StackLayout() {
-  const { isAuthenticated } = useConvexAuth();
+  const { isAuthenticated, isLoading } = useConvexAuth();
+  const mutateSomething = useQuery(api.healthCheck.get);
+  console.log("Task created with ID3:", mutateSomething);
 
   console.log({
     isAuthenticated,
+    isLoading,
   });
 
   return (
@@ -117,17 +122,23 @@ export default function Layout() {
   return (
     <ConvexBetterAuthProvider client={convex} authClient={authClient}>
       <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
+        <GestureHandlerRootView style={styles.root}>
           <KeyboardProvider>
             <AppThemeProvider>
               <HeroUINativeProvider>
                 <StackLayout />
-                <FloatingDevTools environment="qa" />
               </HeroUINativeProvider>
             </AppThemeProvider>
           </KeyboardProvider>
         </GestureHandlerRootView>
+        <FloatingDevTools environment="qa" />
       </QueryClientProvider>
     </ConvexBetterAuthProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+});
