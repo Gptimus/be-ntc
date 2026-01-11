@@ -29,7 +29,6 @@ import { authHooks } from "./utils/emailHooks";
 import { UAParser } from "ua-parser-js";
 
 const siteUrl = process.env.SITE_URL!;
-const nativeAppUrl = process.env.NATIVE_APP_URL || "mybettertapp://";
 const isAdminApp = Boolean(process.env.ADMIN_APP!) || false;
 
 const otpExpiresInSeconds = parseInt(
@@ -40,16 +39,9 @@ const magicLinkExpiresInSeconds = parseInt(
   process.env.MAGIC_LINK_EXPIRES_IN_SECONDS || "300"
 );
 
-const resetPasswordTokenExpiresIn = parseInt(
-  process.env.RESET_PASSWORD_TOKEN_EXPIRES_IN_SECONDS || "3600"
-);
-
 const emailTokenExpiresInSeconds = parseInt(
   process.env.EMAIL_TOKEN_EXPIRES_IN_SECONDS || "3600"
 );
-
-const invitationExpiresIn =
-  process.env.INVITATION_EXPIRES_IN_SECONDS || "7 jours";
 
 const authFunctions: AuthFunctions = internal.auth;
 
@@ -59,6 +51,7 @@ export const authComponent = createClient<DataModel, typeof authSchema>(
     local: {
       schema: authSchema,
     },
+    verbose: true,
     authFunctions,
     triggers: {
       user: {

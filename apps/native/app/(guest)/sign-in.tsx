@@ -134,11 +134,16 @@ export default function SignInScreen() {
       )}
 
       {/* Main Bottom Sheet */}
-      <BottomSheet isOpen={isSheetOpen} onOpenChange={setIsSheetOpen}>
+      <BottomSheet
+        isOpen={isSheetOpen}
+        onOpenChange={setIsSheetOpen}
+        style={{ zIndex: 1 }}
+      >
         <BottomSheet.Portal>
           <BottomSheet.Overlay
             isCloseOnPress={false}
             className="bg-transparent"
+            style={{ zIndex: 0 }}
           />
           <BottomSheet.Content
             snapPoints={showEmailInput ? ["90%"] : ["55%"]}
@@ -173,7 +178,7 @@ export default function SignInScreen() {
                             variant: "danger",
                             label:
                               ctx.error.message ||
-                              t("auth.emailInput.toast.genericError.title"), // Using generic error title as fallback
+                              t("auth.emailInput.toast.genericError.title"),
                             description: t(
                               "auth.emailInput.toast.error.description"
                             ),

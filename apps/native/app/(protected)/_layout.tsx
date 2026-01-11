@@ -3,7 +3,7 @@ import { ErrorState } from "@/components/ui/error-state";
 import { useLocalization } from "@/localization/hooks/use-localization";
 import { api } from "@be-ntc/backend/convex/_generated/api";
 import { convexQuery } from "@convex-dev/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery as tanstackUseQuery } from "@tanstack/react-query";
 import { useConvexAuth } from "convex/react";
 import { Redirect, Slot, useSegments } from "expo-router";
 import React from "react";
@@ -15,13 +15,15 @@ function ProtectedLayout() {
 
   const { isAuthenticated, isLoading } = useConvexAuth();
 
+  console.log("ProtectedLayout", { isAuthenticated, isLoading });
+
   // Load user profile to check if configured
   const {
     data: userProfile,
     isPending: isLoadingProfile,
     error,
     refetch,
-  } = useQuery(convexQuery(api.userProfiles.getUserProfile));
+  } = tanstackUseQuery(convexQuery(api.userProfiles.getUserProfile));
 
   React.useEffect(() => {
     if (!isLoading) {

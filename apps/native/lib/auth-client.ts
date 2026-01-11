@@ -10,7 +10,7 @@ import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 
 export const authClient = createAuthClient({
-  baseURL: "https://be-ntc.com",
+  baseURL: process.env.EXPO_PUBLIC_CONVEX_SITE_URL,
   plugins: [
     expoClient({
       scheme: Constants.expoConfig?.scheme as string,

@@ -6,7 +6,7 @@ catalog:
   "@better-auth/expo": 1.4.9
   "@convex-dev/better-auth": 0.10.9
   better-auth: 1.4.9
-  convex: ^1.29.3
+  convex: 1.31.2
   dotenv: ^17.2.2
   typescript: ^5
   zod: 4.2.1
@@ -20,3 +20,6 @@ onlyBuiltDependencies:
   - msw
   - sharp
   - unrs-resolver
+
+patchedDependencies:
+  react-native-date-picker@5.0.13: patches/react-native-date-picker@5.0.13.patch

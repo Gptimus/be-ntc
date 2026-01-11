@@ -1,0 +1,36 @@
+diff --git a/dist/esm/react/ConvexAuthState.js b/dist/esm/react/ConvexAuthState.js
+index 940023646daab87b5035827c3ecab9f37ce66638..a72d0e5b196e97c28e7efad49617b64a1dfafd64 100644
+--- a/dist/esm/react/ConvexAuthState.js
++++ b/dist/esm/react/ConvexAuthState.js
+@@ -67,7 +67,6 @@ export function ConvexProviderWithAuth({
+ function ConvexAuthStateFirstEffect({
+   authProviderAuthenticated,
+   fetchAccessToken,
+-  authProviderLoading,
+   client,
+   setIsConvexAuthenticated
+ }) {
+@@ -89,7 +88,6 @@ function ConvexAuthStateFirstEffect({
+   }, [
+     authProviderAuthenticated,
+     fetchAccessToken,
+-    authProviderLoading,
+     client,
+     setIsConvexAuthenticated
+   ]);
+@@ -98,7 +96,6 @@ function ConvexAuthStateFirstEffect({
+ function ConvexAuthStateLastEffect({
+   authProviderAuthenticated,
+   fetchAccessToken,
+-  authProviderLoading,
+   client,
+   setIsConvexAuthenticated
+ }) {
+@@ -112,7 +109,6 @@ function ConvexAuthStateLastEffect({
+   }, [
+     authProviderAuthenticated,
+     fetchAccessToken,
+-    authProviderLoading,
+     client,
+     setIsConvexAuthenticated
+   ]);
